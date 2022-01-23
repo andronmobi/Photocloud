@@ -1,4 +1,4 @@
-package fr.dappli.common.network
+package fr.dappli.photocloud.common.network
 
 import io.ktor.client.*
 import io.ktor.client.features.*

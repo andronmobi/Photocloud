@@ -6,7 +6,7 @@ plugins {
     id("org.jetbrains.compose") version "1.0.0"
 }
 
-group = "fr.dappli"
+group = "fr.dappli.photocloud"
 version = "1.0"
 
 kotlin {

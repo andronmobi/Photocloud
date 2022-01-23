@@ -4,7 +4,7 @@ plugins {
     kotlin("android")
 }
 
-group = "fr.dappli"
+group = "fr.dappli.photocloud"
 version = "1.0"
 
 repositories {

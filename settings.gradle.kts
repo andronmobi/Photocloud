@@ -8,7 +8,7 @@ pluginManagement {
     }
     
 }
-rootProject.name = "Owncloud"
+rootProject.name = "Photocloud"
 
 
 include(":android")

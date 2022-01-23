@@ -1,4 +1,4 @@
-package fr.dappli.owncloud.vo
+package fr.dappli.photocloud.vo
 
 import kotlinx.serialization.Serializable
 

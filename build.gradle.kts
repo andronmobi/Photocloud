@@ -11,7 +11,7 @@ buildscript {
     }
 }
 
-group = "fr.dappli"
+group = "fr.dappli.photocloud"
 version = "1.0"
 
 allprojects {

@@ -1,4 +1,4 @@
-package fr.dappli.common
+package fr.dappli.photocloud.common
 
 actual fun getPlatformName(): String {
     return "Android"

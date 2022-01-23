@@ -1,4 +1,4 @@
-import fr.dappli.common.App
+import fr.dappli.photocloud.common.App
 import androidx.compose.material.MaterialTheme
 import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.application

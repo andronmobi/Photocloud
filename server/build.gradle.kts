@@ -4,7 +4,7 @@ plugins {
     kotlin("plugin.serialization") version "1.5.31"
 }
 
-group = "fr.dappli"
+group = "fr.dappli.photocloud"
 version = "1.0"
 
 val kotlinVersion = "1.5.31"

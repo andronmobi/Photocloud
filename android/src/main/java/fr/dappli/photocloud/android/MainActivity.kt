@@ -1,6 +1,6 @@
-package fr.dappli.android
+package fr.dappli.photocloud.android
 
-import fr.dappli.common.App
+import fr.dappli.photocloud.common.App
 import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity

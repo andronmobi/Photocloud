@@ -6,7 +6,7 @@ plugins {
     id("com.android.library")
 }
 
-group = "fr.dappli"
+group = "fr.dappli.photocloud"
 version = "1.0"
 
 kotlin {

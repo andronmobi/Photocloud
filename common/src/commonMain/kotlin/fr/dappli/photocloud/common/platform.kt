@@ -1,3 +1,3 @@
-package fr.dappli.common
+package fr.dappli.photocloud.common
 
 expect fun getPlatformName(): String

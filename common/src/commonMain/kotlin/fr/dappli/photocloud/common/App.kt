@@ -1,4 +1,4 @@
-package fr.dappli.common
+package fr.dappli.photocloud.common
 
 import androidx.compose.material.Text
 import androidx.compose.material.Button
@@ -7,7 +7,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import fr.dappli.common.network.Network
+import fr.dappli.photocloud.common.network.Network
 import io.ktor.client.request.*
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch

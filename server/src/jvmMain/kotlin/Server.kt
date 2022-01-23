@@ -1,6 +1,6 @@
 import com.auth0.jwt.JWT
 import com.auth0.jwt.algorithms.Algorithm
-import fr.dappli.owncloud.vo.User
+import fr.dappli.photocloud.vo.User
 import io.ktor.application.*
 import io.ktor.auth.*
 import io.ktor.auth.jwt.*
