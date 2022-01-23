@@ -13,6 +13,6 @@ rootProject.name = "Photocloud"
 
 include(":android")
 include(":desktop")
-include(":common")
+include(":commonClient")
 include(":server")
 
