@@ -2,6 +2,6 @@ POST http://localhost:9090/login
 Content-Type: application/json
 
 {
-  "username": "foo",
-  "password": "bar"
+  "username": "{{username}}",
+  "password": "{{password}}"
 }
