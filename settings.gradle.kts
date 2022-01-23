@@ -14,4 +14,5 @@ rootProject.name = "Owncloud"
 include(":android")
 include(":desktop")
 include(":common")
+include(":server")
 
