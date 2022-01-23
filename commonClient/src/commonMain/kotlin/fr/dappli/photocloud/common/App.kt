@@ -21,13 +21,12 @@ fun App() {
     Button(onClick = {
         text = "Hello, ${getPlatformName()}"
         MainScope().launch {
-            val s: String = network.client.get {
+            val s: String = network.authClient.get {
                 url {
-                    encodedPath = "/ocs/v2.php/cloud/user"
+                    encodedPath = "hello"
                 }
-                parameter("format", "json")
             }
-            println("request: $s")
+            println("response: $s")
         }
     }) {
         Text(text)
