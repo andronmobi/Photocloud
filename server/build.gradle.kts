@@ -29,8 +29,7 @@ kotlin {
                 implementation("io.ktor:ktor-auth-jwt:$ktorVersion")
                 implementation("ch.qos.logback:logback-classic:$logbackVersion")
 
-                // TODO move to model and change to api
-                implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.1")
+                implementation(project(":commonAll"))
             }
         }
         val jvmTest by getting
