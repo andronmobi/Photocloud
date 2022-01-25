@@ -10,9 +10,9 @@ pluginManagement {
 }
 rootProject.name = "Photocloud"
 
-
 include(":android")
 include(":desktop")
 include(":commonClient")
+include(":commonAll")
 include(":server")
 

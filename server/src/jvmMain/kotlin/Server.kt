@@ -1,6 +1,5 @@
 import com.auth0.jwt.JWT
 import com.auth0.jwt.algorithms.Algorithm
-import fr.dappli.photocloud.vo.User
 import io.ktor.application.*
 import io.ktor.auth.*
 import io.ktor.auth.jwt.*
@@ -11,6 +10,7 @@ import io.ktor.response.*
 import io.ktor.routing.*
 import io.ktor.serialization.*
 import java.util.*
+import fr.dappli.photocloud.vo.User
 
 fun main(args: Array<String>): Unit = io.ktor.server.netty.EngineMain.main(args)
 
