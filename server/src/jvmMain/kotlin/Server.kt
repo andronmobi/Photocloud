@@ -1,5 +1,7 @@
 import com.auth0.jwt.JWT
 import com.auth0.jwt.algorithms.Algorithm
+import fr.dappli.photocloud.vo.Config
+import fr.dappli.photocloud.vo.Dir
 import io.ktor.application.*
 import io.ktor.auth.*
 import io.ktor.auth.jwt.*
@@ -40,6 +42,8 @@ fun Application.module(testing: Boolean = false) {
         val confUser = User(confUserName, confPassword)
 
         val filePath = environment.config.property("server.filePath").getString()
+        val fileId = UUID.nameUUIDFromBytes(filePath.toByteArray()).toString()
+        val config = Config(Dir(fileId))
 
         install(Authentication) {
             jwt("auth-jwt") {
@@ -68,7 +72,7 @@ fun Application.module(testing: Boolean = false) {
                     .withAudience(audience)
                     .withIssuer(issuer)
                     .withClaim("username", user.username)
-                    .withExpiresAt(Date(System.currentTimeMillis() + 60000))
+                    .withExpiresAt(Date(System.currentTimeMillis() + 30 * 60000))
                     .sign(Algorithm.HMAC256(secret))
                 call.respond(hashMapOf("token" to token))
             } else {
@@ -77,15 +81,11 @@ fun Application.module(testing: Boolean = false) {
         }
 
         authenticate("auth-jwt") {
-            get("/hello") {
-                val principal = call.principal<JWTPrincipal>()
-                val username = principal!!.payload.getClaim("username").asString()
-                val expiresAt = principal.expiresAt?.time?.minus(System.currentTimeMillis())
-                call.respondText("Hello, $username! Token is expired at $expiresAt ms.")
+            get("/config") {
+                call.respond(config)
             }
 
             get("files") {
-                println("andrei $filePath")
                 val files = File(filePath).listFiles()
                 val fileNames = files?.map { it.name } ?: emptyList()
                 call.respondText("List of files in $filePath: $fileNames")
