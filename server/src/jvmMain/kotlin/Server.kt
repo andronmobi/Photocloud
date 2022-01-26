@@ -11,6 +11,7 @@ import io.ktor.routing.*
 import io.ktor.serialization.*
 import java.util.*
 import fr.dappli.photocloud.vo.User
+import java.io.File
 
 fun main(args: Array<String>): Unit = io.ktor.server.netty.EngineMain.main(args)
 
@@ -38,15 +39,17 @@ fun Application.module(testing: Boolean = false) {
         val confPassword = environment.config.property("login.password").getString()
         val confUser = User(confUserName, confPassword)
 
+        val filePath = environment.config.property("server.filePath").getString()
+
         install(Authentication) {
             jwt("auth-jwt") {
                 realm = myRealm
                 verifier(
-                    JWT
-                    .require(Algorithm.HMAC256(secret))
-                    .withAudience(audience)
-                    .withIssuer(issuer)
-                    .build())
+                    JWT.require(Algorithm.HMAC256(secret))
+                        .withAudience(audience)
+                        .withIssuer(issuer)
+                        .build()
+                )
                 validate { credential ->
                     if (credential.payload.getClaim("username").asString() != "") {
                         JWTPrincipal(credential.payload)
@@ -80,10 +83,18 @@ fun Application.module(testing: Boolean = false) {
                 val expiresAt = principal.expiresAt?.time?.minus(System.currentTimeMillis())
                 call.respondText("Hello, $username! Token is expired at $expiresAt ms.")
             }
+
+            get("files") {
+                println("andrei $filePath")
+                val files = File(filePath).listFiles()
+                val fileNames = files?.map { it.name } ?: emptyList()
+                call.respondText("List of files in $filePath: $fileNames")
+            }
         }
 
         get("/") {
             call.respondText("Hello, Server!")
         }
     }
+
 }
