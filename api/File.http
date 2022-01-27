@@ -1,0 +1,2 @@
+GET http://localhost:9090/file/cGhvdG9jbG91ZC8vbXlkaXI
+Authorization: Bearer {{auth_token}}
