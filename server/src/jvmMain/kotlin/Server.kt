@@ -17,6 +17,7 @@ fun Application.module(testing: Boolean = false) {
         val issuer = environment.config.property("jwt.issuer").getString()
         val audience = environment.config.property("jwt.audience").getString()
         val myRealm = environment.config.property("jwt.realm").getString()
+        val tokenDuration = environment.config.property("jwt.tokenDuration").getString().toLong()
 
         val confUserName = environment.config.property("login.username").getString()
         val confPassword = environment.config.property("login.password").getString()
@@ -26,7 +27,7 @@ fun Application.module(testing: Boolean = false) {
 
         setupServer()
         setupAuthentication(secret, issuer, audience, myRealm)
-        handleLoginRequests(secret, issuer, audience, confUser)
+        handleLoginRequests(secret, issuer, audience, confUser, tokenDuration)
         handleHomeRequests()
 
         authenticate("auth-jwt") {

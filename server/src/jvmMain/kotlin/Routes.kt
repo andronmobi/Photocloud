@@ -22,7 +22,8 @@ fun Route.handleLoginRequests(
     secret: String,
     issuer: String,
     audience: String,
-    confUser: User
+    confUser: User,
+    tokenDuration: Long
 ) {
     post("/login") {
         val user = call.receive<User>()
@@ -32,7 +33,7 @@ fun Route.handleLoginRequests(
                 .withAudience(audience)
                 .withIssuer(issuer)
                 .withClaim("username", user.username)
-                .withExpiresAt(Date(System.currentTimeMillis() + TOKEN_TIMEOUT))
+                .withExpiresAt(Date(System.currentTimeMillis() + tokenDuration))
                 .sign(Algorithm.HMAC256(secret))
             call.respond(hashMapOf("token" to token))
         } else {
@@ -42,7 +43,7 @@ fun Route.handleLoginRequests(
 }
 
 fun Route.handleConfigRequests() {
-    val root = SCHEME
+    val root = "$SCHEME/"
     val fileId = Base64.getUrlEncoder().withoutPadding().encodeToString(root.toByteArray())
     val config = Config(Dir(fileId))
 
@@ -55,13 +56,12 @@ fun Route.handleFileRequests(rootPath: String) {
     get("/file/{fileId}") {
         val fileId = call.parameters["fileId"] ?: throw BadRequestException("fileId is null")
         val fileUrl = String(Base64.getUrlDecoder().decode(fileId))
-        val path = pathRegex.matchEntire(fileUrl)?.groups?.get(1)?.value ?: throw BadRequestException("unrecognized")
-        val files = File("$rootPath/$path").listFiles()
+        val fileLocation = pathRegex.matchEntire(fileUrl)?.groups?.get(1)?.value ?: throw BadRequestException("unrecognized")
+        val files = File("$rootPath$fileLocation").listFiles()
         val fileNames = files?.map { it.name } ?: emptyList()
-        call.respondText("$path>: $fileNames")
+        call.respondText("$fileLocation>: $fileNames")
     }
 }
 
-private const val TOKEN_TIMEOUT = 2 * 60 * 1000L
 private const val SCHEME ="photocloud://"
 private val pathRegex = "photocloud:\\/\\/(.*)".toRegex()
