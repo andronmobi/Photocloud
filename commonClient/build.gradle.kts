@@ -24,13 +24,13 @@ kotlin {
                 api(compose.foundation)
                 api(compose.material)
 
-                api("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.1")
-
                 api("io.ktor:ktor-client-auth:1.6.7")
                 api("io.ktor:ktor-client-core:1.6.7")
                 api("io.ktor:ktor-client-okhttp:1.6.7")
                 api("io.ktor:ktor-client-serialization-jvm:1.6.7")
                 api("io.ktor:ktor-client-serialization:1.6.7")
+
+                api(project(":commonAll"))
             }
         }
         val commonTest by getting {
