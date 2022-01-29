@@ -32,7 +32,7 @@ fun Route.handleLoginRequests(
                 .withAudience(audience)
                 .withIssuer(issuer)
                 .withClaim("username", user.username)
-                .withExpiresAt(Date(System.currentTimeMillis() + 30 * 60000))
+                .withExpiresAt(Date(System.currentTimeMillis() + TOKEN_TIMEOUT))
                 .sign(Algorithm.HMAC256(secret))
             call.respond(hashMapOf("token" to token))
         } else {
@@ -62,5 +62,6 @@ fun Route.handleFileRequests(rootPath: String) {
     }
 }
 
+private const val TOKEN_TIMEOUT = 2 * 60 * 1000L
 private const val SCHEME ="photocloud://"
 private val pathRegex = "photocloud:\\/\\/(.*)".toRegex()
