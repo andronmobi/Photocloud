@@ -2,7 +2,7 @@ plugins {
     id("org.jetbrains.compose") version "1.0.0"
     id("com.android.application")
     kotlin("android")
-    kotlin("plugin.serialization") version "1.5.31"
+    kotlin("plugin.serialization") version "1.6.10"
 }
 
 group = "fr.dappli.photocloud"

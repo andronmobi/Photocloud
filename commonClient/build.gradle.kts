@@ -2,13 +2,15 @@ import org.jetbrains.compose.compose
 
 plugins {
     kotlin("multiplatform")
-    kotlin("plugin.serialization") version "1.5.31"
+    kotlin("plugin.serialization") version "1.6.10"
     id("org.jetbrains.compose") version "1.0.0"
     id("com.android.library")
 }
 
 group = "fr.dappli.photocloud"
 version = "1.0"
+
+val ktorVersion = "1.6.7"
 
 kotlin {
     android()
@@ -24,11 +26,11 @@ kotlin {
                 api(compose.foundation)
                 api(compose.material)
 
-                api("io.ktor:ktor-client-auth:1.6.7")
-                api("io.ktor:ktor-client-core:1.6.7")
-                api("io.ktor:ktor-client-okhttp:1.6.7")
-                api("io.ktor:ktor-client-serialization-jvm:1.6.7")
-                api("io.ktor:ktor-client-serialization:1.6.7")
+                api("io.ktor:ktor-client-auth:$ktorVersion")
+                api("io.ktor:ktor-client-core:$ktorVersion")
+                api("io.ktor:ktor-client-okhttp:$ktorVersion")
+                api("io.ktor:ktor-client-serialization-jvm:$ktorVersion")
+                api("io.ktor:ktor-client-serialization:$ktorVersion")
 
                 api(project(":commonAll"))
             }
@@ -40,8 +42,8 @@ kotlin {
         }
         val androidMain by getting {
             dependencies {
-                api("androidx.appcompat:appcompat:1.2.0")
-                api("androidx.core:core-ktx:1.3.1")
+                api("androidx.appcompat:appcompat:1.4.1")
+                api("androidx.core:core-ktx:1.7.0")
             }
         }
         val androidTest by getting {

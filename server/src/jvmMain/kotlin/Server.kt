@@ -8,6 +8,7 @@ import io.ktor.http.*
 import io.ktor.routing.*
 import io.ktor.serialization.*
 import fr.dappli.photocloud.vo.User
+import kotlinx.serialization.json.Json
 
 fun main(args: Array<String>): Unit = io.ktor.server.netty.EngineMain.main(args)
 
@@ -39,7 +40,16 @@ fun Application.module(testing: Boolean = false) {
 
 private fun Application.setupServer() {
     install(ContentNegotiation) {
-        json()
+        json(
+            // TODO for ktor 2.0.0 probably we can use a default one
+            Json {
+                encodeDefaults = true
+                isLenient = true
+                allowSpecialFloatingPointValues = true
+                allowStructuredMapKeys = true
+                prettyPrint = false
+                useArrayPolymorphism = false // the same format for sealed class for client and server
+            })
     }
     install(CORS) {
         method(HttpMethod.Get)

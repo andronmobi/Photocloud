@@ -2,6 +2,7 @@ import com.auth0.jwt.JWT
 import com.auth0.jwt.algorithms.Algorithm
 import fr.dappli.photocloud.vo.Config
 import fr.dappli.photocloud.vo.Dir
+import fr.dappli.photocloud.vo.PCFile
 import fr.dappli.photocloud.vo.User
 import io.ktor.application.*
 import io.ktor.features.*
@@ -9,6 +10,8 @@ import io.ktor.http.*
 import io.ktor.request.*
 import io.ktor.response.*
 import io.ktor.routing.*
+import kotlinx.serialization.builtins.ListSerializer
+import kotlinx.serialization.json.Json
 import java.io.File
 import java.util.*
 
@@ -44,7 +47,7 @@ fun Route.handleLoginRequests(
 
 fun Route.handleConfigRequests() {
     val root = "$SCHEME/"
-    val fileId = Base64.getUrlEncoder().withoutPadding().encodeToString(root.toByteArray())
+    val fileId = encodeFileName(root)
     val config = Config(Dir(fileId))
 
     get("/config") {
@@ -57,9 +60,8 @@ fun Route.handleFileRequests(rootPath: String) {
         val fileId = call.parameters["fileId"] ?: throw BadRequestException("fileId is null")
         val fileUrl = String(Base64.getUrlDecoder().decode(fileId))
         val fileLocation = pathRegex.matchEntire(fileUrl)?.groups?.get(1)?.value ?: throw BadRequestException("unrecognized")
-        val files = File("$rootPath$fileLocation").listFiles()
-        val fileNames = files?.map { it.name } ?: emptyList()
-        call.respondText("$fileLocation>: $fileNames")
+        val files = getFiles(rootPath, fileLocation)
+        call.respond(files)
     }
 }
 
