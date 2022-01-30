@@ -2,6 +2,7 @@ import com.auth0.jwt.JWT
 import com.auth0.jwt.algorithms.Algorithm
 import fr.dappli.photocloud.vo.Config
 import fr.dappli.photocloud.vo.Dir
+import fr.dappli.photocloud.vo.PCFile
 import fr.dappli.photocloud.vo.User
 import io.ktor.application.*
 import io.ktor.features.*
@@ -9,6 +10,8 @@ import io.ktor.http.*
 import io.ktor.request.*
 import io.ktor.response.*
 import io.ktor.routing.*
+import kotlinx.serialization.builtins.ListSerializer
+import kotlinx.serialization.json.Json
 import java.io.File
 import java.util.*
 
@@ -22,7 +25,8 @@ fun Route.handleLoginRequests(
     secret: String,
     issuer: String,
     audience: String,
-    confUser: User
+    confUser: User,
+    tokenDuration: Long
 ) {
     post("/login") {
         val user = call.receive<User>()
@@ -32,7 +36,7 @@ fun Route.handleLoginRequests(
                 .withAudience(audience)
                 .withIssuer(issuer)
                 .withClaim("username", user.username)
-                .withExpiresAt(Date(System.currentTimeMillis() + 30 * 60000))
+                .withExpiresAt(Date(System.currentTimeMillis() + tokenDuration))
                 .sign(Algorithm.HMAC256(secret))
             call.respond(hashMapOf("token" to token))
         } else {
@@ -42,8 +46,8 @@ fun Route.handleLoginRequests(
 }
 
 fun Route.handleConfigRequests() {
-    val root = SCHEME
-    val fileId = Base64.getUrlEncoder().withoutPadding().encodeToString(root.toByteArray())
+    val root = "$SCHEME/"
+    val fileId = encodeFileName(root)
     val config = Config(Dir(fileId))
 
     get("/config") {
@@ -55,10 +59,9 @@ fun Route.handleFileRequests(rootPath: String) {
     get("/file/{fileId}") {
         val fileId = call.parameters["fileId"] ?: throw BadRequestException("fileId is null")
         val fileUrl = String(Base64.getUrlDecoder().decode(fileId))
-        val path = pathRegex.matchEntire(fileUrl)?.groups?.get(1)?.value ?: throw BadRequestException("unrecognized")
-        val files = File("$rootPath/$path").listFiles()
-        val fileNames = files?.map { it.name } ?: emptyList()
-        call.respondText("$path>: $fileNames")
+        val fileLocation = pathRegex.matchEntire(fileUrl)?.groups?.get(1)?.value ?: throw BadRequestException("unrecognized")
+        val files = getFiles(rootPath, fileLocation)
+        call.respond(files)
     }
 }
 

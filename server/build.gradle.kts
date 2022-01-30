@@ -1,14 +1,12 @@
 plugins {
     kotlin("multiplatform")
     application //to run JVM part
-    kotlin("plugin.serialization") version "1.5.31"
+    kotlin("plugin.serialization") version "1.6.10"
 }
 
 group = "fr.dappli.photocloud"
 version = "1.0"
 
-val kotlinVersion = "1.5.31"
-val serializationVersion = "1.3.0"
 val ktorVersion = "1.6.7"
 val logbackVersion = "1.2.3"
 

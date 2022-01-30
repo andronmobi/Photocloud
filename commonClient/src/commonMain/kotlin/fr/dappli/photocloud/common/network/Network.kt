@@ -10,7 +10,6 @@ import io.ktor.client.features.auth.providers.*
 import io.ktor.client.features.json.*
 import io.ktor.client.features.json.serializer.*
 import io.ktor.client.request.*
-import io.ktor.client.utils.EmptyContent.contentType
 import io.ktor.http.*
 import kotlinx.serialization.json.Json
 
@@ -23,7 +22,7 @@ class Network {
         }
     }
 
-    val nonAuthClient = HttpClient {
+    private val nonAuthClient = HttpClient {
         install(JsonFeature) {
             serializer = KotlinxSerializer()
         }
@@ -62,7 +61,7 @@ class Network {
         }
     }
 
-    private suspend fun BearerAuthConfig.getToken(): BearerTokens {
+    private suspend fun getToken(): BearerTokens {
         val token = nonAuthClient.post<Token> {
             url {
                 encodedPath = "login"
