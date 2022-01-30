@@ -8,6 +8,7 @@ import io.ktor.http.*
 import io.ktor.routing.*
 import io.ktor.serialization.*
 import fr.dappli.photocloud.vo.User
+import kotlinx.serialization.json.Json
 
 fun main(args: Array<String>): Unit = io.ktor.server.netty.EngineMain.main(args)
 
@@ -17,6 +18,7 @@ fun Application.module(testing: Boolean = false) {
         val issuer = environment.config.property("jwt.issuer").getString()
         val audience = environment.config.property("jwt.audience").getString()
         val myRealm = environment.config.property("jwt.realm").getString()
+        val tokenDuration = environment.config.property("jwt.tokenDuration").getString().toLong()
 
         val confUserName = environment.config.property("login.username").getString()
         val confPassword = environment.config.property("login.password").getString()
@@ -26,7 +28,7 @@ fun Application.module(testing: Boolean = false) {
 
         setupServer()
         setupAuthentication(secret, issuer, audience, myRealm)
-        handleLoginRequests(secret, issuer, audience, confUser)
+        handleLoginRequests(secret, issuer, audience, confUser, tokenDuration)
         handleHomeRequests()
 
         authenticate("auth-jwt") {
@@ -38,7 +40,16 @@ fun Application.module(testing: Boolean = false) {
 
 private fun Application.setupServer() {
     install(ContentNegotiation) {
-        json()
+        json(
+            // TODO for ktor 2.0.0 probably we can use a default one
+            Json {
+                encodeDefaults = true
+                isLenient = true
+                allowSpecialFloatingPointValues = true
+                allowStructuredMapKeys = true
+                prettyPrint = false
+                useArrayPolymorphism = false // the same format for sealed class for client and server
+            })
     }
     install(CORS) {
         method(HttpMethod.Get)

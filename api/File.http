@@ -1,2 +1,2 @@
-GET http://localhost:9090/file/cGhvdG9jbG91ZC8vbXlkaXI
+GET http://localhost:9090/file/cGhvdG9jbG91ZDovLy8
 Authorization: Bearer {{auth_token}}
