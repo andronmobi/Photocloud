@@ -6,6 +6,9 @@ import io.ktor.http.*
 import java.io.File
 import java.util.*
 
+const val SCHEME_NAME = "photocloud"
+const val SCHEME ="$SCHEME_NAME://"
+
 fun getFiles(rootPath: String, fileLocation: String) : List<PCFile> {
     val file = File("$rootPath$fileLocation")
     if (!file.isDirectory) {
@@ -13,21 +16,22 @@ fun getFiles(rootPath: String, fileLocation: String) : List<PCFile> {
     }
     val files = file.listFiles()
     return files.mapNotNull {
-        val fileName = "${fileLocation}/${it.name}"
+        val fileLocation = "$SCHEME$fileLocation${it.name}"
         when {
             it.isDirectory -> {
-                Dir(encodeFileName(fileName))
+                Dir(encodeFileLocation("$fileLocation/"))
             }
             it.isImage() -> {
-                Photo(encodeFileName(fileName))
+                println("andrei filename to encode: $fileLocation")
+                Photo(encodeFileLocation(fileLocation))
             }
             else -> null
         }
     }
 }
 
-fun encodeFileName(fileName: String): String =
-    Base64.getUrlEncoder().withoutPadding().encodeToString(fileName.toByteArray())
+fun encodeFileLocation(fileLocation: String): String =
+    Base64.getUrlEncoder().withoutPadding().encodeToString(fileLocation.toByteArray())
 
 private fun File.isImage(): Boolean {
     return ContentType.fromFilePath(path).find {
