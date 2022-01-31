@@ -2,7 +2,6 @@ import com.auth0.jwt.JWT
 import com.auth0.jwt.algorithms.Algorithm
 import fr.dappli.photocloud.vo.Config
 import fr.dappli.photocloud.vo.Dir
-import fr.dappli.photocloud.vo.PCFile
 import fr.dappli.photocloud.vo.User
 import io.ktor.application.*
 import io.ktor.features.*
@@ -10,9 +9,6 @@ import io.ktor.http.*
 import io.ktor.request.*
 import io.ktor.response.*
 import io.ktor.routing.*
-import kotlinx.serialization.builtins.ListSerializer
-import kotlinx.serialization.json.Json
-import java.io.File
 import java.util.*
 
 fun Route.handleHomeRequests() {
@@ -47,7 +43,7 @@ fun Route.handleLoginRequests(
 
 fun Route.handleConfigRequests() {
     val root = "$SCHEME/"
-    val fileId = encodeFileName(root)
+    val fileId = encodeFileLocation(root)
     val config = Config(Dir(fileId))
 
     get("/config") {
@@ -65,5 +61,4 @@ fun Route.handleFileRequests(rootPath: String) {
     }
 }
 
-private const val SCHEME ="photocloud://"
-private val pathRegex = "photocloud:\\/\\/(.*)".toRegex()
+private val pathRegex = "$SCHEME_NAME:\\/\\/(.*)".toRegex()

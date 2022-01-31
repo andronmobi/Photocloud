@@ -18,6 +18,8 @@ import fr.dappli.photocloud.vo.PCFile
 import io.ktor.client.request.*
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
+import okio.ByteString.Companion.decodeBase64
+import java.util.*
 
 @Composable
 fun FileListScreen() {
@@ -64,9 +66,11 @@ fun FileList(files: List<PCFile>) {
         items(
             items = files,
             itemContent = { item ->
-                val type = if (item is Dir) "Dir: " else "Image:"
-                Text("$type${item.id}")
+                val type = if (item is Dir) "Dir" else "Image"
+                Text("$type: ${item.id.decodeFileId()}")
             }
         )
     }
 }
+
+private fun String.decodeFileId() = String(Base64.getUrlDecoder().decode(this))
