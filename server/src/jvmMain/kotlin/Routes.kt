@@ -9,6 +9,7 @@ import io.ktor.http.*
 import io.ktor.request.*
 import io.ktor.response.*
 import io.ktor.routing.*
+import java.io.File
 import java.util.*
 
 fun Route.handleHomeRequests() {
@@ -53,12 +54,27 @@ fun Route.handleConfigRequests() {
 
 fun Route.handleFileRequests(rootPath: String) {
     get("/file/{fileId}") {
-        val fileId = call.parameters["fileId"] ?: throw BadRequestException("fileId is null")
-        val fileUrl = String(Base64.getUrlDecoder().decode(fileId))
-        val fileLocation = pathRegex.matchEntire(fileUrl)?.groups?.get(1)?.value ?: throw BadRequestException("unrecognized")
+        val fileLocation = call.parameters.getFileLocation()
         val files = getFiles(rootPath, fileLocation)
         call.respond(files)
     }
+}
+
+fun Route.handleFileDownloadRequests(rootPath: String) {
+    get("/file/{fileId}/download") {
+        val fileLocation = call.parameters.getFileLocation()
+        val file = File("$rootPath$fileLocation")
+        if (file.exists()) {
+            call.respondFile(file)
+        }
+        else call.respond(HttpStatusCode.NotFound)
+    }
+}
+
+private fun Parameters.getFileLocation(): String {
+    val fileId = get("fileId") ?: throw BadRequestException("fileId is null")
+    val fileUrl = String(Base64.getUrlDecoder().decode(fileId))
+    return pathRegex.matchEntire(fileUrl)?.groups?.get(1)?.value ?: throw BadRequestException("unrecognized")
 }
 
 private val pathRegex = "$SCHEME_NAME:\\/\\/(.*)".toRegex()

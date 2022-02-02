@@ -34,6 +34,7 @@ fun Application.module(testing: Boolean = false) {
         authenticate("auth-jwt") {
             handleConfigRequests()
             handleFileRequests(filePath)
+            handleFileDownloadRequests(filePath)
         }
     }
 }
