@@ -22,7 +22,6 @@ fun getFiles(rootPath: String, fileLocation: String) : List<PCFile> {
                 Dir(encodeFileLocation("$fileLocation/"))
             }
             it.isImage() -> {
-                println("andrei filename to encode: $fileLocation")
                 Photo(encodeFileLocation(fileLocation))
             }
             else -> null
