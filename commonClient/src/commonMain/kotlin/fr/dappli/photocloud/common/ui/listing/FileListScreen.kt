@@ -14,6 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.unit.dp
 import fr.dappli.photocloud.common.getPlatformName
+import fr.dappli.photocloud.common.iconDirPainter
 import fr.dappli.photocloud.common.loadBitmap
 import fr.dappli.photocloud.common.network.Network
 import fr.dappli.photocloud.vo.Config
@@ -79,7 +80,11 @@ fun FileList(network: Network, files: List<PCFile>) {
                     val fileLocation = item.id.decodeFileId()
                     when (item) {
                         is Dir -> {
-                            // TODO dir placeholder Image()
+                            Image(
+                                painter = iconDirPainter(),
+                                contentDescription = null,
+                                modifier = Modifier.size(100.dp)
+                            )
                             Text("Dir: $fileLocation")
                         }
                         is Photo -> {

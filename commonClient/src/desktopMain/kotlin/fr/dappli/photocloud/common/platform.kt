@@ -1,7 +1,10 @@
 package fr.dappli.photocloud.common
 
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.loadImageBitmap
 import androidx.compose.ui.graphics.ImageBitmap
+import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.res.painterResource
 import java.io.InputStream
 
 actual fun getPlatformName(): String {
@@ -15,3 +18,6 @@ actual fun getDebugHost(): String {
 actual fun loadBitmap(inputStream: InputStream): ImageBitmap {
     return loadImageBitmap(inputStream)
 }
+
+@Composable
+actual fun iconDirPainter(): Painter = painterResource("ic_dir.svg")
