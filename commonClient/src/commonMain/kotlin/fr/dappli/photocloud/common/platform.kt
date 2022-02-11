@@ -11,3 +11,5 @@ expect fun getDebugHost(): String
 expect fun loadBitmap(inputStream: InputStream): ImageBitmap
 
 expect fun iconDirPainter(): Painter
+
+expect fun iconPhotoPainter(): Painter
