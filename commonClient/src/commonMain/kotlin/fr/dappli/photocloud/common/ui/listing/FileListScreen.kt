@@ -15,6 +15,7 @@ import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.unit.dp
 import fr.dappli.photocloud.common.getPlatformName
 import fr.dappli.photocloud.common.iconDirPainter
+import fr.dappli.photocloud.common.iconPhotoPainter
 import fr.dappli.photocloud.common.loadBitmap
 import fr.dappli.photocloud.common.network.Network
 import fr.dappli.photocloud.vo.Config
@@ -23,10 +24,7 @@ import fr.dappli.photocloud.vo.PCFile
 import fr.dappli.photocloud.vo.Photo
 import io.ktor.client.request.*
 import io.ktor.utils.io.errors.*
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.MainScope
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
+import kotlinx.coroutines.*
 import java.io.ByteArrayInputStream
 import java.util.*
 
@@ -101,8 +99,7 @@ fun FileList(network: Network, files: List<PCFile>) {
 
 @Composable
 private fun AsyncImage(network: Network, photo: Photo) {
-    var img: ImageBitmap? by remember { mutableStateOf(null) }
-    val bitmap: ImageBitmap? by produceState(img) {
+    val bitmap: ImageBitmap? by produceState<ImageBitmap?>(null) {
         if (value == null) {
             value = withContext(Dispatchers.IO) {
                 try {
@@ -112,7 +109,7 @@ private fun AsyncImage(network: Network, photo: Photo) {
                         }
                     }
                     val stream = ByteArrayInputStream(byteArray)
-                    loadBitmap(stream).also { img = it }
+                    loadBitmap(stream)
                 } catch (e: IOException) {
                     e.printStackTrace()
                     null
@@ -121,12 +118,20 @@ private fun AsyncImage(network: Network, photo: Photo) {
         }
     }
 
-    bitmap?.let {
+    if (bitmap == null) {
         Image(
-            bitmap = it,
+            painter = iconPhotoPainter(),
             contentDescription = null,
             modifier = Modifier.size(100.dp)
         )
+    } else {
+        bitmap?.let {
+            Image(
+                bitmap = it,
+                contentDescription = null,
+                modifier = Modifier.size(100.dp)
+            )
+        }
     }
 }
 
