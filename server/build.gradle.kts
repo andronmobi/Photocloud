@@ -27,6 +27,8 @@ kotlin {
                 implementation("io.ktor:ktor-auth-jwt:$ktorVersion")
                 implementation("ch.qos.logback:logback-classic:$logbackVersion")
 
+                implementation("net.coobird:thumbnailator:0.4.17")
+
                 implementation(project(":commonAll"))
             }
         }

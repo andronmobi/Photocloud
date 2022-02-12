@@ -9,6 +9,7 @@ import io.ktor.http.*
 import io.ktor.request.*
 import io.ktor.response.*
 import io.ktor.routing.*
+import net.coobird.thumbnailator.Thumbnails
 import java.io.File
 import java.util.*
 
@@ -60,21 +61,15 @@ fun Route.handleFileRequests(rootPath: String) {
     }
 }
 
+// TODO create a dedicated path for thumbnails
 fun Route.handleFileDownloadRequests(rootPath: String) {
     get("/file/{fileId}/download") {
         val fileLocation = call.parameters.getFileLocation()
         val file = File("$rootPath$fileLocation")
         if (file.exists()) {
-            call.respondFile(file)
+            val thumbnail = createThumbnail(rootPath, fileLocation)
+            call.respondFile(thumbnail)
         }
         else call.respond(HttpStatusCode.NotFound)
     }
 }
-
-private fun Parameters.getFileLocation(): String {
-    val fileId = get("fileId") ?: throw BadRequestException("fileId is null")
-    val fileUrl = String(Base64.getUrlDecoder().decode(fileId))
-    return pathRegex.matchEntire(fileUrl)?.groups?.get(1)?.value ?: throw BadRequestException("unrecognized")
-}
-
-private val pathRegex = "$SCHEME_NAME:\\/\\/(.*)".toRegex()
