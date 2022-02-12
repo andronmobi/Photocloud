@@ -27,6 +27,7 @@ import io.ktor.utils.io.errors.*
 import kotlinx.coroutines.*
 import java.io.ByteArrayInputStream
 import java.util.*
+import kotlin.collections.HashMap
 
 @Composable
 fun FileListScreen() {
@@ -97,19 +98,24 @@ fun FileList(network: Network, files: List<PCFile>) {
     }
 }
 
+// TODO improve me
+private var photoCache = HashMap<String, ImageBitmap?>()
+
 @Composable
 private fun AsyncImage(network: Network, photo: Photo) {
     val bitmap: ImageBitmap? by produceState<ImageBitmap?>(null) {
         if (value == null) {
             value = withContext(Dispatchers.IO) {
                 try {
-                    val byteArray = network.authClient.get<ByteArray> {
-                        url {
-                            encodedPath = "file/${photo.id}/download"
+                    println("get image ${photo.id}")
+                    if (photoCache.contains(photo.id)) {
+                        photoCache[photo.id]
+                    } else {
+                        println("download image ${photo.id}")
+                        downloadImageBitmap(network, photo.id).also {
+                            photoCache[photo.id] = it
                         }
                     }
-                    val stream = ByteArrayInputStream(byteArray)
-                    loadBitmap(stream)
                 } catch (e: IOException) {
                     e.printStackTrace()
                     null
@@ -133,6 +139,16 @@ private fun AsyncImage(network: Network, photo: Photo) {
             )
         }
     }
+}
+
+private suspend fun downloadImageBitmap(network: Network, photoId: String): ImageBitmap {
+    val byteArray = network.authClient.get<ByteArray> {
+        url {
+            encodedPath = "file/${photoId}/download"
+        }
+    }
+    val stream = ByteArrayInputStream(byteArray)
+    return loadBitmap(stream)
 }
 
 private fun String.decodeFileId() = String(Base64.getUrlDecoder().decode(this))
