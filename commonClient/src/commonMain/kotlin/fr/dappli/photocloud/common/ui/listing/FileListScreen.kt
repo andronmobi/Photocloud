@@ -107,11 +107,9 @@ private fun AsyncImage(network: Network, photo: Photo) {
         if (value == null) {
             value = withContext(Dispatchers.IO) {
                 try {
-                    println("get image ${photo.id}")
                     if (photoCache.contains(photo.id)) {
                         photoCache[photo.id]
                     } else {
-                        println("download image ${photo.id}")
                         downloadImageBitmap(network, photo.id).also {
                             photoCache[photo.id] = it
                         }
