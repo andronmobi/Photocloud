@@ -20,7 +20,8 @@ fun getFiles(rootPath: String, fileLocation: String): List<PCFile> {
         val fileLocation = "$SCHEME$fileLocation${it.name}"
         when {
             it.isDirectory -> {
-                Dir(encodeFileLocation("$fileLocation/"))
+                if (it.name.startsWith(".")) null // ignore .thumbnails
+                else Dir(encodeFileLocation("$fileLocation/"))
             }
             it.isImage() -> {
                 Photo(encodeFileLocation(fileLocation))
