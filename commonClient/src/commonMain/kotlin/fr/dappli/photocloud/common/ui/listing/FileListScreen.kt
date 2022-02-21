@@ -1,18 +1,20 @@
 package fr.dappli.photocloud.common.ui.listing
 
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.GridCells
+import androidx.compose.foundation.lazy.LazyVerticalGrid
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.Button
+import androidx.compose.material.Card
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import fr.dappli.photocloud.common.getPlatformName
 import fr.dappli.photocloud.common.iconDirPainter
 import fr.dappli.photocloud.common.iconPhotoPainter
@@ -28,6 +30,7 @@ import kotlinx.coroutines.*
 import java.io.ByteArrayInputStream
 import java.util.*
 import kotlin.collections.HashMap
+import androidx.compose.ui.graphics.Color as ComposeColor
 
 @Composable
 fun FileListScreen() {
@@ -65,36 +68,56 @@ fun FileListScreen() {
         }
         Text(dir)
         Spacer(Modifier.size(16.dp))
-        FileList(network, files)
+        Grillage(network, files)
     }
 }
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun FileList(network: Network, files: List<PCFile>) {
-    LazyColumn {
-        items(
-            items = files,
-            itemContent = { item ->
-                Row {
-                    val fileLocation = item.id.decodeFileId()
-                    when (item) {
-                        is Dir -> {
+fun Grillage(network: Network, files: List<PCFile>) {
+    LazyVerticalGrid(
+        cells = GridCells.Adaptive(116.dp),
+        contentPadding = PaddingValues(8.dp)
+    ) {
+        items(files) { item ->
+            Card(
+                backgroundColor = ComposeColor.LightGray,
+                modifier = Modifier
+                    .padding(4.dp)
+                    .fillMaxWidth(),
+                elevation = 8.dp,
+            ) {
+                val fileName = item.id.decodeFileId().toName()
+                when (item) {
+                    is Dir -> {
+                        Column {
                             Image(
                                 painter = iconDirPainter(),
                                 contentDescription = null,
-                                modifier = Modifier.size(100.dp)
+                                modifier = Modifier.size(100.dp).align(Alignment.CenterHorizontally)
                             )
-                            Text("Dir: $fileLocation")
+                            Text(
+                                fontSize = 8.sp,
+                                text = fileName
+                            )
                         }
-                        is Photo -> {
-                            AsyncImage(network, item)
-                            Text("Photo: $fileLocation")
+                    }
+                    is Photo -> {
+                        Column {
+                            AsyncImage(
+                                network = network,
+                                photo = item,
+                                modifier = Modifier.size(100.dp).align(Alignment.CenterHorizontally)
+                            )
+                            Text(
+                                fontSize = 8.sp,
+                                text = fileName
+                            )
                         }
                     }
                 }
-                Spacer(modifier = Modifier.size(16.dp))
             }
-        )
+        }
     }
 }
 
@@ -102,7 +125,11 @@ fun FileList(network: Network, files: List<PCFile>) {
 private var photoCache = HashMap<String, ImageBitmap?>()
 
 @Composable
-private fun AsyncImage(network: Network, photo: Photo) {
+private fun AsyncImage(
+    network: Network,
+    photo: Photo,
+    modifier: Modifier = Modifier
+) {
     val bitmap: ImageBitmap? by produceState<ImageBitmap?>(null) {
         if (value == null) {
             value = withContext(Dispatchers.IO) {
@@ -126,14 +153,14 @@ private fun AsyncImage(network: Network, photo: Photo) {
         Image(
             painter = iconPhotoPainter(),
             contentDescription = null,
-            modifier = Modifier.size(100.dp)
+            modifier = modifier
         )
     } else {
         bitmap?.let {
             Image(
                 bitmap = it,
                 contentDescription = null,
-                modifier = Modifier.size(100.dp)
+                modifier = modifier
             )
         }
     }
@@ -150,3 +177,5 @@ private suspend fun downloadImageBitmap(network: Network, photoId: String): Imag
 }
 
 private fun String.decodeFileId() = String(Base64.getUrlDecoder().decode(this))
+
+private fun String.toName() = substringAfter("photocloud:///")
