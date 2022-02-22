@@ -13,6 +13,8 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ImageBitmap
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import fr.dappli.photocloud.common.getPlatformName
@@ -84,36 +86,31 @@ fun Grillage(network: Network, files: List<PCFile>) {
                 backgroundColor = ComposeColor.LightGray,
                 modifier = Modifier
                     .padding(4.dp)
-                    .fillMaxWidth(),
-                elevation = 8.dp,
+                    .fillMaxWidth()
             ) {
                 val fileName = item.id.decodeFileId().toName()
                 when (item) {
                     is Dir -> {
-                        Column {
+                        Box {
                             Image(
                                 painter = iconDirPainter(),
                                 contentDescription = null,
-                                modifier = Modifier.size(100.dp).align(Alignment.CenterHorizontally)
+                                modifier = Modifier.size(100.dp).align(Alignment.Center)
                             )
                             Text(
                                 fontSize = 8.sp,
-                                text = fileName
+                                text = fileName,
+                                textAlign = TextAlign.Center,
+                                modifier = Modifier.align(Alignment.Center)
                             )
                         }
                     }
                     is Photo -> {
-                        Column {
-                            AsyncImage(
-                                network = network,
-                                photo = item,
-                                modifier = Modifier.size(100.dp).align(Alignment.CenterHorizontally)
-                            )
-                            Text(
-                                fontSize = 8.sp,
-                                text = fileName
-                            )
-                        }
+                        AsyncImage(
+                            network = network,
+                            photo = item,
+                            modifier = Modifier.size(100.dp)
+                        )
                     }
                 }
             }
@@ -153,14 +150,16 @@ private fun AsyncImage(
         Image(
             painter = iconPhotoPainter(),
             contentDescription = null,
-            modifier = modifier
+            modifier = modifier,
+            contentScale = ContentScale.Crop
         )
     } else {
         bitmap?.let {
             Image(
                 bitmap = it,
                 contentDescription = null,
-                modifier = modifier
+                modifier = modifier,
+                contentScale = ContentScale.Crop
             )
         }
     }
