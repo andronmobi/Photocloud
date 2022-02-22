@@ -48,7 +48,7 @@ fun createThumbnail(rootPath: String, fileLocation: String): File {
     if (!thumbnailFile.exists()) {
         println("Create thumbnails: $thumbnailFullName")
         Thumbnails.of(file)
-            .size(100, 100)
+            .size(200, 200)
             .toFile(thumbnailFullName)
     }
     return thumbnailFile
