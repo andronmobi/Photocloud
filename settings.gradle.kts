@@ -16,3 +16,4 @@ include(":commonClient")
 include(":commonAll")
 include(":server")
 
+include(":sharedClient")
