@@ -7,7 +7,7 @@ import io.ktor.features.*
 import io.ktor.http.*
 import io.ktor.routing.*
 import io.ktor.serialization.*
-import fr.dappli.photocloud.vo.User
+import fr.dappli.photocloud.common.vo.User
 import kotlinx.serialization.json.Json
 
 fun main(args: Array<String>): Unit = io.ktor.server.netty.EngineMain.main(args)

@@ -1,15 +1,13 @@
 import com.auth0.jwt.JWT
 import com.auth0.jwt.algorithms.Algorithm
-import fr.dappli.photocloud.vo.Config
-import fr.dappli.photocloud.vo.Dir
-import fr.dappli.photocloud.vo.User
+import fr.dappli.photocloud.common.vo.Config
+import fr.dappli.photocloud.common.vo.Dir
+import fr.dappli.photocloud.common.vo.User
 import io.ktor.application.*
-import io.ktor.features.*
 import io.ktor.http.*
 import io.ktor.request.*
 import io.ktor.response.*
 import io.ktor.routing.*
-import net.coobird.thumbnailator.Thumbnails
 import java.io.File
 import java.util.*
 

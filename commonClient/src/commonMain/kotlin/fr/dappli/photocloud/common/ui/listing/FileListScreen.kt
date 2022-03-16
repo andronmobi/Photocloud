@@ -22,10 +22,10 @@ import fr.dappli.photocloud.common.iconDirPainter
 import fr.dappli.photocloud.common.iconPhotoPainter
 import fr.dappli.photocloud.common.loadBitmap
 import fr.dappli.photocloud.common.network.Network
-import fr.dappli.photocloud.vo.Config
-import fr.dappli.photocloud.vo.Dir
-import fr.dappli.photocloud.vo.PCFile
-import fr.dappli.photocloud.vo.Photo
+import fr.dappli.photocloud.common.vo.Config
+import fr.dappli.photocloud.common.vo.Dir
+import fr.dappli.photocloud.common.vo.PCFile
+import fr.dappli.photocloud.common.vo.Photo
 import io.ktor.client.request.*
 import io.ktor.utils.io.errors.*
 import kotlinx.coroutines.*

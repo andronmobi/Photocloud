@@ -1,4 +1,4 @@
-package fr.dappli.photocloud.vo
+package fr.dappli.photocloud.common.vo
 
 import kotlinx.serialization.Serializable
 

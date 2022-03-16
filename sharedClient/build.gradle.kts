@@ -1,11 +1,21 @@
 plugins {
     kotlin("multiplatform")
+    kotlin("plugin.serialization") version "1.6.10"
     id("com.android.library")
 }
 
+group = "fr.dappli.photocloud"
+version = "1.0"
+
+val ktorVersion = "1.6.7"
+
 kotlin {
     android()
-    
+    jvm("desktop") {
+        compilations.all {
+            kotlinOptions.jvmTarget = "11"
+        }
+    }
     listOf(
         iosX64(),
         iosArm64(),
@@ -17,13 +27,27 @@ kotlin {
     }
 
     sourceSets {
-        val commonMain by getting
+        val commonMain by getting {
+            dependencies {
+                api("io.ktor:ktor-client-auth:$ktorVersion")
+                api("io.ktor:ktor-client-core:$ktorVersion")
+//                api("io.ktor:ktor-client-serialization-jvm:$ktorVersion")
+                api("io.ktor:ktor-client-serialization:$ktorVersion")
+
+//                api(project(":commonAll"))
+                implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.2") // todo check commonAll
+            }
+        }
         val commonTest by getting {
             dependencies {
                 implementation(kotlin("test"))
             }
         }
-        val androidMain by getting
+        val androidMain by getting {
+            dependencies {
+                api("io.ktor:ktor-client-okhttp:$ktorVersion")
+            }
+        }
         val androidTest by getting
         val iosX64Main by getting
         val iosArm64Main by getting
@@ -33,6 +57,10 @@ kotlin {
             iosX64Main.dependsOn(this)
             iosArm64Main.dependsOn(this)
             iosSimulatorArm64Main.dependsOn(this)
+
+            dependencies {
+                implementation("io.ktor:ktor-client-ios:$ktorVersion")
+            }
         }
         val iosX64Test by getting
         val iosArm64Test by getting
@@ -53,4 +81,5 @@ android {
         minSdk = 21
         targetSdk = 31
     }
+    namespace = "fr.dappli.sharedclient"
 }
