@@ -26,12 +26,7 @@ kotlin {
                 api(compose.foundation)
                 api(compose.material)
 
-                api("io.ktor:ktor-client-auth:$ktorVersion")
-                api("io.ktor:ktor-client-core:$ktorVersion")
-                api("io.ktor:ktor-client-okhttp:$ktorVersion")
-                api("io.ktor:ktor-client-serialization-jvm:$ktorVersion")
-                api("io.ktor:ktor-client-serialization:$ktorVersion")
-
+                api(project(":sharedClient"))
                 api(project(":commonAll"))
             }
         }
@@ -71,4 +66,5 @@ android {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
     }
+    namespace = "fr.dappli.photocloud.common"
 }

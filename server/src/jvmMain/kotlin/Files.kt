@@ -1,6 +1,6 @@
-import fr.dappli.photocloud.vo.Dir
-import fr.dappli.photocloud.vo.PCFile
-import fr.dappli.photocloud.vo.Photo
+import fr.dappli.photocloud.common.vo.Dir
+import fr.dappli.photocloud.common.vo.PCFile
+import fr.dappli.photocloud.common.vo.Photo
 import io.ktor.features.*
 import io.ktor.http.*
 import net.coobird.thumbnailator.Thumbnails

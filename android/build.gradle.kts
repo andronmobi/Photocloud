@@ -14,13 +14,14 @@ repositories {
 
 dependencies {
     implementation(project(":commonClient"))
+    implementation(project(":sharedClient"))
     implementation("androidx.activity:activity-compose:1.3.0")
 }
 
 android {
     compileSdkVersion(31)
     defaultConfig {
-        applicationId = "fr.dappli.android"
+        applicationId = "fr.dappli.photocloud.android"
         minSdkVersion(24)
         targetSdkVersion(31)
         versionCode = 1
@@ -35,4 +36,5 @@ android {
             isMinifyEnabled = false
         }
     }
+    namespace = "fr.dappli.photocloud.android"
 }
