@@ -1,5 +1,5 @@
 plugins {
-    id("org.jetbrains.compose") version "1.0.0"
+    id("org.jetbrains.compose") version "1.1.0"
     id("com.android.application")
     kotlin("android")
     kotlin("plugin.serialization") version "1.6.10"
@@ -15,7 +15,7 @@ repositories {
 dependencies {
     implementation(project(":commonClient"))
     implementation(project(":sharedClient"))
-    implementation("androidx.activity:activity-compose:1.3.0")
+    implementation("androidx.activity:activity-compose:1.4.0")
 }
 
 android {
