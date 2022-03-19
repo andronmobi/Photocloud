@@ -10,6 +10,15 @@ kotlin {
     jvm {
         withJava()
     }
+    listOf(
+        iosX64(),
+        iosArm64(),
+        iosSimulatorArm64()
+    ).forEach {
+        it.binaries.framework {
+            baseName = "sharedClient"
+        }
+    }
     sourceSets {
         val commonMain by getting {
             dependencies {
