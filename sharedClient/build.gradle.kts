@@ -27,6 +27,7 @@ kotlin {
     }
 
     sourceSets {
+        // common
         val commonMain by getting {
             dependencies {
                 api("io.ktor:ktor-client-auth:$ktorVersion")
@@ -43,12 +44,24 @@ kotlin {
                 implementation(kotlin("test"))
             }
         }
+
+        // android
         val androidMain by getting {
             dependencies {
                 api("io.ktor:ktor-client-okhttp:$ktorVersion")
             }
         }
         val androidTest by getting
+
+        // jvm
+        val desktopMain by getting {
+            dependencies {
+                api("io.ktor:ktor-client-okhttp:$ktorVersion")
+                api("io.ktor:ktor-client-serialization-jvm:$ktorVersion")
+            }
+        }
+
+        // ios
         val iosX64Main by getting
         val iosArm64Main by getting
         val iosSimulatorArm64Main by getting

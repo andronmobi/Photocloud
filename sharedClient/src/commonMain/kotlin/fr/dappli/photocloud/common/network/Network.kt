@@ -12,8 +12,10 @@ import io.ktor.client.features.json.serializer.*
 import io.ktor.client.request.*
 import io.ktor.http.*
 import kotlinx.serialization.json.Json
+import kotlin.native.concurrent.ThreadLocal
 
-class Network {
+@ThreadLocal
+object Network {
 
     private val baseJson by lazy {
         Json {
@@ -22,7 +24,7 @@ class Network {
         }
     }
 
-    private val nonAuthClient = HttpClient {
+    private val nonAuthClient = HttpClient(Platform().engineFactory) {
         install(JsonFeature) {
             serializer = KotlinxSerializer()
         }
@@ -35,7 +37,7 @@ class Network {
         }
     }
 
-    val authClient = HttpClient {
+    val authClient = HttpClient(Platform().engineFactory) {
 
         install(JsonFeature) {
             serializer = KotlinxSerializer(baseJson)
