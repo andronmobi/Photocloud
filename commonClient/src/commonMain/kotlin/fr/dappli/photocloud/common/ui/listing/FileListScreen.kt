@@ -37,7 +37,6 @@ import androidx.compose.ui.graphics.Color as ComposeColor
 @Composable
 fun FileListScreen() {
 
-    val network = Network()
     var text by remember { mutableStateOf("Get files") }
     var dir by remember { mutableStateOf("Not connected") }
     var files by remember { mutableStateOf(emptyList<PCFile>()) }
@@ -47,7 +46,7 @@ fun FileListScreen() {
         Button(
             onClick = {
                 MainScope().launch {
-                    val config: Config = network.authClient.get {
+                    val config: Config = Network.authClient.get {
                         url {
                             encodedPath = "config"
                         }
@@ -55,7 +54,7 @@ fun FileListScreen() {
                     dir = "${config.rootDir}"
                     text = "Get files from ${getPlatformName()}"
 
-                    files = network.authClient.get {
+                    files = Network.authClient.get {
                         url {
                             encodedPath = "file/${config.rootDir.id}"
                         }
@@ -70,13 +69,13 @@ fun FileListScreen() {
         }
         Text(dir)
         Spacer(Modifier.size(16.dp))
-        Grillage(network, files)
+        Grillage(files)
     }
 }
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun Grillage(network: Network, files: List<PCFile>) {
+fun Grillage(files: List<PCFile>) {
     LazyVerticalGrid(
         cells = GridCells.Adaptive(116.dp),
         contentPadding = PaddingValues(8.dp)
@@ -107,7 +106,6 @@ fun Grillage(network: Network, files: List<PCFile>) {
                     }
                     is Photo -> {
                         AsyncImage(
-                            network = network,
                             photo = item,
                             modifier = Modifier.size(100.dp)
                         )
@@ -123,7 +121,6 @@ private var photoCache = HashMap<String, ImageBitmap?>()
 
 @Composable
 private fun AsyncImage(
-    network: Network,
     photo: Photo,
     modifier: Modifier = Modifier
 ) {
@@ -134,7 +131,7 @@ private fun AsyncImage(
                     if (photoCache.contains(photo.id)) {
                         photoCache[photo.id]
                     } else {
-                        downloadImageBitmap(network, photo.id).also {
+                        downloadImageBitmap(photo.id).also {
                             photoCache[photo.id] = it
                         }
                     }
@@ -165,8 +162,8 @@ private fun AsyncImage(
     }
 }
 
-private suspend fun downloadImageBitmap(network: Network, photoId: String): ImageBitmap {
-    val byteArray = network.authClient.get<ByteArray> {
+private suspend fun downloadImageBitmap(photoId: String): ImageBitmap {
+    val byteArray = Network.authClient.get<ByteArray> {
         url {
             encodedPath = "file/${photoId}/download"
         }
