@@ -9,14 +9,6 @@ import androidx.compose.ui.res.painterResource
 import java.io.BufferedInputStream
 import java.io.InputStream
 
-actual fun getPlatformName(): String {
-    return "Android"
-}
-
-actual fun getDebugHost(): String {
-    return "192.168.1.2"
-}
-
 actual fun loadBitmap(inputStream: InputStream): ImageBitmap {
     val bitmap = BitmapFactory.decodeStream(BufferedInputStream(inputStream))
     return bitmap.asImageBitmap()

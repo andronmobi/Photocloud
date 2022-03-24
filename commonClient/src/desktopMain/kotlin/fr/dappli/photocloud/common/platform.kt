@@ -7,14 +7,6 @@ import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
 import java.io.InputStream
 
-actual fun getPlatformName(): String {
-    return "Desktop"
-}
-
-actual fun getDebugHost(): String {
-    return "localhost"
-}
-
 actual fun loadBitmap(inputStream: InputStream): ImageBitmap {
     return loadImageBitmap(inputStream)
 }

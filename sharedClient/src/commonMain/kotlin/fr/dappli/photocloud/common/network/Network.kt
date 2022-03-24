@@ -24,20 +24,20 @@ object Network {
         }
     }
 
-    private val nonAuthClient = HttpClient(Platform().engineFactory) {
+    private val nonAuthClient = HttpClient(Platform.engineFactory) {
         install(JsonFeature) {
             serializer = KotlinxSerializer()
         }
         defaultRequest {
             url {
                 protocol = URLProtocol.HTTP
-                host = Platform().debugHost
+                host = Platform.debugHost
                 port = 9090 // TODO for debug
             }
         }
     }
 
-    val authClient = HttpClient(Platform().engineFactory) {
+    val authClient = HttpClient(Platform.engineFactory) {
 
         install(JsonFeature) {
             serializer = KotlinxSerializer(baseJson)
@@ -57,7 +57,7 @@ object Network {
         defaultRequest {
             url {
                 protocol = URLProtocol.HTTP
-                host = Platform().debugHost
+                host = Platform.debugHost
                 port = 9090 // TODO for debug
             }
         }
