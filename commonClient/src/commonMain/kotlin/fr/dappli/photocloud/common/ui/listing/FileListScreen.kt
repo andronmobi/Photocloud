@@ -17,7 +17,6 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import fr.dappli.photocloud.common.getPlatformName
 import fr.dappli.photocloud.common.iconDirPainter
 import fr.dappli.photocloud.common.iconPhotoPainter
 import fr.dappli.photocloud.common.loadBitmap
@@ -26,6 +25,7 @@ import fr.dappli.photocloud.common.vo.Config
 import fr.dappli.photocloud.common.vo.Dir
 import fr.dappli.photocloud.common.vo.PCFile
 import fr.dappli.photocloud.common.vo.Photo
+import fr.dappli.sharedclient.Platform.platform
 import io.ktor.client.request.*
 import io.ktor.utils.io.errors.*
 import kotlinx.coroutines.*
@@ -52,7 +52,7 @@ fun FileListScreen() {
                         }
                     }
                     dir = "${config.rootDir}"
-                    text = "Get files from ${getPlatformName()}"
+                    text = "Get files from $platform"
 
                     files = Network.authClient.get {
                         url {
