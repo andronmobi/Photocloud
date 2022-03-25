@@ -21,6 +21,7 @@ import fr.dappli.photocloud.common.iconDirPainter
 import fr.dappli.photocloud.common.iconPhotoPainter
 import fr.dappli.photocloud.common.loadBitmap
 import fr.dappli.photocloud.common.network.Network
+import fr.dappli.photocloud.common.network.PhotocloudLoader
 import fr.dappli.photocloud.common.vo.Config
 import fr.dappli.photocloud.common.vo.Dir
 import fr.dappli.photocloud.common.vo.PCFile
@@ -46,20 +47,11 @@ fun FileListScreen() {
         Button(
             onClick = {
                 MainScope().launch {
-                    val config: Config = Network.authClient.get {
-                        url {
-                            encodedPath = "config"
-                        }
-                    }
+                    val loader = PhotocloudLoader()
+                    val config: Config = loader.getConfig()
                     dir = "${config.rootDir}"
                     text = "Get files from $platform"
-
-                    files = Network.authClient.get {
-                        url {
-                            encodedPath = "file/${config.rootDir.id}"
-                        }
-                    }
-
+                    files = loader.getFiles(config.rootDir)
                     isEnabled = false
                 }
             },

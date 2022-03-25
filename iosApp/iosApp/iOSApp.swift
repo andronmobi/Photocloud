@@ -3,13 +3,17 @@ import sharedClient
 
 @main
 struct iOSApp: App {
-    
-    let loader: PhotocloudLoader
 
     init() {
-        loader = PhotocloudLoader()
+        let loader = PhotocloudLoader()
         loader.getConfig { config, error in
-            print(config)
+            let conf: CommonAllConfig = config!
+            print(conf.rootDir)
+            loader.getFiles(dir: conf.rootDir) { files, error in
+                for f in files! {
+                    print(f)
+                }
+            }
         }
         print("photocloud")
     }
