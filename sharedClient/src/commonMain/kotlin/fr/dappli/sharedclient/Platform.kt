@@ -6,5 +6,4 @@ expect object Platform {
     val platform: String
     val debugHost: String
     val engineFactory: HttpClientEngineFactory<HttpClientEngineConfig>
-    //val photocloudLoader: PhotocloudLoader
 }

@@ -27,7 +27,6 @@ kotlin {
                 api(compose.material)
 
                 api(project(":sharedClient"))
-                api(project(":commonAll"))
             }
         }
         val commonTest by getting {
