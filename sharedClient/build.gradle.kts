@@ -32,11 +32,9 @@ kotlin {
             dependencies {
                 api("io.ktor:ktor-client-auth:$ktorVersion")
                 api("io.ktor:ktor-client-core:$ktorVersion")
-//                api("io.ktor:ktor-client-serialization-jvm:$ktorVersion")
                 api("io.ktor:ktor-client-serialization:$ktorVersion")
 
                 api(project(":commonAll"))
-//                implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.2") // todo check commonAll
             }
         }
         val commonTest by getting {
