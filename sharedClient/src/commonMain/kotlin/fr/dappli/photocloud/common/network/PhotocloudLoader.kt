@@ -22,4 +22,13 @@ class PhotocloudLoader {
             }
         }
     }
+
+    suspend fun getImageData(photoId: String): ByteArray {
+        return Network.authClient.get {
+            url {
+                encodedPath = "file/${photoId}/download"
+            }
+        }
+    }
+
 }
