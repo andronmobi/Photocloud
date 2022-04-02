@@ -30,6 +30,8 @@ kotlin {
         // common
         val commonMain by getting {
             dependencies {
+                implementation("com.arkivanov.decompose:decompose:0.5.2")
+
                 api("io.ktor:ktor-client-auth:$ktorVersion")
                 api("io.ktor:ktor-client-core:$ktorVersion")
                 api("io.ktor:ktor-client-serialization:$ktorVersion")
