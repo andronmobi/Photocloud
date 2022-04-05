@@ -17,8 +17,10 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.arkivanov.decompose.extensions.compose.jetbrains.subscribeAsState
 import fr.dappli.photocloud.common.iconDirPainter
 import fr.dappli.photocloud.common.iconPhotoPainter
+import fr.dappli.photocloud.common.list.PhotoList
 import fr.dappli.photocloud.common.loadBitmap
 import fr.dappli.photocloud.common.network.Network
 import fr.dappli.photocloud.common.network.PhotocloudLoader
@@ -36,7 +38,9 @@ import kotlin.collections.HashMap
 import androidx.compose.ui.graphics.Color as ComposeColor
 
 @Composable
-fun FileListScreen() {
+fun FileListScreen(photoList: PhotoList) {
+
+    val mylist by photoList.models.subscribeAsState()
 
     var text by remember { mutableStateOf("Get files") }
     var dir by remember { mutableStateOf("Not connected") }
@@ -59,6 +63,8 @@ fun FileListScreen() {
         ) {
             Text(text)
         }
+        Text(mylist.photos.toString())
+        Spacer(Modifier.size(16.dp))
         Text(dir)
         Spacer(Modifier.size(16.dp))
         Grillage(files)

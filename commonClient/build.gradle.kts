@@ -27,6 +27,8 @@ kotlin {
                 api(compose.material)
 
                 api(project(":sharedClient"))
+
+                implementation("com.arkivanov.decompose:extensions-compose-jetbrains:0.5.2")
             }
         }
         val commonTest by getting {
