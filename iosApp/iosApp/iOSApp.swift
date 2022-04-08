@@ -5,7 +5,8 @@ struct iOSApp: App {
 
 	var body: some Scene {
 		WindowGroup {
-			PhotosView()
+			//PhotosView()
+			ListView()
 		}
 	}
 }

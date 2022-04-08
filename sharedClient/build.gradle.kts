@@ -23,6 +23,8 @@ kotlin {
     ).forEach {
         it.binaries.framework {
             baseName = "sharedClient"
+            export("com.arkivanov.essenty:lifecycle:0.2.2")
+            export("com.arkivanov.decompose:decompose:0.5.2")
         }
     }
 
@@ -31,7 +33,6 @@ kotlin {
         val commonMain by getting {
             dependencies {
                 api("com.arkivanov.decompose:decompose:0.5.2")
-                api("com.arkivanov.essenty:lifecycle:0.2.2")
 
                 api("io.ktor:ktor-client-auth:$ktorVersion")
                 api("io.ktor:ktor-client-core:$ktorVersion")
