@@ -1,32 +1,32 @@
 import SwiftUI
 import sharedClient
 
-extension String {
-    func load() -> UIImage {
-        do {
-            guard let url = URL(string: self) else {
-                return UIImage()
-            }
-            let data: Data = try Data(contentsOf: url)
-            return UIImage(data: data) ?? UIImage()
-        } catch {}
-        return UIImage()
+struct ContentView: View {
+    
+    @State
+    private var componentHolder = ComponentHolder(factory: RootComponent.init)
+
+    var body: some View {
+        RootView(componentHolder.component)
+            .onAppear { LifecycleRegistryExtKt.resume(self.componentHolder.lifecycle) }
+            .onDisappear { LifecycleRegistryExtKt.stop(self.componentHolder.lifecycle) }
     }
 }
 
-struct ContentView: View {
-	let greet = Greeting().greeting()
+class ComponentHolder<T> {
+   let lifecycle: LifecycleRegistry
+   let component: T
 
-	var body: some View {
-        Image(uiImage: "https://www.pngall.com/wp-content/uploads/1/Android.png".load())
-            .resizable()
-            .frame(width: 100.0, height: 100.0)
-		Text(greet)
-	}
-}
+   init(factory: (ComponentContext) -> T) {
+        let lifecycle = LifecycleRegistryKt.LifecycleRegistry()
+        let component = factory(DefaultComponentContext(lifecycle: lifecycle))
+        self.lifecycle = lifecycle
+        self.component = component
 
-struct ContentView_Previews: PreviewProvider {
-	static var previews: some View {
-		ContentView()
-	}
+        lifecycle.onCreate()
+   }
+
+    deinit {
+        lifecycle.onDestroy()
+    }
 }

@@ -14,7 +14,6 @@ struct PhotoListView: View {
     }
 
     var body: some View {
-        Text("Photos")
         List(model.value.photos, id: \.self) { photo in
             Text(photo.id)
         }
