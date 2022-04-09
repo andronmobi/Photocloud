@@ -24,6 +24,7 @@ import fr.dappli.photocloud.common.list.PhotoList
 import fr.dappli.photocloud.common.loadBitmap
 import fr.dappli.photocloud.common.network.Network
 import fr.dappli.photocloud.common.network.PhotocloudLoader
+import fr.dappli.photocloud.common.root.Root
 import fr.dappli.photocloud.common.vo.Config
 import fr.dappli.photocloud.common.vo.Dir
 import fr.dappli.photocloud.common.vo.PCFile
@@ -38,9 +39,7 @@ import kotlin.collections.HashMap
 import androidx.compose.ui.graphics.Color as ComposeColor
 
 @Composable
-fun FileListScreen(photoList: PhotoList) {
-
-    val mylist by photoList.models.subscribeAsState()
+fun FileListScreen(root: Root) {
 
     var text by remember { mutableStateOf("Get files") }
     var dir by remember { mutableStateOf("Not connected") }
@@ -63,7 +62,6 @@ fun FileListScreen(photoList: PhotoList) {
         ) {
             Text(text)
         }
-        Text(mylist.photos.toString())
         Spacer(Modifier.size(16.dp))
         Text(dir)
         Spacer(Modifier.size(16.dp))

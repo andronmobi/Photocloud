@@ -14,8 +14,14 @@ struct PhotoListView: View {
     }
 
     var body: some View {
-        List(model.value.photos, id: \.self) { photo in
-            Text(photo.id)
+        List(model.value.files, id: \.self) { file in
+            if let dir = file as? Dir {
+                Button("Dir: " + dir.id) {
+                    self.photoList.onDirClicked(dir: dir)
+                }
+            } else {
+                Text("Photo: " + file.id)
+            }
         }
     }
 

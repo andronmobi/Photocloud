@@ -4,17 +4,17 @@ import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.application
 import com.arkivanov.decompose.DefaultComponentContext
 import com.arkivanov.essenty.lifecycle.LifecycleRegistry
-import fr.dappli.photocloud.common.list.PhotoListComponent
+import fr.dappli.photocloud.common.root.RootComponent
 
 fun main() = application {
 
     val lifecycle = LifecycleRegistry()
     val ctx = DefaultComponentContext(lifecycle = lifecycle)
-    val photoListComponent = PhotoListComponent(ctx)
+    val rootComponent = RootComponent(ctx)
 
     Window(onCloseRequest = ::exitApplication) {
         MaterialTheme {
-            App(photoListComponent)
+            App(rootComponent)
         }
     }
 }

@@ -2,6 +2,7 @@ plugins {
     kotlin("multiplatform")
     kotlin("plugin.serialization") version "1.6.10"
     id("com.android.library")
+    id("kotlin-parcelize")
 }
 
 group = "fr.dappli.photocloud"
@@ -25,6 +26,7 @@ kotlin {
             baseName = "sharedClient"
             export("com.arkivanov.essenty:lifecycle:0.2.2")
             export("com.arkivanov.decompose:decompose:0.5.2")
+            export(project(":commonAll"))
         }
     }
 

@@ -1,6 +1,6 @@
 package fr.dappli.photocloud.android
 
-import fr.dappli.photocloud.common.list.PhotoListComponent
+import fr.dappli.photocloud.common.root.RootComponent
 import fr.dappli.photocloud.common.App
 import com.arkivanov.decompose.defaultComponentContext
 import android.os.Bundle
@@ -12,11 +12,11 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val photoListComponent = PhotoListComponent(defaultComponentContext())
+        val rootComponent = RootComponent(defaultComponentContext())
 
         setContent {
             MaterialTheme {
-                App(photoListComponent)
+                App(rootComponent)
             }
         }
     }

@@ -14,10 +14,10 @@ class PhotosViewModel : ObservableObject {
 
     func loadPhotos() {
         loader.getConfig { config, error in
-            let conf: CommonAllConfig = config!
+            let conf: Config = config!
             self.loader.getFiles(dir: conf.rootDir) { files, error in
                 for f in files! {
-                    if let dir = f as? CommonAllDir {
+                    if let dir = f as? Dir {
                         print("dir: \(dir)")
                     } else {
                         print("photo: \(f)")
