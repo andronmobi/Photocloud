@@ -14,7 +14,29 @@ struct PhotoListView: View {
     }
 
     var body: some View {
-        List(model.value.files, id: \.self) { file in
+        if (photoList.isInitial) {
+            photosView()
+        } else {
+            NavigationView {
+                VStack {
+                    photosView()
+                }
+                .navigationBarTitle(Text("Current dir name"), displayMode: .inline)
+                .navigationBarItems(
+                    leading: Image(systemName: "arrow.backward")
+                        .aspectRatio(contentMode: .fit)
+                        .imageScale(.large)
+                        .foregroundColor(.blue)
+                        .onTapGesture {
+                            photoList.onBackClicked()
+                        }
+                )
+            }
+        }
+    }
+
+    func photosView() -> some View {
+        return List(model.value.files, id: \.self) { file in
             if let dir = file as? Dir {
                 Button("Dir: " + dir.id) {
                     self.photoList.onDirClicked(dir: dir)

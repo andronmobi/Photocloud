@@ -7,9 +7,11 @@ import fr.dappli.photocloud.common.vo.Photo
 
 interface PhotoList {
 
+    val isInitial: Boolean
     val models: Value<Model>
 
     fun onDirClicked(dir: Dir)
+    fun onBackClicked()
 
     data class Model(
         val photos: List<Photo>,

@@ -9,7 +9,9 @@ import kotlin.native.concurrent.ThreadLocal
 
 class PhotoListComponent(
     componentContext: ComponentContext,
-    private val onDirSelected: (Dir) -> Unit
+    override val isInitial: Boolean,
+    private val onDirSelected: (Dir) -> Unit,
+    private val onClose: () -> Unit
 ) : PhotoList, ComponentContext by componentContext {
 
     private val _models = MutableValue(
@@ -25,6 +27,10 @@ class PhotoListComponent(
 
     override fun onDirClicked(dir: Dir) {
         onDirSelected(dir)
+    }
+
+    override fun onBackClicked() {
+        onClose()
     }
 
     @ThreadLocal

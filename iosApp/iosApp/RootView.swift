@@ -15,8 +15,6 @@ struct RootView: View {
 
     var body: some View {
         let activeChild = self.routerState.value.activeChild.instance
-
-        Text("Root")
         PhotoListView(activeChild.photoList)
     }
 }
