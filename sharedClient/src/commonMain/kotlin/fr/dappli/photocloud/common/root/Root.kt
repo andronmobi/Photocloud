@@ -8,7 +8,8 @@ interface Root {
 
     val routerState: Value<RouterState<*, Child>>
 
-    class Child(
-        val photoList: PhotoList
-    )
+    sealed class Child {
+        object LoadingChild : Child()
+        class ListChild(val photoList: PhotoList) : Child()
+    }
 }

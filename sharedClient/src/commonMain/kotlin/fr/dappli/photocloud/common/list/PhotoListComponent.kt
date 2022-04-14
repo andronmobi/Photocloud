@@ -3,12 +3,14 @@ package fr.dappli.photocloud.common.list
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.value.MutableValue
 import com.arkivanov.decompose.value.Value
+import fr.dappli.photocloud.common.network.PhotocloudLoader
 import fr.dappli.photocloud.common.vo.Dir
 import fr.dappli.photocloud.common.vo.Photo
 import kotlin.native.concurrent.ThreadLocal
 
 class PhotoListComponent(
     componentContext: ComponentContext,
+    photocloudLoader: PhotocloudLoader,
     override val isInitial: Boolean,
     private val onDirSelected: (Dir) -> Unit,
     private val onClose: () -> Unit

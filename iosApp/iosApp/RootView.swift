@@ -15,6 +15,10 @@ struct RootView: View {
 
     var body: some View {
         let activeChild = self.routerState.value.activeChild.instance
-        PhotoListView(activeChild.photoList)
+        if let listChild = activeChild as? RootChild.ListChild {
+            PhotoListView(listChild.photoList)
+        } else {
+            Text("loading...")
+        }
     }
 }
