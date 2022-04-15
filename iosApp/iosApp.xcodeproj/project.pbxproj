@@ -10,8 +10,6 @@
 		058557BB273AAA24004C7B11 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 058557BA273AAA24004C7B11 /* Assets.xcassets */; };
 		058557D9273AAEEB004C7B11 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 058557D8273AAEEB004C7B11 /* Preview Assets.xcassets */; };
 		2152FB042600AC8F00CF470E /* iOSApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2152FB032600AC8F00CF470E /* iOSApp.swift */; };
-		257C237127F0EF8A0098A3EB /* PhotosView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 257C237027F0EF8A0098A3EB /* PhotosView.swift */; };
-		257C237327F0F4200098A3EB /* PhotosViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 257C237227F0F4200098A3EB /* PhotosViewModel.swift */; };
 		257C237D2800D6E40098A3EB /* ObservableValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 257C237A2800D6E40098A3EB /* ObservableValue.swift */; };
 		257C237E2800D6E40098A3EB /* PhotoListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 257C237B2800D6E40098A3EB /* PhotoListView.swift */; };
 		257C23812800E4EC0098A3EB /* RootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 257C23802800E4EC0098A3EB /* RootView.swift */; };
@@ -35,8 +33,6 @@
 		058557BA273AAA24004C7B11 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		058557D8273AAEEB004C7B11 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		2152FB032600AC8F00CF470E /* iOSApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iOSApp.swift; sourceTree = "<group>"; };
-		257C237027F0EF8A0098A3EB /* PhotosView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotosView.swift; sourceTree = "<group>"; };
-		257C237227F0F4200098A3EB /* PhotosViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotosViewModel.swift; sourceTree = "<group>"; };
 		257C237A2800D6E40098A3EB /* ObservableValue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ObservableValue.swift; sourceTree = "<group>"; };
 		257C237B2800D6E40098A3EB /* PhotoListView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoListView.swift; sourceTree = "<group>"; };
 		257C23802800E4EC0098A3EB /* RootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootView.swift; sourceTree = "<group>"; };
@@ -90,8 +86,6 @@
 				7555FF8C242A565B00829871 /* Info.plist */,
 				2152FB032600AC8F00CF470E /* iOSApp.swift */,
 				058557D7273AAEEB004C7B11 /* Preview Content */,
-				257C237027F0EF8A0098A3EB /* PhotosView.swift */,
-				257C237227F0F4200098A3EB /* PhotosViewModel.swift */,
 				257C23802800E4EC0098A3EB /* RootView.swift */,
 				257C23822800E9010098A3EB /* ContentView.swift */,
 			);
@@ -200,9 +194,7 @@
 				2152FB042600AC8F00CF470E /* iOSApp.swift in Sources */,
 				257C237D2800D6E40098A3EB /* ObservableValue.swift in Sources */,
 				257C23832800E9010098A3EB /* ContentView.swift in Sources */,
-				257C237327F0F4200098A3EB /* PhotosViewModel.swift in Sources */,
 				257C23812800E4EC0098A3EB /* RootView.swift in Sources */,
-				257C237127F0EF8A0098A3EB /* PhotosView.swift in Sources */,
 				257C237E2800D6E40098A3EB /* PhotoListView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
