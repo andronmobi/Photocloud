@@ -5,25 +5,19 @@ import com.arkivanov.decompose.value.MutableValue
 import com.arkivanov.decompose.value.Value
 import fr.dappli.photocloud.common.network.PhotocloudLoader
 import fr.dappli.photocloud.common.vo.Dir
-import fr.dappli.photocloud.common.vo.Photo
-import kotlin.native.concurrent.ThreadLocal
+import kotlinx.coroutines.MainScope
+import kotlinx.coroutines.launch
 
 class PhotoListComponent(
     componentContext: ComponentContext,
     photocloudLoader: PhotocloudLoader,
+    override val currentDir: Dir,
     override val isInitial: Boolean,
     private val onDirSelected: (Dir) -> Unit,
     private val onClose: () -> Unit
 ) : PhotoList, ComponentContext by componentContext {
 
-    private val _models = MutableValue(
-        PhotoList.Model(
-            listOf(Photo("$id-12345")),  // TODO just for test
-            listOf(Photo("$id-67895"), Dir("00$id"))
-        ).also {
-            id++
-        }
-    )
+    private val _models = MutableValue(PhotoList.Model(emptyList()))
 
     override val models: Value<PhotoList.Model> = _models
 
@@ -35,8 +29,9 @@ class PhotoListComponent(
         onClose()
     }
 
-    @ThreadLocal
-    private companion object {
-        var id = 1
+    init {
+        MainScope().launch {
+            _models.value = PhotoList.Model(photocloudLoader.getFiles(currentDir))
+        }
     }
 }

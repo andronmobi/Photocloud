@@ -37,7 +37,7 @@ class RootComponent(
                     val config = photocloudLoader.getConfig()
                     println("andrei cloud config $config")
                     router.push(
-                        ChildConfiguration.ListConfiguration(config.rootDir.id, isInitial = true)
+                        ChildConfiguration.ListConfiguration(config.rootDir, isInitial = true)
                     )
                 }
             }
@@ -52,11 +52,12 @@ class RootComponent(
                     PhotoListComponent(
                         context,
                         photocloudLoader,
+                        config.dir,
                         config.isInitial,
                         ::onDirSelected,
                         ::onClose
                     ).also {
-                        println("andrei create child: ${config.dirId}")
+                        println("andrei create child: ${config.dir.id}")
                     }
                 )
             }
@@ -65,7 +66,7 @@ class RootComponent(
 
     private fun onDirSelected(dir: Dir) {
         println("andrei to add dir/conf $dir.id")
-        router.push(ChildConfiguration.ListConfiguration(dir.id, isInitial = false))
+        router.push(ChildConfiguration.ListConfiguration(dir, isInitial = false))
     }
 
     private fun onClose() {
@@ -77,7 +78,7 @@ class RootComponent(
         object LoadingConfiguration : ChildConfiguration()
 
         @Parcelize
-        data class ListConfiguration(val dirId: String, val isInitial: Boolean) :
+        data class ListConfiguration(val dir: Dir, val isInitial: Boolean) :
             ChildConfiguration()
     }
 
