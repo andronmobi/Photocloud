@@ -36,16 +36,17 @@ struct PhotoListView: View {
     }
 
     func photosView() -> some View {
-        return List(model.value.files, id: \.self) { file in
-            if let dir = file as? Dir {
+        return Form {
+            List(model.value.dirs, id: \.self) { dir in
                 Button("Dir: " + dir.id) {
                     self.photoList.onDirClicked(dir: dir)
                 }
-            } else {
-                Text("Photo: " + file.id)
+            }
+            List(model.value.images, id: \.self) { image in
+                let uiImage = (image as KotlinByteArray).toUiImage() ?? UIImage()
+                Image(uiImage: uiImage)
             }
         }
     }
 
 }
-

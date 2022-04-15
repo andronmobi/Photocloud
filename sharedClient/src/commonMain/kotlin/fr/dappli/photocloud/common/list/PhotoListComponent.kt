@@ -3,8 +3,10 @@ package fr.dappli.photocloud.common.list
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.value.MutableValue
 import com.arkivanov.decompose.value.Value
+import com.arkivanov.decompose.value.reduce
 import fr.dappli.photocloud.common.network.PhotocloudLoader
 import fr.dappli.photocloud.common.vo.Dir
+import fr.dappli.photocloud.common.vo.Photo
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
 
@@ -17,7 +19,7 @@ class PhotoListComponent(
     private val onClose: () -> Unit
 ) : PhotoList, ComponentContext by componentContext {
 
-    private val _models = MutableValue(PhotoList.Model(emptyList()))
+    private val _models = MutableValue(PhotoList.Model(emptyList(), emptyList()))
 
     override val models: Value<PhotoList.Model> = _models
 
@@ -31,7 +33,19 @@ class PhotoListComponent(
 
     init {
         MainScope().launch {
-            _models.value = PhotoList.Model(photocloudLoader.getFiles(currentDir))
+            val files = photocloudLoader.getFiles(currentDir)
+            val photoFiles = files.filterIsInstance<Photo>()
+            val dirs = files.filterIsInstance<Dir>()
+
+            _models.value = PhotoList.Model(dirs, emptyList())
+            val images = mutableListOf<ByteArray>()
+            photoFiles.forEach {
+                val image = photocloudLoader.getImageData(it.id)
+                images.add(image)
+                _models.reduce { model ->
+                    model.copy(images = images)
+                }
+            }
         }
     }
 }

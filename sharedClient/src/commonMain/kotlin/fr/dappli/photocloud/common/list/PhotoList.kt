@@ -15,6 +15,7 @@ interface PhotoList {
     fun onBackClicked()
 
     data class Model(
-        val files: List<PCFile>
+        val dirs: List<Dir>,
+        val images: List<ByteArray>
     )
 }
