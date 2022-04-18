@@ -4,7 +4,6 @@ import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.ExperimentalDecomposeApi
 import com.arkivanov.decompose.router.*
 import com.arkivanov.decompose.value.Value
-import com.arkivanov.decompose.value.observe
 import com.arkivanov.essenty.parcelable.Parcelable
 import com.arkivanov.essenty.parcelable.Parcelize
 import fr.dappli.photocloud.common.list.PhotoListComponent
@@ -30,17 +29,11 @@ class RootComponent(
     override val routerState: Value<RouterState<*, Child>> = router.state
 
     init {
-        router.state.observe(lifecycle) {
-            println("andrei active child ${it.activeChild}")
-            if (it.activeChild.instance is Child.LoadingChild) {
-                MainScope().launch {
-                    val config = photocloudLoader.getConfig()
-                    println("andrei cloud config $config")
-                    router.push(
-                        ChildConfiguration.ListConfiguration(config.rootDir.id, isInitial = true)
-                    )
-                }
-            }
+        MainScope().launch {
+            val config = photocloudLoader.getConfig()
+            router.push(
+                ChildConfiguration.ListConfiguration(config.rootDir.id, isInitial = true)
+            )
         }
     }
 
@@ -56,16 +49,13 @@ class RootComponent(
                         config.isInitial,
                         ::onDirSelected,
                         ::onClose
-                    ).also {
-                        println("andrei create child: ${config.dirId}")
-                    }
+                    )
                 )
             }
         }
     }
 
     private fun onDirSelected(dir: Dir) {
-        println("andrei to add dir/conf $dir.id")
         router.push(ChildConfiguration.ListConfiguration(dir.id, isInitial = false))
     }
 
