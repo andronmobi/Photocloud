@@ -1,7 +1,7 @@
 package fr.dappli.photocloud.android
 
 import fr.dappli.photocloud.common.root.RootComponent
-import fr.dappli.photocloud.common.App
+import fr.dappli.photocloud.compose.App
 import com.arkivanov.decompose.defaultComponentContext
 import android.os.Bundle
 import androidx.activity.compose.setContent

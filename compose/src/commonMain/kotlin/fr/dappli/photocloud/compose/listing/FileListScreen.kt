@@ -1,4 +1,4 @@
-package fr.dappli.photocloud.common.ui.listing
+package fr.dappli.photocloud.compose.listing
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
@@ -18,10 +18,10 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.arkivanov.decompose.extensions.compose.jetbrains.subscribeAsState
-import fr.dappli.photocloud.common.iconDirPainter
-import fr.dappli.photocloud.common.iconPhotoPainter
+import fr.dappli.photocloud.compose.iconDirPainter
+import fr.dappli.photocloud.compose.iconPhotoPainter
 import fr.dappli.photocloud.common.list.PhotoList
-import fr.dappli.photocloud.common.loadBitmap
+import fr.dappli.photocloud.compose.loadBitmap
 import fr.dappli.photocloud.common.network.Network
 import fr.dappli.photocloud.common.network.PhotocloudLoader
 import fr.dappli.photocloud.common.root.Root

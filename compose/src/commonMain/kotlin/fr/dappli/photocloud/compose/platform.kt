@@ -1,4 +1,4 @@
-package fr.dappli.photocloud.common
+package fr.dappli.photocloud.compose
 
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.painter.Painter

@@ -1,4 +1,4 @@
-package fr.dappli.photocloud.common
+package fr.dappli.photocloud.compose
 
 import android.graphics.BitmapFactory
 import androidx.compose.runtime.Composable
@@ -6,6 +6,7 @@ import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
+import fr.dappli.photocloud.common.R
 import java.io.BufferedInputStream
 import java.io.InputStream
 
