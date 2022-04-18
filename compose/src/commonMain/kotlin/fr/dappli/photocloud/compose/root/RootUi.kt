@@ -8,16 +8,15 @@ import fr.dappli.photocloud.common.root.Root
 import androidx.compose.material.Text
 import androidx.compose.runtime.getValue
 import com.arkivanov.decompose.extensions.compose.jetbrains.subscribeAsState
+import fr.dappli.photocloud.compose.list.PhotoListUI
 
 @Composable
 fun RootUi(root: Root) {
+    val routerState by root.routerState.subscribeAsState()
     Box {
-        println("andrei box scope")
-        val routerState by root.routerState.subscribeAsState()
-
         val activeChild = routerState.activeChild.instance
         if (activeChild is Root.Child.ListChild) {
-            Text("data ok", modifier = Modifier.align(Alignment.Center))
+            PhotoListUI(activeChild.photoList)
         } else {
             Text("loading...", modifier = Modifier.align(Alignment.Center))
         }

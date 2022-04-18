@@ -43,7 +43,7 @@ class PhotoListComponent(
                 val image = photocloudLoader.getImageData(it.id)
                 images.add(image)
                 _models.reduce { model ->
-                    model.copy(images = images)
+                    model.copy(images = images.toList())
                 }
             }
         }
