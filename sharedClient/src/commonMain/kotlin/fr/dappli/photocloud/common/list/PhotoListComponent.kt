@@ -7,7 +7,7 @@ import com.arkivanov.decompose.value.reduce
 import fr.dappli.photocloud.common.network.PhotocloudLoader
 import fr.dappli.photocloud.common.vo.Dir
 import fr.dappli.photocloud.common.vo.Photo
-import kotlinx.coroutines.MainScope
+import fr.dappli.sharedclient.Platform
 import kotlinx.coroutines.launch
 
 class PhotoListComponent(
@@ -32,18 +32,18 @@ class PhotoListComponent(
     }
 
     init {
-        MainScope().launch {
+        Platform.mainCoroutineScope.launch {
             val files = photocloudLoader.getFiles(currentDir)
             val photoFiles = files.filterIsInstance<Photo>()
             val dirs = files.filterIsInstance<Dir>()
 
             _models.value = PhotoList.Model(dirs, emptyList())
-            val images = mutableListOf<ByteArray>()
-            photoFiles.forEach {
-                val image = photocloudLoader.getImageData(it.id)
-                images.add(image)
+            val images = mutableListOf<PhotoList.PhotoImage>()
+            photoFiles.forEach { photo ->
+                val image = photocloudLoader.getImageData(photo.id)
+                images.add(PhotoList.PhotoImage(photo, image))
                 _models.reduce { model ->
-                    model.copy(images = images.toList())
+                    model.copy(photoImages = images.toList())
                 }
             }
         }

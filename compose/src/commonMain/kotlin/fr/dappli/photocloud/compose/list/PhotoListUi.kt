@@ -17,19 +17,19 @@ import fr.dappli.photocloud.compose.loadBitmap
 import java.io.ByteArrayInputStream
 
 // TODO improve me
-private var photoCache = HashMap<Int, ImageBitmap>()
+private var photoCache = HashMap<String, ImageBitmap>()
 
 @Composable
 fun PhotoListUI(photoList: PhotoList) {
     val model by photoList.models.subscribeAsState()
 
     LazyColumn {
-        items(model.images) { image ->
-            val id = image.hashCode()
-            val bitmap = photoCache[id] ?: run {
-                val stream = ByteArrayInputStream(image)
+        items(model.photoImages) { photoImage ->
+
+            val bitmap = photoCache[photoImage.photo.id] ?: run {
+                val stream = ByteArrayInputStream(photoImage.image)
                 loadBitmap(stream).also {
-                    photoCache[id] = it
+                    photoCache[photoImage.photo.id] = it
                 }
             }
             Image(

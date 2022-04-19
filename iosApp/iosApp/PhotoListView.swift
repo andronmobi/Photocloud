@@ -42,8 +42,8 @@ struct PhotoListView: View {
                     self.photoList.onDirClicked(dir: dir)
                 }
             }
-            List(model.value.images, id: \.self) { image in
-                let uiImage = (image as KotlinByteArray).toUiImage() ?? UIImage()
+            List(model.value.photoImages, id: \.self) { photoImage in
+                let uiImage = (photoImage.image as KotlinByteArray).toUiImage() ?? UIImage()
                 Image(uiImage: uiImage)
             }
         }
