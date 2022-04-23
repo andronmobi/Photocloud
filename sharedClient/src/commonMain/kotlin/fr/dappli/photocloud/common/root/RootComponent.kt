@@ -11,7 +11,6 @@ import fr.dappli.photocloud.common.network.PhotocloudLoader
 import fr.dappli.photocloud.common.root.Root.Child
 import fr.dappli.photocloud.common.vo.Dir
 import fr.dappli.sharedclient.Platform
-import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalDecomposeApi::class)

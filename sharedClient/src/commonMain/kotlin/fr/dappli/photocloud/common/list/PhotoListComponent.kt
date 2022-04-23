@@ -4,6 +4,8 @@ import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.value.MutableValue
 import com.arkivanov.decompose.value.Value
 import com.arkivanov.decompose.value.reduce
+import fr.dappli.photocloud.common.list.model.PhotoDir
+import fr.dappli.photocloud.common.list.model.PhotoImage
 import fr.dappli.photocloud.common.network.PhotocloudLoader
 import fr.dappli.photocloud.common.vo.Dir
 import fr.dappli.photocloud.common.vo.Photo
@@ -23,8 +25,8 @@ class PhotoListComponent(
 
     override val models: Value<PhotoList.Model> = _models
 
-    override fun onDirClicked(dir: Dir) {
-        onDirSelected(dir)
+    override fun onDirClicked(dirId: String) {
+        onDirSelected(Dir(dirId))
     }
 
     override fun onBackClicked() {
@@ -35,17 +37,20 @@ class PhotoListComponent(
         Platform.mainCoroutineScope.launch {
             val files = photocloudLoader.getFiles(currentDir)
             val photoFiles = files.filterIsInstance<Photo>()
-            val dirs = files.filterIsInstance<Dir>()
+            val dirs = files.filterIsInstance<Dir>().map {
+                PhotoDir(it.id, it.id) // TODO decode name
+            }
 
             _models.value = PhotoList.Model(dirs, emptyList())
-            val images = mutableListOf<PhotoList.PhotoImage>()
+            val images = mutableListOf<PhotoImage>()
             photoFiles.forEach { photo ->
                 val image = photocloudLoader.getImageData(photo.id)
-                images.add(PhotoList.PhotoImage(photo, image))
+                images.add(PhotoImage(photo.id, image))
                 _models.reduce { model ->
                     model.copy(photoImages = images.toList())
                 }
             }
         }
     }
+
 }

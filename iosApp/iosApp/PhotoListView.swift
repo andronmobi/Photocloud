@@ -37,9 +37,9 @@ struct PhotoListView: View {
 
     func photosView() -> some View {
         return Form {
-            List(model.value.dirs, id: \.self) { dir in
-                Button("Dir: " + dir.id) {
-                    self.photoList.onDirClicked(dir: dir)
+            List(model.value.dirs, id: \.self) { photoDir in
+                Button("Dir: " + photoDir.name) {
+                    self.photoList.onDirClicked(dirId: photoDir.id)
                 }
             }
             List(model.value.photoImages, id: \.self) { photoImage in
