@@ -2,7 +2,7 @@ import SwiftUI
 import sharedClient
 
 struct PhotoListView: View {
-    
+
     private let photoList: PhotoList
 
     @ObservedObject
@@ -36,11 +36,20 @@ struct PhotoListView: View {
     }
 
     func photosView() -> some View {
-        return Form {
-            List(model.value.dirs, id: \.self) { photoDir in
-                Button("Dir: " + photoDir.name) {
-                    self.photoList.onDirClicked(dirId: photoDir.id)
+        Form {
+            ScrollView(.horizontal) {
+                HStack(spacing: 16) {
+                    ForEach(model.value.dirs, id: \.self.id) { photoDir in
+                        Button(action: {
+                            photoList.onDirClicked(dirId: photoDir.id)
+                        }, label: {
+                            Image("ic_dir").resizable().frame(width: 120, height: 120).scaledToFit()
+                                    .overlay(Text(photoDir.name))
+                                    .padding(.bottom, 8)
+                        })
+                    }
                 }
+                Spacer().frame(height: 4)
             }
             List(model.value.photoImages, id: \.self) { photoImage in
                 let uiImage = (photoImage.image as KotlinByteArray).toUiImage() ?? UIImage()
