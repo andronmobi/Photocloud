@@ -31,7 +31,7 @@ class RootComponent(
     init {
         Platform.mainCoroutineScope.launch {
             val config = photocloudLoader.getConfig()
-            router.push(
+            router.bringToFront(
                 ChildConfiguration.ListConfiguration(config.rootDir.id, isInitial = true)
             )
         }
