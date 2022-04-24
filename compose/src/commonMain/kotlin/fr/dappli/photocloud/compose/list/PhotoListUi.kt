@@ -2,6 +2,7 @@ package fr.dappli.photocloud.compose.list
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.GridCells
 import androidx.compose.foundation.lazy.LazyRow
@@ -35,7 +36,9 @@ private var photoCache = HashMap<String, ImageBitmap>()
 fun PhotoListUI(photoList: PhotoList) {
     val model by photoList.models.subscribeAsState()
     Column {
-        Folders(model.dirs)
+        Folders(model.dirs) { dirId ->
+            photoList.onDirClicked(dirId)
+        }
         Spacer(modifier = Modifier.size(4.dp))
         PhotoGrid(model.photoImages)
     }
@@ -43,7 +46,7 @@ fun PhotoListUI(photoList: PhotoList) {
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun Folders(dirs: List<PhotoDir>) {
+fun Folders(dirs: List<PhotoDir>, onDirClicked: (String) -> Unit) {
     LazyRow(
         contentPadding = PaddingValues(8.dp)
     ) {
@@ -53,7 +56,9 @@ fun Folders(dirs: List<PhotoDir>) {
                     painter = iconDirPainter(),
                     contentScale = ContentScale.FillWidth,
                     contentDescription = null,
-                    modifier = Modifier.size(120.dp).align(Alignment.CenterHorizontally)
+                    modifier = Modifier.size(120.dp).align(Alignment.CenterHorizontally).clickable {
+                        onDirClicked(photoDir.id)
+                    }
                 )
                 Text(
                     fontSize = 8.sp,
