@@ -51,19 +51,21 @@ fun Folders(dirs: List<PhotoDir>, onDirClicked: (String) -> Unit) {
         contentPadding = PaddingValues(8.dp)
     ) {
         items(dirs) { photoDir ->
-            Column {
+            Box(
+                contentAlignment = Alignment.Center
+            ) {
                 Image(
                     painter = iconDirPainter(),
                     contentScale = ContentScale.FillWidth,
                     contentDescription = null,
-                    modifier = Modifier.size(120.dp).align(Alignment.CenterHorizontally).clickable {
+                    modifier = Modifier.size(120.dp).clickable {
                         onDirClicked(photoDir.id)
                     }
                 )
                 Text(
                     fontSize = 8.sp,
+                    color = Color.Black,
                     text = photoDir.name,
-                    textAlign = TextAlign.Center,
                     modifier = Modifier.width(116.dp).padding(horizontal = 8.dp)
                 )
             }
