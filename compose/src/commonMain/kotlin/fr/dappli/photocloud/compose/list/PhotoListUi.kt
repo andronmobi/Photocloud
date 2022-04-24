@@ -63,10 +63,11 @@ fun Folders(dirs: List<PhotoDir>, onDirClicked: (String) -> Unit) {
                     }
                 )
                 Text(
-                    fontSize = 8.sp,
+                    fontSize = 12.sp,
                     color = Color.Black,
+                    textAlign = TextAlign.Center,
                     text = photoDir.name,
-                    modifier = Modifier.width(116.dp).padding(horizontal = 8.dp)
+                    modifier = Modifier.width(116.dp).padding(start = 8.dp, end = 8.dp, top = 16.dp)
                 )
             }
             Spacer(modifier = Modifier.width(16.dp))

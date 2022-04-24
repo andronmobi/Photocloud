@@ -10,8 +10,10 @@ import fr.dappli.photocloud.common.network.PhotocloudLoader
 import fr.dappli.photocloud.common.vo.Dir
 import fr.dappli.photocloud.common.vo.Photo
 import fr.dappli.sharedclient.Platform
+import io.ktor.util.*
 import kotlinx.coroutines.launch
 
+@OptIn(InternalAPI::class)
 class PhotoListComponent(
     componentContext: ComponentContext,
     photocloudLoader: PhotocloudLoader,
@@ -38,7 +40,7 @@ class PhotoListComponent(
             val files = photocloudLoader.getFiles(currentDir)
             val photoFiles = files.filterIsInstance<Photo>()
             val dirs = files.filterIsInstance<Dir>().map {
-                PhotoDir(it.id, it.id) // TODO decode name
+                PhotoDir(it.id, it.id.decodeFileId())
             }
 
             _models.value = PhotoList.Model(dirs, emptyList())
@@ -53,4 +55,10 @@ class PhotoListComponent(
         }
     }
 
+    private fun String.decodeFileId(): String {
+        return decodeBase64String()
+            .substringAfter("photocloud:///")
+            .substringBeforeLast("/")
+            .split("/").last()
+    }
 }
