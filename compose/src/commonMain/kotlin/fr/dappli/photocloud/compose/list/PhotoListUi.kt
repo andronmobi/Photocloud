@@ -23,24 +23,25 @@ import androidx.compose.ui.unit.sp
 import com.arkivanov.decompose.extensions.compose.jetbrains.subscribeAsState
 import fr.dappli.photocloud.common.list.PhotoList
 import fr.dappli.photocloud.common.list.model.PhotoDir
-import fr.dappli.photocloud.common.list.model.PhotoImage
 import fr.dappli.photocloud.compose.iconDirPainter
 import fr.dappli.photocloud.compose.loadBitmap
 import java.io.ByteArrayInputStream
-import kotlin.collections.HashMap
-
-// TODO improve me
-private var photoCache = HashMap<String, ImageBitmap>()
 
 @Composable
 fun PhotoListUI(photoList: PhotoList) {
     val model by photoList.models.subscribeAsState()
+
+    val bitmaps = model.photoImages.map {
+        val stream = ByteArrayInputStream(it.image)
+        PhotoGridItem(it.id, loadBitmap(stream))
+    }
+
     Column {
         Folders(model.dirs) { dirId ->
             photoList.onDirClicked(dirId)
         }
         Spacer(modifier = Modifier.size(4.dp))
-        PhotoGrid(model.photoImages)
+        PhotoGrid(bitmaps)
     }
 }
 
@@ -77,26 +78,20 @@ fun Folders(dirs: List<PhotoDir>, onDirClicked: (String) -> Unit) {
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun PhotoGrid(photoImages: List<PhotoImage>) {
+fun PhotoGrid(photoItems: List<PhotoGridItem>) {
     LazyVerticalGrid(
         cells = GridCells.Adaptive(116.dp),
         contentPadding = PaddingValues(8.dp)
     ) {
-        items(photoImages) { photoImage ->
+        items(photoItems) { item ->
             Card(
                 backgroundColor = Color.LightGray,
                 modifier = Modifier
                     .padding(4.dp)
                     .fillMaxWidth()
             ) {
-                val bitmap = photoCache[photoImage.id] ?: run {
-                    val stream = ByteArrayInputStream(photoImage.image)
-                    loadBitmap(stream).also {
-                        photoCache[photoImage.id] = it
-                    }
-                }
                 Image(
-                    bitmap = bitmap,
+                    bitmap = item.bitmap,
                     contentDescription = null,
                     modifier = Modifier.size(100.dp),
                     contentScale = ContentScale.Crop
@@ -105,3 +100,8 @@ fun PhotoGrid(photoImages: List<PhotoImage>) {
         }
     }
 }
+
+data class PhotoGridItem(
+    val id: String,
+    val bitmap: ImageBitmap
+)
