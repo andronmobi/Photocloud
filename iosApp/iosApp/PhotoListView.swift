@@ -1,6 +1,16 @@
 import SwiftUI
 import sharedClient
 
+extension View {
+    @ViewBuilder func phoneOnlyStackNavigationView() -> some View {
+        if UIDevice.current.userInterfaceIdiom == .phone {
+            self.navigationViewStyle(.stack)
+        } else {
+            self
+        }
+    }
+}
+
 struct PhotoListView: View {
 
     private let photoList: PhotoList
@@ -31,12 +41,12 @@ struct PhotoListView: View {
                                 photoList.onBackClicked()
                             }
                     )
-            }
+            }.phoneOnlyStackNavigationView()
         }
     }
 
     func foldersAndPhotos() -> some View {
-        VStack(alignment: .leading, spacing: 20) {
+        VStack(alignment: .leading, spacing: 10) {
             folders()
             photosView()
         }
