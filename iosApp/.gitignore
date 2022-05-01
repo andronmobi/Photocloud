@@ -1,3 +1,4 @@
-/iosApp.xcodeproj/xcuserdata/*
+iosApp.xcodeproj/xcuserdata/*
 iosApp.xcodeproj/project.xcworkspace/*
 iosApp.xcodeproj/project.pbxproj
+.idea/codeStyles/*
