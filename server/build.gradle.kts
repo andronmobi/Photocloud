@@ -7,7 +7,6 @@ plugins {
 group = "fr.dappli.photocloud"
 version = "1.0"
 
-val ktorVersion = "1.6.7"
 val logbackVersion = "1.2.3"
 
 kotlin {
@@ -20,11 +19,12 @@ kotlin {
     sourceSets {
         val jvmMain by getting {
             dependencies {
-                implementation("io.ktor:ktor-serialization:$ktorVersion")
-                implementation("io.ktor:ktor-server-core:$ktorVersion")
-                implementation("io.ktor:ktor-server-netty:$ktorVersion")
-                implementation("io.ktor:ktor-auth:$ktorVersion")
-                implementation("io.ktor:ktor-auth-jwt:$ktorVersion")
+                implementation(libs.ktor.serialization)
+                implementation(libs.ktor.server.core)
+                implementation(libs.ktor.server.netty)
+                implementation(libs.ktor.auth)
+                implementation(libs.ktor.auth.jwt)
+
                 implementation("ch.qos.logback:logback-classic:$logbackVersion")
 
                 implementation("net.coobird:thumbnailator:0.4.17")

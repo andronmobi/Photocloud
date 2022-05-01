@@ -17,3 +17,5 @@ include(":commonAll")
 include(":server")
 
 include(":sharedClient")
+
+enableFeaturePreview("VERSION_CATALOGS")

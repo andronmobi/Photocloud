@@ -8,8 +8,6 @@ plugins {
 group = "fr.dappli.photocloud"
 version = "1.0"
 
-val ktorVersion = "1.6.7"
-
 kotlin {
     android()
     jvm("desktop") {
@@ -36,9 +34,9 @@ kotlin {
             dependencies {
                 api("com.arkivanov.decompose:decompose:0.5.2")
 
-                api("io.ktor:ktor-client-auth:$ktorVersion")
-                api("io.ktor:ktor-client-core:$ktorVersion")
-                api("io.ktor:ktor-client-serialization:$ktorVersion")
+                api(libs.ktor.core)
+                api(libs.ktor.auth)
+                api(libs.ktor.serialization)
 
                 api(project(":commonAll"))
             }
@@ -52,7 +50,7 @@ kotlin {
         // android
         val androidMain by getting {
             dependencies {
-                api("io.ktor:ktor-client-okhttp:$ktorVersion")
+                api(libs.ktor.client.okhttp)
             }
         }
         val androidTest by getting
@@ -60,8 +58,8 @@ kotlin {
         // jvm
         val desktopMain by getting {
             dependencies {
-                api("io.ktor:ktor-client-okhttp:$ktorVersion")
-                api("io.ktor:ktor-client-serialization-jvm:$ktorVersion")
+                api(libs.ktor.client.okhttp)
+                api(libs.ktor.serialization.jvm)
             }
         }
 
@@ -76,7 +74,7 @@ kotlin {
             iosSimulatorArm64Main.dependsOn(this)
 
             dependencies {
-                implementation("io.ktor:ktor-client-ios:$ktorVersion")
+                implementation(libs.ktor.client.ios)
             }
         }
         val iosX64Test by getting
