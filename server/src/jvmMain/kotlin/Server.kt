@@ -1,33 +1,38 @@
 import com.auth0.jwt.JWT
 import com.auth0.jwt.algorithms.Algorithm
-import io.ktor.application.*
-import io.ktor.auth.*
-import io.ktor.auth.jwt.*
-import io.ktor.features.*
 import io.ktor.http.*
-import io.ktor.routing.*
-import io.ktor.serialization.*
 import fr.dappli.photocloud.common.vo.User
+import io.ktor.serialization.kotlinx.json.*
+import io.ktor.server.application.*
+import io.ktor.server.auth.*
+import io.ktor.server.auth.jwt.*
+import io.ktor.server.plugins.compression.*
+import io.ktor.server.plugins.contentnegotiation.*
+import io.ktor.server.plugins.cors.routing.*
+import io.ktor.server.plugins.statuspages.*
+import io.ktor.server.response.*
+import io.ktor.server.routing.*
 import kotlinx.serialization.json.Json
 
 fun main(args: Array<String>): Unit = io.ktor.server.netty.EngineMain.main(args)
 
 fun Application.module(testing: Boolean = false) {
+    val secret = environment.config.property("jwt.secret").getString()
+    val issuer = environment.config.property("jwt.issuer").getString()
+    val audience = environment.config.property("jwt.audience").getString()
+    val myRealm = environment.config.property("jwt.realm").getString()
+    val tokenDuration = environment.config.property("jwt.tokenDuration").getString().toLong()
+
+    val confUserName = environment.config.property("login.username").getString()
+    val confPassword = environment.config.property("login.password").getString()
+    val confUser = User(confUserName, confPassword)
+
+    val filePath = environment.config.property("server.filePath").getString()
+
+    setupServer()
+    setupAuthentication(secret, issuer, audience, myRealm)
+
     routing {
-        val secret = environment.config.property("jwt.secret").getString()
-        val issuer = environment.config.property("jwt.issuer").getString()
-        val audience = environment.config.property("jwt.audience").getString()
-        val myRealm = environment.config.property("jwt.realm").getString()
-        val tokenDuration = environment.config.property("jwt.tokenDuration").getString().toLong()
-
-        val confUserName = environment.config.property("login.username").getString()
-        val confPassword = environment.config.property("login.password").getString()
-        val confUser = User(confUserName, confPassword)
-
-        val filePath = environment.config.property("server.filePath").getString()
-
-        setupServer()
-        setupAuthentication(secret, issuer, audience, myRealm)
         handleLoginRequests(secret, issuer, audience, confUser, tokenDuration)
         handleHomeRequests()
 
@@ -53,13 +58,16 @@ private fun Application.setupServer() {
             })
     }
     install(CORS) {
-        method(HttpMethod.Get)
-        method(HttpMethod.Post)
-        method(HttpMethod.Delete)
+        allowMethod(HttpMethod.Delete)
         anyHost()
     }
     install(Compression) {
         gzip()
+    }
+    install(StatusPages) {
+        exception<Throwable> { call, cause ->
+            call.respondText(text = "500: $cause" , status = HttpStatusCode.InternalServerError)
+        }
     }
 }
 

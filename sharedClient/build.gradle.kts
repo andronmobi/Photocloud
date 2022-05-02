@@ -36,7 +36,8 @@ kotlin {
 
                 api(libs.ktor.core)
                 api(libs.ktor.auth)
-                api(libs.ktor.serialization)
+                api(libs.ktor.client.negotiation)
+                api(libs.ktor.serialization.kotlinx)
 
                 api(project(":commonAll"))
             }
@@ -74,7 +75,7 @@ kotlin {
             iosSimulatorArm64Main.dependsOn(this)
 
             dependencies {
-                implementation(libs.ktor.client.ios)
+                implementation(libs.ktor.client.darwin)
             }
         }
         val iosX64Test by getting

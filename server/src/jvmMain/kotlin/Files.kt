@@ -1,8 +1,8 @@
 import fr.dappli.photocloud.common.vo.Dir
 import fr.dappli.photocloud.common.vo.PCFile
 import fr.dappli.photocloud.common.vo.Photo
-import io.ktor.features.*
 import io.ktor.http.*
+import io.ktor.server.plugins.*
 import net.coobird.thumbnailator.Thumbnails
 import java.io.File
 import java.util.*
@@ -32,7 +32,7 @@ fun getFiles(rootPath: String, fileLocation: String): List<PCFile> {
 }
 
 fun Parameters.getFileLocation(): String {
-    val fileId = get("fileId") ?: throw BadRequestException("fileId is null")
+    val fileId = get("fileId") ?: throw MissingRequestParameterException("fileId")
     val fileUrl = String(Base64.getUrlDecoder().decode(fileId))
     return schemePathRegex.matchEntire(fileUrl)?.groups?.get(1)?.value ?: throw BadRequestException("unrecognized")
 }

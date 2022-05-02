@@ -19,11 +19,15 @@ kotlin {
     sourceSets {
         val jvmMain by getting {
             dependencies {
-                implementation(libs.ktor.serialization)
+                implementation(libs.ktor.auth)
+                implementation(libs.ktor.serialization.kotlinx)
+                implementation(libs.ktor.server.auth.jwt)
                 implementation(libs.ktor.server.core)
                 implementation(libs.ktor.server.netty)
-                implementation(libs.ktor.auth)
-                implementation(libs.ktor.auth.jwt)
+                implementation(libs.ktor.server.negotiation)
+                implementation(libs.ktor.server.cors)
+                implementation(libs.ktor.server.compression)
+                implementation(libs.ktor.server.status)
 
                 implementation("ch.qos.logback:logback-classic:$logbackVersion")
 

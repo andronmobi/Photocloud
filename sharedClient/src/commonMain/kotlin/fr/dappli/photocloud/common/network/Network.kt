@@ -4,29 +4,22 @@ import fr.dappli.photocloud.common.vo.Token
 import fr.dappli.photocloud.common.vo.User
 import fr.dappli.sharedclient.Platform
 import io.ktor.client.*
-import io.ktor.client.features.*
-import io.ktor.client.features.auth.*
-import io.ktor.client.features.auth.providers.*
-import io.ktor.client.features.json.*
-import io.ktor.client.features.json.serializer.*
+import io.ktor.client.call.*
+import io.ktor.client.plugins.*
+import io.ktor.client.plugins.auth.*
+import io.ktor.client.plugins.auth.providers.*
+import io.ktor.client.plugins.contentnegotiation.*
 import io.ktor.client.request.*
 import io.ktor.http.*
-import kotlinx.serialization.json.Json
+import io.ktor.serialization.kotlinx.json.*
 import kotlin.native.concurrent.ThreadLocal
 
 @ThreadLocal
 object Network {
 
-    private val baseJson by lazy {
-        Json {
-            ignoreUnknownKeys = true
-            encodeDefaults = true
-        }
-    }
-
     private val nonAuthClient = HttpClient(Platform.engineFactory) {
-        install(JsonFeature) {
-            serializer = KotlinxSerializer()
+        install(ContentNegotiation) {
+            json()
         }
         defaultRequest {
             url {
@@ -38,11 +31,9 @@ object Network {
     }
 
     val authClient = HttpClient(Platform.engineFactory) {
-
-        install(JsonFeature) {
-            serializer = KotlinxSerializer(baseJson)
+        install(ContentNegotiation) {
+            json()
         }
-
         install(Auth) {
             bearer {
                 loadTokens {
@@ -64,13 +55,14 @@ object Network {
     }
 
     private suspend fun getToken(): BearerTokens {
-        val token = nonAuthClient.post<Token> {
+        val response = nonAuthClient.post {
             url {
                 encodedPath = "login"
             }
             contentType(ContentType.Application.Json)
-            body = User("foo", "bar") // TODO
+            setBody(User("foo", "bar")) // TODO
         }
+        val token = response.body<Token>()
         return BearerTokens(token.accessToken, "")
     }
 }

@@ -17,10 +17,8 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.arkivanov.decompose.extensions.compose.jetbrains.subscribeAsState
 import fr.dappli.photocloud.compose.iconDirPainter
 import fr.dappli.photocloud.compose.iconPhotoPainter
-import fr.dappli.photocloud.common.list.PhotoList
 import fr.dappli.photocloud.compose.loadBitmap
 import fr.dappli.photocloud.common.network.Network
 import fr.dappli.photocloud.common.network.PhotocloudLoader
@@ -30,7 +28,9 @@ import fr.dappli.photocloud.common.vo.Dir
 import fr.dappli.photocloud.common.vo.PCFile
 import fr.dappli.photocloud.common.vo.Photo
 import fr.dappli.sharedclient.Platform.platform
+import io.ktor.client.call.*
 import io.ktor.client.request.*
+import io.ktor.http.*
 import io.ktor.utils.io.errors.*
 import kotlinx.coroutines.*
 import java.io.ByteArrayInputStream
@@ -159,11 +159,11 @@ private fun AsyncImage(
 }
 
 private suspend fun downloadImageBitmap(photoId: String): ImageBitmap {
-    val byteArray = Network.authClient.get<ByteArray> {
+    val byteArray = Network.authClient.get {
         url {
             encodedPath = "file/${photoId}/download"
         }
-    }
+    }.body<ByteArray>()
     val stream = ByteArrayInputStream(byteArray)
     return loadBitmap(stream)
 }

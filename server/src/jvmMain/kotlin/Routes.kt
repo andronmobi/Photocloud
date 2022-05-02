@@ -3,11 +3,11 @@ import com.auth0.jwt.algorithms.Algorithm
 import fr.dappli.photocloud.common.vo.Config
 import fr.dappli.photocloud.common.vo.Dir
 import fr.dappli.photocloud.common.vo.User
-import io.ktor.application.*
 import io.ktor.http.*
-import io.ktor.request.*
-import io.ktor.response.*
-import io.ktor.routing.*
+import io.ktor.server.application.*
+import io.ktor.server.request.*
+import io.ktor.server.response.*
+import io.ktor.server.routing.*
 import java.io.File
 import java.util.*
 

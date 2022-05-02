@@ -1,7 +1,6 @@
 package fr.dappli.photocloud.common.root
 
 import com.arkivanov.decompose.ComponentContext
-import com.arkivanov.decompose.ExperimentalDecomposeApi
 import com.arkivanov.decompose.router.*
 import com.arkivanov.decompose.value.Value
 import com.arkivanov.essenty.parcelable.Parcelable
@@ -13,7 +12,6 @@ import fr.dappli.photocloud.common.vo.Dir
 import fr.dappli.sharedclient.Platform
 import kotlinx.coroutines.launch
 
-@OptIn(ExperimentalDecomposeApi::class)
 class RootComponent(
     componentContext: ComponentContext
 ) : Root, ComponentContext by componentContext {
@@ -29,7 +27,7 @@ class RootComponent(
     override val routerState: Value<RouterState<*, Child>> = router.state
 
     init {
-        Platform.mainCoroutineScope.launch {
+        Platform.mainCoroutineScope.launch { // TODO fix InvalidMutabilityException for ios
             val config = photocloudLoader.getConfig()
             router.bringToFront(
                 ChildConfiguration.ListConfiguration(config.rootDir.id, isInitial = true)
