@@ -10,7 +10,10 @@ import fr.dappli.photocloud.common.network.PhotocloudLoader
 import fr.dappli.photocloud.common.root.Root.Child
 import fr.dappli.photocloud.common.vo.Dir
 import fr.dappli.sharedclient.Platform
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class RootComponent(
     componentContext: ComponentContext
@@ -27,7 +30,7 @@ class RootComponent(
     override val routerState: Value<RouterState<*, Child>> = router.state
 
     init {
-        Platform.mainCoroutineScope.launch { // TODO fix InvalidMutabilityException for ios
+        CoroutineScope(Platform.uiDispatcher).launch {
             val config = photocloudLoader.getConfig()
             router.bringToFront(
                 ChildConfiguration.ListConfiguration(config.rootDir.id, isInitial = true)
@@ -66,7 +69,8 @@ class RootComponent(
         object LoadingConfiguration : ChildConfiguration()
 
         @Parcelize
-        data class ListConfiguration(val dirId: String, val isInitial: Boolean) : ChildConfiguration()
+        data class ListConfiguration(val dirId: String, val isInitial: Boolean) :
+            ChildConfiguration()
     }
 
 }

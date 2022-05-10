@@ -11,7 +11,10 @@ import fr.dappli.photocloud.common.vo.Dir
 import fr.dappli.photocloud.common.vo.Photo
 import fr.dappli.sharedclient.Platform
 import io.ktor.util.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 @OptIn(InternalAPI::class)
 class PhotoListComponent(
@@ -36,7 +39,7 @@ class PhotoListComponent(
     }
 
     init {
-        Platform.mainCoroutineScope.launch {
+        CoroutineScope(Platform.uiDispatcher).launch {
             val files = photocloudLoader.getFiles(currentDir)
             val photoFiles = files.filterIsInstance<Photo>()
             val dirs = files.filterIsInstance<Dir>().map {

@@ -29,6 +29,12 @@ kotlin {
                 api(project(":sharedClient"))
 
                 implementation("com.arkivanov.decompose:extensions-compose-jetbrains:0.5.2")
+
+                implementation ("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.1-native-mt"){
+                    version {
+                        strictly("1.6.1-native-mt")
+                    }
+                }
             }
         }
         val commonTest by getting {
@@ -40,6 +46,7 @@ kotlin {
             dependencies {
                 api("androidx.appcompat:appcompat:1.4.1")
                 api("androidx.core:core-ktx:1.7.0")
+                runtimeOnly("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.1")
             }
         }
         val androidTest by getting {
