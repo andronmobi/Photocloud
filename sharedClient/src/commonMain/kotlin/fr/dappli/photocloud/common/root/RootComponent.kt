@@ -11,9 +11,7 @@ import fr.dappli.photocloud.common.root.Root.Child
 import fr.dappli.photocloud.common.vo.Dir
 import fr.dappli.sharedclient.Platform
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 class RootComponent(
     componentContext: ComponentContext

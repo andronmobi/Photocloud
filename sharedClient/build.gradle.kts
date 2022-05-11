@@ -34,11 +34,7 @@ kotlin {
             dependencies {
                 api("com.arkivanov.decompose:decompose:0.5.2")
 
-                implementation ("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.1-native-mt"){
-                    version {
-                        strictly("1.6.1-native-mt")
-                    }
-                }
+                implementation ("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.1")
 
                 api(libs.ktor.core)
                 api(libs.ktor.auth)
@@ -67,26 +63,13 @@ kotlin {
             dependencies {
                 api(libs.ktor.client.okhttp)
                 api(libs.ktor.serialization.jvm)
-                //implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.6.1")
             }
         }
 
         // ios
-        val iosX64Main by getting {
-            dependencies {
-                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core-iosx64:1.6.1")
-            }
-        }
-        val iosArm64Main by getting {
-            dependencies {
-                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core-iosarm64:1.6.1")
-            }
-        }
-        val iosSimulatorArm64Main by getting {
-            dependencies {
-                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core-iossimulatorarm64:1.6.1")
-            }
-        }
+        val iosX64Main by getting
+        val iosArm64Main by getting
+        val iosSimulatorArm64Main by getting
         val iosMain by creating {
             dependsOn(commonMain)
             iosX64Main.dependsOn(this)

@@ -12,11 +12,8 @@ import fr.dappli.photocloud.common.vo.Photo
 import fr.dappli.sharedclient.Platform
 import io.ktor.util.*
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
-@OptIn(InternalAPI::class)
 class PhotoListComponent(
     componentContext: ComponentContext,
     photocloudLoader: PhotocloudLoader,

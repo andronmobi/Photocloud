@@ -3,7 +3,6 @@ package fr.dappli.sharedclient
 import io.ktor.client.engine.*
 import io.ktor.client.engine.darwin.*
 import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Runnable
 import platform.UIKit.UIDevice
 import platform.darwin.dispatch_async
@@ -15,7 +14,6 @@ actual object Platform {
     actual val platform: String = UIDevice.currentDevice.systemName() + " " + UIDevice.currentDevice.systemVersion
     actual val debugHost: String = "192.168.1.2"
     actual val engineFactory: HttpClientEngineFactory<HttpClientEngineConfig> = Darwin
-    actual val mainCoroutineScope: CoroutineScope = CoroutineScope(MainDispatcher)
     actual val uiDispatcher: CoroutineContext = MainDispatcher
 }
 
