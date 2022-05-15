@@ -11,7 +11,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.arkivanov.decompose.extensions.compose.jetbrains.Children
-import com.arkivanov.decompose.extensions.compose.jetbrains.animation.child.crossfade
 import com.arkivanov.decompose.extensions.compose.jetbrains.subscribeAsState
 import fr.dappli.photocloud.compose.list.PhotoListUI
 
@@ -32,7 +31,7 @@ fun RootUi(root: Root) {
                             contentDescription = "Back"
                         )
                     }
-                    Text("Dir name")
+                    Text(photoList.currentDir.name)
                 } else {
                     Text("Photocloud", modifier = Modifier.padding(start = 16.dp))
                 }

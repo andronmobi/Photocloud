@@ -24,25 +24,23 @@ struct PhotoListView: View {
     }
 
     var body: some View {
-        if (photoList.isInitial) {
-            foldersAndPhotos()
-        } else {
-            NavigationView {
-                VStack(alignment: .leading) {
-                    foldersAndPhotos()
-                }
-                    .navigationBarTitle(Text("Current dir name"), displayMode: .inline)
-                    .navigationBarItems(
-                        leading: Image(systemName: "arrow.backward")
-                            .aspectRatio(contentMode: .fit)
-                            .imageScale(.large)
-                            .foregroundColor(.blue)
-                            .onTapGesture {
-                                photoList.onBackClicked()
-                            }
-                    )
-            }.phoneOnlyStackNavigationView()
+        NavigationView {
+            VStack(alignment: .leading) {
+                foldersAndPhotos()
+            }
+                .navigationBarTitle(
+                    Text(photoList.isInitial ? "Photocloud" : photoList.currentDir.name), displayMode: .inline)
+                .navigationBarItems(
+                    leading: photoList.isInitial ? nil : Image(systemName: "arrow.backward")
+                        .aspectRatio(contentMode: .fit)
+                        .imageScale(.large)
+                        .foregroundColor(.blue)
+                        .onTapGesture {
+                            photoList.onBackClicked()
+                        }
+                )
         }
+            .phoneOnlyStackNavigationView()
     }
 
     func foldersAndPhotos() -> some View {

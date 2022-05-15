@@ -45,7 +45,6 @@ fun PhotoListUI(photoList: PhotoList) {
     }
 }
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun Folders(dirs: List<PhotoDir>, onDirClicked: (String) -> Unit) {
     LazyRow(

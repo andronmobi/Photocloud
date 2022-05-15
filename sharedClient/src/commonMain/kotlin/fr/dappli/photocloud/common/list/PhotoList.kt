@@ -8,7 +8,7 @@ import fr.dappli.photocloud.common.vo.Photo
 
 interface PhotoList {
 
-    val currentDir: Dir
+    val currentDir: PhotoDir
     val isInitial: Boolean
     val models: Value<Model>
 

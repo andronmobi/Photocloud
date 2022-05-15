@@ -7,19 +7,20 @@ import com.arkivanov.decompose.value.reduce
 import fr.dappli.photocloud.common.list.model.PhotoDir
 import fr.dappli.photocloud.common.list.model.PhotoImage
 import fr.dappli.photocloud.common.network.PhotocloudLoader
+import fr.dappli.photocloud.common.utils.decodeFileId
+import fr.dappli.photocloud.common.utils.toDir
 import fr.dappli.photocloud.common.vo.Dir
 import fr.dappli.photocloud.common.vo.Photo
 import fr.dappli.sharedclient.Platform
-import io.ktor.util.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
 class PhotoListComponent(
     componentContext: ComponentContext,
     photocloudLoader: PhotocloudLoader,
-    override val currentDir: Dir,
+    override val currentDir: PhotoDir,
     override val isInitial: Boolean,
-    private val onDirSelected: (Dir) -> Unit,
+    private val onDirSelected: (String) -> Unit,
     private val onClose: () -> Unit
 ) : PhotoList, ComponentContext by componentContext {
 
@@ -28,7 +29,7 @@ class PhotoListComponent(
     override val models: Value<PhotoList.Model> = _models
 
     override fun onDirClicked(dirId: String) {
-        onDirSelected(Dir(dirId))
+        onDirSelected(dirId)
     }
 
     override fun onBackClicked() {
@@ -37,7 +38,7 @@ class PhotoListComponent(
 
     init {
         CoroutineScope(Platform.uiDispatcher).launch {
-            val files = photocloudLoader.getFiles(currentDir)
+            val files = photocloudLoader.getFiles(currentDir.toDir())
             val photoFiles = files.filterIsInstance<Photo>()
             val dirs = files.filterIsInstance<Dir>().map {
                 PhotoDir(it.id, it.id.decodeFileId())
@@ -53,12 +54,5 @@ class PhotoListComponent(
                 }
             }
         }
-    }
-
-    private fun String.decodeFileId(): String {
-        return decodeBase64String()
-            .substringAfter("photocloud:///")
-            .substringBeforeLast("/")
-            .split("/").last()
     }
 }

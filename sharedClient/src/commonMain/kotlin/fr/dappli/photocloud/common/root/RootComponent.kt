@@ -8,7 +8,7 @@ import com.arkivanov.essenty.parcelable.Parcelize
 import fr.dappli.photocloud.common.list.PhotoListComponent
 import fr.dappli.photocloud.common.network.PhotocloudLoader
 import fr.dappli.photocloud.common.root.Root.Child
-import fr.dappli.photocloud.common.vo.Dir
+import fr.dappli.photocloud.common.utils.toPhotoDir
 import fr.dappli.sharedclient.Platform
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
@@ -44,7 +44,7 @@ class RootComponent(
                     PhotoListComponent(
                         context,
                         photocloudLoader,
-                        Dir(config.dirId),
+                        config.dirId.toPhotoDir(),
                         config.isInitial,
                         ::onDirSelected,
                         ::onClose
@@ -54,8 +54,8 @@ class RootComponent(
         }
     }
 
-    private fun onDirSelected(dir: Dir) {
-        router.push(ChildConfiguration.ListConfiguration(dir.id, isInitial = false))
+    private fun onDirSelected(dirId: String) {
+        router.push(ChildConfiguration.ListConfiguration(dirId, isInitial = false))
     }
 
     private fun onClose() {
