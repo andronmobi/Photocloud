@@ -1,7 +1,7 @@
 plugins {
     id("org.jetbrains.compose") version "1.1.1"
     id("com.android.application")
-    kotlin("android")
+    kotlin("multiplatform")
     kotlin("plugin.serialization") version "1.6.10"
 }
 
@@ -10,12 +10,6 @@ version = "1.0"
 
 repositories {
     jcenter()
-}
-
-dependencies {
-    implementation(project(":compose"))
-    implementation(project(":sharedClient"))
-    implementation("androidx.activity:activity-compose:1.4.0")
 }
 
 android {
@@ -37,4 +31,16 @@ android {
         }
     }
     namespace = "fr.dappli.photocloud.android"
+}
+kotlin {
+    android()
+    sourceSets {
+        val androidMain by getting {
+            dependencies {
+                implementation(project(":compose"))
+                implementation(project(":sharedClient"))
+                implementation("androidx.activity:activity-compose:1.4.0")
+            }
+        }
+    }
 }
