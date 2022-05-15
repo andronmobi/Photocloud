@@ -8,6 +8,7 @@ import androidx.compose.runtime.Composable
 import fr.dappli.photocloud.common.root.Root
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.arkivanov.decompose.extensions.compose.jetbrains.Children
 import com.arkivanov.decompose.extensions.compose.jetbrains.animation.child.crossfade
@@ -19,7 +20,10 @@ fun RootUi(root: Root) {
     val routerState by root.routerState.subscribeAsState()
     Scaffold(
         topBar = {
-            TopAppBar {
+            TopAppBar(
+                backgroundColor = Color.White,
+                elevation = 0.dp
+            ) {
                 if (routerState.backStack.size > 1) {
                     val photoList = (routerState.activeChild.instance as Root.Child.ListChild).photoList
                     IconButton(onClick = { photoList.onBackClicked() }) {
