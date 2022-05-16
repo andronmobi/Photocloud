@@ -10,6 +10,8 @@ import fr.dappli.photocloud.common.R
 import java.io.BufferedInputStream
 import java.io.InputStream
 
+actual val isDesktop: Boolean = false
+
 actual fun loadBitmap(inputStream: InputStream): ImageBitmap {
     val bitmap = BitmapFactory.decodeStream(BufferedInputStream(inputStream))
     return bitmap.asImageBitmap()

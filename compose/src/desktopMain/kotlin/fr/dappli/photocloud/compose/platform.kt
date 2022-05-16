@@ -7,6 +7,8 @@ import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
 import java.io.InputStream
 
+actual val isDesktop: Boolean = true
+
 actual fun loadBitmap(inputStream: InputStream): ImageBitmap {
     return loadImageBitmap(inputStream)
 }

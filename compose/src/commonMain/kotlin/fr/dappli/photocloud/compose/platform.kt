@@ -4,6 +4,8 @@ import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.painter.Painter
 import java.io.InputStream
 
+expect val isDesktop: Boolean
+
 expect fun loadBitmap(inputStream: InputStream): ImageBitmap
 
 expect fun iconDirPainter(): Painter
