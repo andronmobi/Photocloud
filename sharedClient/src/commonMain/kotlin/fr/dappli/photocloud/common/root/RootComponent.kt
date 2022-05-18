@@ -30,7 +30,8 @@ class RootComponent(
     init {
         CoroutineScope(Platform.uiDispatcher).launch {
             val config = photocloudLoader.getConfig()
-            router.bringToFront(
+            // TODO handle properly rotation on android with several screens (persistence)
+            router.replaceCurrent(
                 ChildConfiguration.ListConfiguration(config.rootDir.id, isInitial = true)
             )
         }
