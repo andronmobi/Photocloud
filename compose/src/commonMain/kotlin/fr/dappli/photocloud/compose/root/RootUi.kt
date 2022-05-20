@@ -1,5 +1,7 @@
 package fr.dappli.photocloud.compose.root
 
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
@@ -11,6 +13,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.arkivanov.decompose.extensions.compose.jetbrains.Children
 import com.arkivanov.decompose.extensions.compose.jetbrains.subscribeAsState
+import com.arkivanov.decompose.router.RouterState
 import fr.dappli.photocloud.compose.isDesktop
 import fr.dappli.photocloud.compose.list.PhotoListUI
 
@@ -18,6 +21,18 @@ import fr.dappli.photocloud.compose.list.PhotoListUI
 fun RootUi(root: Root) {
     val routerState by root.routerState.subscribeAsState()
     val navIdState = remember { mutableStateOf(0) }
+    if (isDesktop) {
+        Row {
+            AppNavRail(navIdState)
+            AppScaffold(routerState, navIdState)
+        }
+    } else {
+        AppScaffold(routerState, navIdState)
+    }
+}
+
+@Composable
+private fun AppScaffold(routerState: RouterState<*, Root.Child>, navIdState: MutableState<Int>) {
     Scaffold(
         topBar = {
             TopAppBar(
@@ -52,28 +67,31 @@ fun RootUi(root: Root) {
             }
         }
     ) {
-        val activeChild = routerState.activeChild.instance
-        if (activeChild is Root.Child.ListChild) {
-            when (navIdState.value) {
-                Nav.HOME.ordinal -> {
-                    Children(
-                        routerState = routerState
-                    ) {
-                        PhotoListUI(activeChild.photoList)
-                    }
-                }
-                Nav.SETTINGS.ordinal -> {
-                    Text("TODO")
-                }
-            }
-        } else {
-            Text("loading...")
-        }
+        Content(routerState, navIdState)
     }
 }
 
 @Composable
-fun BottomBar(navIdState: MutableState<Int>) {
+private fun Content(routerState: RouterState<*, Root.Child>, navIdState: State<Int>) {
+    val activeChild = routerState.activeChild.instance
+    if (activeChild is Root.Child.ListChild) {
+        when (navIdState.value) {
+            Nav.HOME.ordinal -> {
+                Children(routerState = routerState) {
+                    PhotoListUI(activeChild.photoList)
+                }
+            }
+            Nav.SETTINGS.ordinal -> {
+                Text("TODO")
+            }
+        }
+    } else {
+        Text("loading...")
+    }
+}
+
+@Composable
+private fun BottomBar(navIdState: MutableState<Int>) {
     BottomNavigation(elevation = 10.dp) {
         BottomNavigationItem(
             icon = {
@@ -91,6 +109,36 @@ fun BottomBar(navIdState: MutableState<Int>) {
             },
             label = { Text(text = "Settings") },
             selected = (navIdState.value == Nav.SETTINGS.ordinal),
+            onClick = {
+                navIdState.value = Nav.SETTINGS.ordinal
+            }
+        )
+    }
+}
+
+@Composable
+private fun AppNavRail(navIdState: MutableState<Int>) {
+    NavigationRail(modifier = Modifier.fillMaxHeight()) {
+        NavigationRailItem(
+            selected = (navIdState.value == Nav.HOME.ordinal),
+            icon = {
+                Icon(
+                    imageVector = Icons.Filled.Home,
+                    contentDescription = "Home"
+                )
+            },
+            onClick = {
+                navIdState.value = Nav.HOME.ordinal
+            }
+        )
+        NavigationRailItem(
+            selected = (navIdState.value == Nav.SETTINGS.ordinal),
+            icon = {
+                Icon(
+                    imageVector = Icons.Filled.Settings,
+                    contentDescription = "Settings"
+                )
+            },
             onClick = {
                 navIdState.value = Nav.SETTINGS.ordinal
             }
