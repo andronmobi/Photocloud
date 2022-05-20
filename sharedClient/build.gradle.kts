@@ -23,7 +23,7 @@ kotlin {
         it.binaries.framework {
             baseName = "sharedClient"
             export("com.arkivanov.essenty:lifecycle:0.2.2")
-            export("com.arkivanov.decompose:decompose:0.5.2")
+            export("com.arkivanov.decompose:decompose:0.6.0")
             export(project(":commonAll"))
         }
     }
@@ -32,7 +32,7 @@ kotlin {
         // common
         val commonMain by getting {
             dependencies {
-                api("com.arkivanov.decompose:decompose:0.5.2")
+                api("com.arkivanov.decompose:decompose:0.6.0")
 
                 implementation ("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.1")
 
