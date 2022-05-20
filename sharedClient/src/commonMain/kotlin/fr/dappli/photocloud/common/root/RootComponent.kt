@@ -29,11 +29,14 @@ class RootComponent(
 
     init {
         CoroutineScope(Platform.uiDispatcher).launch {
-            val config = photocloudLoader.getConfig()
-            // TODO handle properly rotation on android with several screens (persistence)
-            router.replaceCurrent(
-                ChildConfiguration.ListConfiguration(config.rootDir.id, isInitial = true)
-            )
+            if (router.state.value.backStack.isEmpty()) {
+                // if there are no any screens on back stack
+                // lets replace splashscreen by photo list
+                val config = photocloudLoader.getConfig()
+                router.replaceCurrent(
+                    ChildConfiguration.ListConfiguration(config.rootDir.id, isInitial = true)
+                )
+            }
         }
     }
 
