@@ -3,15 +3,10 @@ package fr.dappli.photocloud.common.root
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.router.*
 import com.arkivanov.decompose.value.Value
-import com.arkivanov.essenty.parcelable.Parcelable
-import com.arkivanov.essenty.parcelable.Parcelize
-import fr.dappli.photocloud.common.list.PhotoListComponent
+import fr.dappli.photocloud.common.login.LoginComponent
 import fr.dappli.photocloud.common.network.PhotocloudLoader
-import fr.dappli.photocloud.common.root.Root.Child
-import fr.dappli.photocloud.common.utils.toPhotoDir
-import fr.dappli.sharedclient.Platform
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.launch
+import fr.dappli.photocloud.common.root.model.Screen
+import fr.dappli.photocloud.common.root.model.ScreenConfiguration
 
 class RootComponent(
     componentContext: ComponentContext
@@ -19,60 +14,20 @@ class RootComponent(
 
     private val photocloudLoader = PhotocloudLoader()
 
-    private val router: Router<ChildConfiguration, Child> = router(
-        initialConfiguration = ChildConfiguration.LoadingConfiguration,
+    private val router: Router<ScreenConfiguration, Screen> = router(
+        initialConfiguration = ScreenConfiguration.LoginConfiguration,
         handleBackButton = true, // Pop the back stack on back button press
-        childFactory = ::createChild
+        childFactory = ::createScreen
     )
 
-    override val routerState: Value<RouterState<*, Child>> = router.state
+    override val routerState: Value<RouterState<*, Screen>> = router.state
 
-    init {
-        CoroutineScope(Platform.uiDispatcher).launch {
-            if (router.state.value.backStack.isEmpty()) {
-                // if there are no any screens on back stack
-                // lets replace splashscreen by photo list
-                val config = photocloudLoader.getConfig()
-                router.replaceCurrent(
-                    ChildConfiguration.ListConfiguration(config.rootDir.id, isInitial = true)
-                )
-            }
-        }
-    }
-
-    private fun createChild(config: ChildConfiguration, context: ComponentContext): Child {
+    private fun createScreen(config: ScreenConfiguration, context: ComponentContext): Screen {
         return when (config) {
-            is ChildConfiguration.LoadingConfiguration -> Child.LoadingChild
-            is ChildConfiguration.ListConfiguration -> {
-                Child.ListChild(
-                    PhotoListComponent(
-                        context,
-                        photocloudLoader,
-                        config.dirId.toPhotoDir(),
-                        config.isInitial,
-                        ::onDirSelected,
-                        ::onClose
-                    )
-                )
-            }
+            is ScreenConfiguration.LoginConfiguration -> Screen.LoginScreen(LoginComponent(context))
+            is ScreenConfiguration.SplashConfiguration -> Screen.SplashScreen
+            is ScreenConfiguration.HomeConfiguration -> Screen.HomeScreen
         }
-    }
-
-    private fun onDirSelected(dirId: String) {
-        router.push(ChildConfiguration.ListConfiguration(dirId, isInitial = false))
-    }
-
-    private fun onClose() {
-        router.pop()
-    }
-
-    sealed class ChildConfiguration : Parcelable {
-        @Parcelize
-        object LoadingConfiguration : ChildConfiguration()
-
-        @Parcelize
-        data class ListConfiguration(val dirId: String, val isInitial: Boolean) :
-            ChildConfiguration()
     }
 
 }
