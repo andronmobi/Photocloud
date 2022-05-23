@@ -8,4 +8,5 @@ expect object Platform {
     val debugHost: String
     val engineFactory: HttpClientEngineFactory<HttpClientEngineConfig>
     val uiDispatcher: CoroutineContext
+    val defaultDispatcher: CoroutineContext
 }

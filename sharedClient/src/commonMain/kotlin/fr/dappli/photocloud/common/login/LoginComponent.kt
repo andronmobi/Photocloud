@@ -2,9 +2,7 @@ package fr.dappli.photocloud.common.login
 
 import com.arkivanov.decompose.ComponentContext
 import fr.dappli.sharedclient.Platform
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 
 class LoginComponent(
     componentContext: ComponentContext,
@@ -15,7 +13,6 @@ class LoginComponent(
         println("login $name $password")
         // TODO do login
         CoroutineScope(Platform.uiDispatcher).launch {
-            delay(5000) // simulate a delay
             onLoginSuccess()
         }
     }
