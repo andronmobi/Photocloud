@@ -9,6 +9,7 @@ import fr.dappli.photocloud.common.root.model.Screen.LoginScreen
 import fr.dappli.photocloud.common.root.model.Screen.SplashScreen
 import fr.dappli.photocloud.common.root.model.Screen.HomeScreen
 import fr.dappli.photocloud.compose.login.LoginUi
+import fr.dappli.photocloud.compose.splash.SplashUi
 
 @Composable
 fun RootUi(root: Root) {
@@ -18,8 +19,8 @@ fun RootUi(root: Root) {
             routerState = routerState
         ) { child ->
             when (val screen = child.instance) {
-                is LoginScreen -> LoginUi()
-                is SplashScreen -> TODO("SplashScreen")
+                is LoginScreen -> LoginUi(screen.component)
+                is SplashScreen -> SplashUi()
                 is HomeScreen -> TODO("HomeScreen")
             }
         }

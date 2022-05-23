@@ -7,6 +7,9 @@ import fr.dappli.photocloud.common.login.LoginComponent
 import fr.dappli.photocloud.common.network.PhotocloudLoader
 import fr.dappli.photocloud.common.root.model.Screen
 import fr.dappli.photocloud.common.root.model.ScreenConfiguration
+import fr.dappli.photocloud.common.root.model.ScreenConfiguration.SplashConfiguration
+import fr.dappli.photocloud.common.root.model.ScreenConfiguration.HomeConfiguration
+import fr.dappli.photocloud.common.root.model.ScreenConfiguration.LoginConfiguration
 
 class RootComponent(
     componentContext: ComponentContext
@@ -15,7 +18,7 @@ class RootComponent(
     private val photocloudLoader = PhotocloudLoader()
 
     private val router: Router<ScreenConfiguration, Screen> = router(
-        initialConfiguration = ScreenConfiguration.LoginConfiguration,
+        initialConfiguration = LoginConfiguration,
         handleBackButton = true, // Pop the back stack on back button press
         childFactory = ::createScreen
     )
@@ -24,10 +27,14 @@ class RootComponent(
 
     private fun createScreen(config: ScreenConfiguration, context: ComponentContext): Screen {
         return when (config) {
-            is ScreenConfiguration.LoginConfiguration -> Screen.LoginScreen(LoginComponent(context))
-            is ScreenConfiguration.SplashConfiguration -> Screen.SplashScreen
-            is ScreenConfiguration.HomeConfiguration -> Screen.HomeScreen
+            is LoginConfiguration -> Screen.LoginScreen(LoginComponent(context, ::onLoginSuccess))
+            is SplashConfiguration -> Screen.SplashScreen
+            is HomeConfiguration -> Screen.HomeScreen
         }
+    }
+
+    private fun onLoginSuccess() {
+        router.replaceCurrent(SplashConfiguration)
     }
 
 }
