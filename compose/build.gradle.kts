@@ -70,3 +70,6 @@ android {
     }
     namespace = "fr.dappli.photocloud.common"
 }
+dependencies {
+    implementation("androidx.compose.ui:ui-text:1.1.1")
+}
