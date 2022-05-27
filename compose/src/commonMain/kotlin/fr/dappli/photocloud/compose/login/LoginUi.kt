@@ -12,6 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import fr.dappli.photocloud.common.login.Login
 
@@ -32,7 +33,11 @@ fun LoginUi(login: Login) {
         )
 
         OutlinedTextField(
-            modifier = Modifier.padding(top = 40.dp),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 40.dp)
+                .padding(horizontal = 60.dp)
+            ,
             value = username.value,
             placeholder = { Text(text = "foo") },
             label = { Text(text = "User name") },
@@ -43,7 +48,10 @@ fun LoginUi(login: Login) {
         )
 
         OutlinedTextField(
-            modifier = Modifier.padding(top = 20.dp),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 20.dp)
+                .padding(horizontal = 60.dp),
             value = password.value,
             placeholder = { Text(text = "bar") },
             label = { Text(text = "Password") },
@@ -55,7 +63,7 @@ fun LoginUi(login: Login) {
         )
 
         Button(
-            modifier = Modifier.padding(top = 32.dp),
+            modifier = Modifier.padding(top = 32.dp).padding(horizontal = 60.dp),
             onClick = {
             if (username.value.isNotBlank() && password.value.isNotBlank()) {
                 login.login(username.value, password.value)
@@ -64,7 +72,7 @@ fun LoginUi(login: Login) {
                 // TODO display error for outlined text
             }
         }) {
-            Text("Login")
+            Text("Login", modifier = Modifier.fillMaxWidth(), textAlign = TextAlign.Center)
         }
     }
 }
