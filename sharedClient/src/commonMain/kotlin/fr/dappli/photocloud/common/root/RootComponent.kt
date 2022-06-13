@@ -15,7 +15,7 @@ class RootComponent(
     componentContext: ComponentContext
 ) : Root, ComponentContext by componentContext {
 
-    private val photocloudLoader = PhotocloudLoader()
+    private val photocloudLoader = PhotocloudLoader() // it could be injected to components
 
     private val router: Router<ScreenConfiguration, Screen> = router(
         initialConfiguration = LoginConfiguration,
@@ -27,7 +27,9 @@ class RootComponent(
 
     private fun createScreen(config: ScreenConfiguration, context: ComponentContext): Screen {
         return when (config) {
-            is LoginConfiguration -> Screen.LoginScreen(LoginComponent(context, ::onLoginSuccess))
+            is LoginConfiguration -> Screen.LoginScreen(
+                LoginComponent(context, photocloudLoader, ::onLoginSuccess)
+            )
             is SplashConfiguration -> Screen.SplashScreen
             is HomeConfiguration -> Screen.HomeScreen
         }

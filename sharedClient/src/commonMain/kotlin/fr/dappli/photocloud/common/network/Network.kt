@@ -17,6 +17,8 @@ import kotlin.native.concurrent.ThreadLocal
 @ThreadLocal
 object Network {
 
+    private var bearerTokens: BearerTokens? = null
+
     private val nonAuthClient = HttpClient(Platform.engineFactory) {
         install(ContentNegotiation) {
             json()
@@ -37,10 +39,10 @@ object Network {
         install(Auth) {
             bearer {
                 loadTokens {
-                    getToken()
+                    bearerTokens
                 }
                 refreshTokens {
-                    getToken()
+                    TODO("implement refresh endpoint with oldTokens?.refreshToken")
                 }
             }
         }
@@ -54,15 +56,30 @@ object Network {
         }
     }
 
-    private suspend fun getToken(): BearerTokens {
-        val response = nonAuthClient.post {
-            url {
-                encodedPath = "login"
+    suspend fun login(name: String, password: String): Boolean {
+        return try {
+            val response = nonAuthClient.post {
+                url {
+                    encodedPath = "login"
+                }
+                contentType(ContentType.Application.Json)
+                setBody(User(name, password))
             }
-            contentType(ContentType.Application.Json)
-            setBody(User("foo", "bar")) // TODO
+            when (response.status) {
+                HttpStatusCode.OK -> {
+                    val token = response.body<Token>()
+                    bearerTokens = BearerTokens(token.accessToken, "")
+                    true
+                }
+                else -> {
+                    println(response)
+                    false
+                }
+            }
+
+        } catch (e: ResponseException) {
+            println(e)
+            false
         }
-        val token = response.body<Token>()
-        return BearerTokens(token.accessToken, "")
     }
 }

@@ -9,6 +9,10 @@ import io.ktor.http.*
 
 class PhotocloudLoader {
 
+    suspend fun login(name: String, password: String): Boolean {
+        return Network.login(name, password)
+    }
+
     suspend fun getConfig(): Config {
         return Network.authClient.get {
             url {
