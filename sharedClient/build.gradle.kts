@@ -35,9 +35,10 @@ kotlin {
                 api("com.arkivanov.decompose:decompose:0.6.0")
 
                 implementation ("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.1")
-
+                implementation (libs.logback.classic)
                 api(libs.ktor.core)
                 api(libs.ktor.auth)
+                implementation(libs.ktor.client.logging)
                 api(libs.ktor.client.negotiation)
                 api(libs.ktor.serialization.kotlinx)
 

@@ -5,10 +5,12 @@ import fr.dappli.photocloud.common.vo.User
 import fr.dappli.sharedclient.Platform
 import io.ktor.client.*
 import io.ktor.client.call.*
+import io.ktor.client.engine.*
 import io.ktor.client.plugins.*
 import io.ktor.client.plugins.auth.*
 import io.ktor.client.plugins.auth.providers.*
 import io.ktor.client.plugins.contentnegotiation.*
+import io.ktor.client.plugins.logging.*
 import io.ktor.client.request.*
 import io.ktor.http.*
 import io.ktor.serialization.kotlinx.json.*
@@ -23,6 +25,7 @@ object Network {
         install(ContentNegotiation) {
             json()
         }
+        logging()
         defaultRequest {
             url {
                 protocol = URLProtocol.HTTP
@@ -36,6 +39,7 @@ object Network {
         install(ContentNegotiation) {
             json()
         }
+        logging()
         install(Auth) {
             bearer {
                 loadTokens {
@@ -53,6 +57,13 @@ object Network {
                 host = Platform.debugHost
                 port = 9090 // TODO for debug
             }
+        }
+    }
+
+    private fun HttpClientConfig<HttpClientEngineConfig>.logging() {
+        install(Logging) {
+            logger = Logger.DEFAULT
+            level = LogLevel.HEADERS
         }
     }
 
