@@ -8,6 +8,7 @@ import com.arkivanov.decompose.extensions.compose.jetbrains.subscribeAsState
 import fr.dappli.photocloud.common.root.model.Screen.LoginScreen
 import fr.dappli.photocloud.common.root.model.Screen.SplashScreen
 import fr.dappli.photocloud.common.root.model.Screen.HomeScreen
+import fr.dappli.photocloud.compose.home.HomeUi
 import fr.dappli.photocloud.compose.login.LoginUi
 import fr.dappli.photocloud.compose.splash.SplashUi
 
@@ -21,7 +22,7 @@ fun RootUi(root: Root) {
             when (val screen = child.instance) {
                 is LoginScreen -> LoginUi(screen.component)
                 is SplashScreen -> SplashUi()
-                is HomeScreen -> TODO("HomeScreen")
+                is HomeScreen -> HomeUi()
             }
         }
         // TODO add bottom navigation

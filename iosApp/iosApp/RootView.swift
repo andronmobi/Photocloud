@@ -18,8 +18,8 @@ struct RootView: View {
 
         switch activeChild {
         case let child as Screen.LoginScreen: LoginView(login: child.component)
-        case activeChild as Screen.HomeScreen: Text("Home")
-        case activeChild as Screen.SplashScreen: Text("Splash")
+        case activeChild as Screen.HomeScreen: HomeView()
+        case activeChild as Screen.SplashScreen: SplashView()
         default: EmptyView()
         }
     }

@@ -10,6 +10,7 @@ import fr.dappli.photocloud.common.root.model.ScreenConfiguration
 import fr.dappli.photocloud.common.root.model.ScreenConfiguration.SplashConfiguration
 import fr.dappli.photocloud.common.root.model.ScreenConfiguration.HomeConfiguration
 import fr.dappli.photocloud.common.root.model.ScreenConfiguration.LoginConfiguration
+import fr.dappli.photocloud.common.splash.SplashComponent
 
 class RootComponent(
     componentContext: ComponentContext
@@ -28,15 +29,17 @@ class RootComponent(
     private fun createScreen(config: ScreenConfiguration, context: ComponentContext): Screen {
         return when (config) {
             is LoginConfiguration -> Screen.LoginScreen(
-                LoginComponent(context, photocloudLoader, ::onLoginSuccess)
+                LoginComponent(context, photocloudLoader) {
+                    router.replaceCurrent(SplashConfiguration)
+                }
             )
-            is SplashConfiguration -> Screen.SplashScreen
+            is SplashConfiguration -> Screen.SplashScreen(
+                SplashComponent(context, photocloudLoader) {
+                    router.replaceCurrent(HomeConfiguration)
+                }
+            )
             is HomeConfiguration -> Screen.HomeScreen
         }
-    }
-
-    private fun onLoginSuccess() {
-        router.replaceCurrent(SplashConfiguration)
     }
 
 }
