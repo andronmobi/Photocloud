@@ -19,7 +19,9 @@ class RootComponent(
     databaseDriverFactory: DatabaseDriverFactory
 ) : Root, ComponentContext by componentContext {
 
-    private val photocloudLoader = PhotocloudLoader() // it could be injected to components
+    // it could be injected to components
+    private val database = Database(databaseDriverFactory)
+    private val photocloudLoader = PhotocloudLoader(database)
 
     private val router: Router<ScreenConfiguration, Screen> = router(
         initialConfiguration = LoginConfiguration,
@@ -30,7 +32,10 @@ class RootComponent(
     override val routerState: Value<RouterState<*, Screen>> = router.state
 
     private fun createScreen(config: ScreenConfiguration, context: ComponentContext): Screen {
-        return when (config) {
+        val newConfig = if (config is LoginConfiguration && photocloudLoader.isLoggedIn) {
+            SplashConfiguration
+        } else config
+        return when (newConfig) {
             is LoginConfiguration -> Screen.LoginScreen(
                 LoginComponent(context, photocloudLoader) {
                     router.replaceCurrent(SplashConfiguration)

@@ -20,8 +20,4 @@ class LoginComponent(
             // TODO else error
         }
     }
-
-    init {
-        // TODO check if logged in, call onLoginSuccess
-    }
 }

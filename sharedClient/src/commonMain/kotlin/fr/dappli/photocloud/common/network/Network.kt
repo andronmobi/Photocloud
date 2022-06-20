@@ -1,5 +1,7 @@
 package fr.dappli.photocloud.common.network
 
+import fr.dappli.photocloud.common.db.CacheKey
+import fr.dappli.photocloud.common.db.Database
 import fr.dappli.photocloud.common.vo.Token
 import fr.dappli.photocloud.common.vo.User
 import fr.dappli.sharedclient.Platform
@@ -14,12 +16,20 @@ import io.ktor.client.plugins.logging.*
 import io.ktor.client.request.*
 import io.ktor.http.*
 import io.ktor.serialization.kotlinx.json.*
-import kotlin.native.concurrent.ThreadLocal
 
-@ThreadLocal
-object Network {
+class Network(private val database: Database) {
 
     private var bearerTokens: BearerTokens? = null
+
+    init {
+        bearerTokens = database.getFromCache(CacheKey.ACCESS_TOKEN.name)?.let { accessToken ->
+            println("access token from db: $accessToken")
+            BearerTokens(accessToken, "")
+        }
+    }
+
+    val isLoggedIn: Boolean
+        get() = bearerTokens != null
 
     private val nonAuthClient = HttpClient(Platform.engineFactory) {
         install(ContentNegotiation) {
@@ -60,13 +70,6 @@ object Network {
         }
     }
 
-    private fun HttpClientConfig<HttpClientEngineConfig>.logging() {
-        install(Logging) {
-            logger = Logger.DEFAULT
-            level = LogLevel.HEADERS
-        }
-    }
-
     suspend fun login(name: String, password: String): Boolean {
         return try {
             val response = nonAuthClient.post {
@@ -79,6 +82,7 @@ object Network {
             when (response.status) {
                 HttpStatusCode.OK -> {
                     val token = response.body<Token>()
+                    database.insertToCache(CacheKey.ACCESS_TOKEN.name, token.accessToken)
                     bearerTokens = BearerTokens(token.accessToken, "")
                     true
                 }
@@ -91,6 +95,13 @@ object Network {
         } catch (e: ResponseException) {
             println(e)
             false
+        }
+    }
+
+    private fun HttpClientConfig<HttpClientEngineConfig>.logging() {
+        install(Logging) {
+            logger = Logger.DEFAULT
+            level = LogLevel.HEADERS
         }
     }
 }
