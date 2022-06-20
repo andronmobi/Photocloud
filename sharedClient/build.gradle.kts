@@ -3,6 +3,7 @@ plugins {
     kotlin("plugin.serialization") version "1.6.10"
     id("com.android.library")
     id("kotlin-parcelize")
+    id("com.squareup.sqldelight")
 }
 
 group = "fr.dappli.photocloud"
@@ -34,8 +35,8 @@ kotlin {
             dependencies {
                 api("com.arkivanov.decompose:decompose:0.6.0")
 
-                implementation ("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.1")
-                implementation (libs.logback.classic)
+                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.1")
+                implementation(libs.logback.classic)
                 api(libs.ktor.core)
                 api(libs.ktor.auth)
                 implementation(libs.ktor.client.logging)
@@ -55,6 +56,7 @@ kotlin {
         val androidMain by getting {
             dependencies {
                 api(libs.ktor.client.okhttp)
+                implementation(libs.sqldelight.android)
             }
         }
         val androidTest by getting
@@ -64,6 +66,7 @@ kotlin {
             dependencies {
                 api(libs.ktor.client.okhttp)
                 api(libs.ktor.serialization.jvm)
+                implementation(libs.sqldelight.jvm)
             }
         }
 
@@ -79,6 +82,7 @@ kotlin {
 
             dependencies {
                 implementation(libs.ktor.client.darwin)
+                implementation(libs.sqldelight.ios)
             }
         }
         val iosX64Test by getting
@@ -101,4 +105,10 @@ android {
         targetSdk = 31
     }
     namespace = "fr.dappli.sharedclient"
+}
+
+sqldelight {
+    database("AppDatabase") {
+        packageName = "fr.dappli.photocloud.common.db"
+    }
 }

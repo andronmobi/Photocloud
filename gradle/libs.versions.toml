@@ -1,6 +1,7 @@
 [versions]
 ktor = "2.0.1"
 logback = "1.2.11"
+sqldelight = "1.5.3"
 
 [libraries]
 ktor-core = { module = "io.ktor:ktor-client-core", version.ref = "ktor" }
@@ -20,4 +21,10 @@ ktor-server-compression = { module = "io.ktor:ktor-server-compression", version.
 ktor-server-status = { module = "io.ktor:ktor-server-status-pages", version.ref = "ktor" }
 
 logback-classic = { module = "ch.qos.logback:logback-classic", version.ref = "logback"}
+
+sqldelight-android = { module = "com.squareup.sqldelight:android-driver", version.ref = "sqldelight"}
+sqldelight-ios = { module = "com.squareup.sqldelight:native-driver", version.ref = "sqldelight"}
+sqldelight-jvm = { module = "com.squareup.sqldelight:sqlite-driver", version.ref = "sqldelight"}
+
+
 

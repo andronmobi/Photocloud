@@ -1,0 +1,19 @@
+CREATE TABLE Cache (
+    key TEXT NOT NULL PRIMARY KEY,
+    value TEXT NOT NULL
+);
+
+insertToCache:
+INSERT INTO Cache(key, value)
+VALUES(?, ?);
+
+selectFromCacheByKey:
+SELECT * FROM Cache
+WHERE key = ?;
+
+deleteAllCache:
+DELETE FROM Cache;
+
+deleteFromCacheByKey:
+DELETE FROM Cache
+WHERE key = ?;

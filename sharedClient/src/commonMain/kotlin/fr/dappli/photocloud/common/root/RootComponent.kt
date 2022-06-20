@@ -3,6 +3,8 @@ package fr.dappli.photocloud.common.root
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.router.*
 import com.arkivanov.decompose.value.Value
+import fr.dappli.photocloud.common.db.Database
+import fr.dappli.photocloud.common.db.DatabaseDriverFactory
 import fr.dappli.photocloud.common.login.LoginComponent
 import fr.dappli.photocloud.common.network.PhotocloudLoader
 import fr.dappli.photocloud.common.root.model.Screen
@@ -13,7 +15,8 @@ import fr.dappli.photocloud.common.root.model.ScreenConfiguration.LoginConfigura
 import fr.dappli.photocloud.common.splash.SplashComponent
 
 class RootComponent(
-    componentContext: ComponentContext
+    componentContext: ComponentContext,
+    databaseDriverFactory: DatabaseDriverFactory
 ) : Root, ComponentContext by componentContext {
 
     private val photocloudLoader = PhotocloudLoader() // it could be injected to components
