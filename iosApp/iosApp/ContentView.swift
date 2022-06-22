@@ -17,9 +17,10 @@ class ComponentHolder<T> {
    let lifecycle: LifecycleRegistry
    let component: T
 
-   init(factory: (ComponentContext) -> T) {
+   init(factory: (ComponentContext, DatabaseDriverFactory) -> T) {
         let lifecycle = LifecycleRegistryKt.LifecycleRegistry()
-        let component = factory(DefaultComponentContext(lifecycle: lifecycle))
+        let dbFactory = DatabaseDriverFactory()
+        let component = factory(DefaultComponentContext(lifecycle: lifecycle), dbFactory)
         self.lifecycle = lifecycle
         self.component = component
 
