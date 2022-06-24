@@ -24,7 +24,8 @@ class Network(private val database: Database) {
     init {
         bearerTokens = database.getFromCache(CacheKey.ACCESS_TOKEN.name)?.let { accessToken ->
             println("access token from db: $accessToken")
-            BearerTokens(accessToken, "")
+            val refreshToken = database.getFromCache(CacheKey.REFRESH_TOKEN.name) ?: ""
+            BearerTokens(accessToken, refreshToken)
         }
     }
 
@@ -56,7 +57,10 @@ class Network(private val database: Database) {
                     bearerTokens
                 }
                 refreshTokens {
-                    TODO("implement refresh endpoint with oldTokens?.refreshToken")
+                    bearerTokens?.let {
+                        bearerTokens = updateTokens(it)
+                        bearerTokens
+                    }
                 }
             }
         }
@@ -83,7 +87,8 @@ class Network(private val database: Database) {
                 HttpStatusCode.OK -> {
                     val token = response.body<Token>()
                     database.insertToCache(CacheKey.ACCESS_TOKEN.name, token.accessToken)
-                    bearerTokens = BearerTokens(token.accessToken, "")
+                    database.insertToCache(CacheKey.REFRESH_TOKEN.name, token.refreshToken)
+                    bearerTokens = BearerTokens(token.accessToken, token.refreshToken)
                     true
                 }
                 else -> {
@@ -96,6 +101,20 @@ class Network(private val database: Database) {
             println(e)
             false
         }
+    }
+
+    private suspend fun updateTokens(oldTokens: BearerTokens): BearerTokens {
+        val newToken = nonAuthClient.post {
+            url {
+                encodedPath = "refresh"
+            }
+            contentType(ContentType.Application.Json)
+            setBody(Token(oldTokens.accessToken, oldTokens.refreshToken))
+        }.body<Token>()
+        println("new token: $newToken")
+        database.updateCache(CacheKey.ACCESS_TOKEN.name, newToken.accessToken)
+        database.updateCache(CacheKey.REFRESH_TOKEN.name, newToken.refreshToken)
+        return BearerTokens(newToken.accessToken, newToken.refreshToken)
     }
 
     private fun HttpClientConfig<HttpClientEngineConfig>.logging() {

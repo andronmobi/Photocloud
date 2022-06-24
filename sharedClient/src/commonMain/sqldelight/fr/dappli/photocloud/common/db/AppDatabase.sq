@@ -1,5 +1,5 @@
 CREATE TABLE Cache (
-    key TEXT NOT NULL PRIMARY KEY,
+    key TEXT NOT NULL UNIQUE,
     value TEXT NOT NULL
 );
 
@@ -16,4 +16,9 @@ DELETE FROM Cache;
 
 deleteFromCacheByKey:
 DELETE FROM Cache
+WHERE key = ?;
+
+update:
+UPDATE Cache
+SET value = ?
 WHERE key = ?;

@@ -19,4 +19,10 @@ class Database(databaseDriverFactory: DatabaseDriverFactory) {
     fun getFromCache(key: String): String? {
         return dbQuery.selectFromCacheByKey(key).executeAsOneOrNull()?.value_
     }
+
+    fun updateCache(key: String, value: String) {
+        dbQuery.transaction {
+            dbQuery.update(value, key)
+        }
+    }
 }

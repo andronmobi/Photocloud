@@ -34,9 +34,11 @@ fun Application.module(testing: Boolean = false) {
 
     routing {
         handleLoginRequests(secret, issuer, audience, confUser, tokenDuration)
+        handleRefreshTokenRequests(secret, issuer, audience, tokenDuration)
         handleHomeRequests()
 
         authenticate("auth-jwt") {
+            handleAudienceRequests()
             handleConfigRequests()
             handleFileRequests(filePath)
             handleFileDownloadRequests(filePath)
@@ -86,12 +88,15 @@ private fun Application.setupAuthentication(
                     .withIssuer(issuer)
                     .build()
             )
-            validate { credential ->
-                if (credential.payload.getClaim("username").asString() != "") {
-                    JWTPrincipal(credential.payload)
+            validate { token ->
+                if (token.payload.getClaim("username").asString() != "") {
+                    JWTPrincipal(token.payload)
                 } else {
                     null
                 }
+            }
+            challenge { defaultScheme, realm ->
+                call.respond(HttpStatusCode.Unauthorized, "Token is not valid or has expired")
             }
         }
     }
