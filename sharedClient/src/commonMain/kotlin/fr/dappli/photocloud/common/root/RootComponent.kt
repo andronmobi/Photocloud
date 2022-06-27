@@ -5,6 +5,7 @@ import com.arkivanov.decompose.router.*
 import com.arkivanov.decompose.value.Value
 import fr.dappli.photocloud.common.db.Database
 import fr.dappli.photocloud.common.db.DatabaseDriverFactory
+import fr.dappli.photocloud.common.home.HomeComponent
 import fr.dappli.photocloud.common.login.LoginComponent
 import fr.dappli.photocloud.common.network.PhotocloudLoader
 import fr.dappli.photocloud.common.root.model.Screen
@@ -46,7 +47,9 @@ class RootComponent(
                     router.replaceCurrent(HomeConfiguration)
                 }
             )
-            is HomeConfiguration -> Screen.HomeScreen
+            is HomeConfiguration -> Screen.HomeScreen(
+                HomeComponent(context, photocloudLoader)
+            )
         }
     }
 

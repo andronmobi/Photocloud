@@ -22,7 +22,7 @@ fun RootUi(root: Root) {
             when (val screen = child.instance) {
                 is LoginScreen -> LoginUi(screen.component)
                 is SplashScreen -> SplashUi()
-                is HomeScreen -> HomeUi()
+                is HomeScreen -> HomeUi(screen.component)
             }
         }
         // TODO add bottom navigation
