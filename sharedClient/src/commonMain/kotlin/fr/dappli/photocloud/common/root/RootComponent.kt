@@ -3,16 +3,14 @@ package fr.dappli.photocloud.common.root
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.router.*
 import com.arkivanov.decompose.value.Value
+import com.arkivanov.essenty.parcelable.Parcelable
+import com.arkivanov.essenty.parcelable.Parcelize
 import fr.dappli.photocloud.common.db.Database
 import fr.dappli.photocloud.common.db.DatabaseDriverFactory
 import fr.dappli.photocloud.common.home.HomeComponent
 import fr.dappli.photocloud.common.login.LoginComponent
 import fr.dappli.photocloud.common.network.PhotocloudLoader
-import fr.dappli.photocloud.common.root.model.Screen
-import fr.dappli.photocloud.common.root.model.ScreenConfiguration
-import fr.dappli.photocloud.common.root.model.ScreenConfiguration.SplashConfiguration
-import fr.dappli.photocloud.common.root.model.ScreenConfiguration.HomeConfiguration
-import fr.dappli.photocloud.common.root.model.ScreenConfiguration.LoginConfiguration
+import fr.dappli.photocloud.common.root.Root.Child
 import fr.dappli.photocloud.common.splash.SplashComponent
 
 class RootComponent(
@@ -24,33 +22,41 @@ class RootComponent(
     private val database = Database(databaseDriverFactory)
     private val photocloudLoader = PhotocloudLoader(database)
 
-    private val router: Router<ScreenConfiguration, Screen> = router(
-        initialConfiguration = LoginConfiguration,
+    private val router: Router<Config, Child> = router(
+        initialConfiguration = Config.Login,
         handleBackButton = true, // Pop the back stack on back button press
-        childFactory = ::createScreen
+        childFactory = ::createConfig
     )
 
-    override val routerState: Value<RouterState<*, Screen>> = router.state
+    override val routerState: Value<RouterState<*, Child>> = router.state
 
-    private fun createScreen(config: ScreenConfiguration, context: ComponentContext): Screen {
-        val newConfig = if (config is LoginConfiguration && photocloudLoader.isLoggedIn) {
-            SplashConfiguration
+    private fun createConfig(config: Config, context: ComponentContext): Child {
+        val newConfig = if (config is Config.Login && photocloudLoader.isLoggedIn) {
+            Config.Splash
         } else config
         return when (newConfig) {
-            is LoginConfiguration -> Screen.LoginScreen(
+            is Config.Login -> Child.LoginChild(
                 LoginComponent(context, photocloudLoader) {
-                    router.replaceCurrent(SplashConfiguration)
+                    router.replaceCurrent(Config.Splash)
                 }
             )
-            is SplashConfiguration -> Screen.SplashScreen(
+            is Config.Splash -> Child.SplashChild(
                 SplashComponent(context, photocloudLoader) {
-                    router.replaceCurrent(HomeConfiguration)
+                    router.replaceCurrent(Config.Home)
                 }
             )
-            is HomeConfiguration -> Screen.HomeScreen(
+            is Config.Home -> Child.HomeChild(
                 HomeComponent(context, photocloudLoader)
             )
         }
     }
 
+    private sealed class Config : Parcelable {
+        @Parcelize
+        object Login : Config()
+        @Parcelize
+        object Splash : Config()
+        @Parcelize
+        object Home : Config()
+    }
 }

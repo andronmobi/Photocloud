@@ -12,12 +12,11 @@ import androidx.compose.ui.unit.dp
 import com.arkivanov.decompose.extensions.compose.jetbrains.Children
 import com.arkivanov.decompose.extensions.compose.jetbrains.subscribeAsState
 import fr.dappli.photocloud.common.home.Home
-import fr.dappli.photocloud.common.home.model.Screen
 
 @Composable
 fun HomeUi(home: Home) {
     val routerState by home.routerState.subscribeAsState()
-    val currentScreen = routerState.activeChild.instance
+    val currentChild = routerState.activeChild.instance
     Column {
         Children(
             routerState = routerState,
@@ -25,27 +24,27 @@ fun HomeUi(home: Home) {
         ) {
             Content(it.instance)
         }
-        BottomBar(home, currentScreen)
+        BottomBar(home, currentChild)
     }
 }
 
 @Composable
-private fun Content(screen: Screen) {
-    when (screen) {
-        Screen.PhotoListScreen -> Text("PhotoList")
-        Screen.SettingsScreen -> Text("Settings")
+private fun Content(child: Home.Child) {
+    when (child) {
+        Home.Child.PhotoListChild -> Text("PhotoList")
+        Home.Child.SettingsChild -> Text("Settings")
     }
 }
 
 @Composable
-private fun BottomBar(home: Home, screen: Screen) {
+private fun BottomBar(home: Home, child: Home.Child) {
     BottomNavigation(elevation = 10.dp) {
         BottomNavigationItem(
             icon = {
                 Icon(imageVector = Icons.Default.Home, "")
             },
             label = { Text(text = "Home") },
-            selected = (screen == Screen.PhotoListScreen),
+            selected = (child == Home.Child.PhotoListChild),
             onClick = home::onTabHomeClick
         )
         BottomNavigationItem(
@@ -53,7 +52,7 @@ private fun BottomBar(home: Home, screen: Screen) {
                 Icon(imageVector = Icons.Default.Settings, "")
             },
             label = { Text(text = "Settings") },
-            selected = (screen == Screen.SettingsScreen),
+            selected = (child == Home.Child.SettingsChild),
             onClick = home::onTabSettingsClick
         )
     }

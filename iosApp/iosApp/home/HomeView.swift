@@ -2,13 +2,24 @@ import SwiftUI
 import sharedClient
 
 struct HomeView: View {
-    var body: some View {
-        Text("Home Screen")
-    }
-}
 
-struct HomeView_Previews: PreviewProvider {
-    static var previews: some View {
-        HomeView()
+    private let home: Home
+
+    @ObservedObject
+    private var routerState: ObservableValue<RouterState<AnyObject, HomeChild>>
+
+    init(_ home: Home) {
+        self.home = home
+        routerState = (ObservableValue(home.routerState))
+    }
+
+    var body: some View {
+        let activeChild = routerState.value.activeChild.instance
+
+        switch activeChild {
+        case activeChild as HomeChild.PhotoListChild: Text("PhotoList")
+        case activeChild as HomeChild.SettingsChild: Text("Settings")
+        default: EmptyView()
+        }
     }
 }

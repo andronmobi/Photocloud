@@ -6,7 +6,7 @@ struct RootView: View {
     private let root: Root
 
     @ObservedObject
-    private var routerState: ObservableValue<RouterState<AnyObject, Screen>>
+    private var routerState: ObservableValue<RouterState<AnyObject, RootChild>>
 
     init(_ root: Root) {
         self.root = root
@@ -17,9 +17,9 @@ struct RootView: View {
         let activeChild = routerState.value.activeChild.instance
 
         switch activeChild {
-        case let child as Screen.LoginScreen: LoginView(login: child.component)
-        case activeChild as Screen.HomeScreen: HomeView()
-        case activeChild as Screen.SplashScreen: SplashView()
+        case let child as RootChild.LoginChild: LoginView(child.component)
+        case let child as RootChild.HomeChild: HomeView(child.component)
+        case activeChild as RootChild.SplashChild: SplashView()
         default: EmptyView()
         }
     }

@@ -10,7 +10,7 @@ struct LoginView: View {
     @State
     private var password: String = ""
 
-    init(login: Login) {
+    init(_ login: Login) {
         self.login = login
     }
 

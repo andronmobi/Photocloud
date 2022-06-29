@@ -5,9 +5,6 @@ import androidx.compose.runtime.*
 import fr.dappli.photocloud.common.root.Root
 import com.arkivanov.decompose.extensions.compose.jetbrains.Children
 import com.arkivanov.decompose.extensions.compose.jetbrains.subscribeAsState
-import fr.dappli.photocloud.common.root.model.Screen.LoginScreen
-import fr.dappli.photocloud.common.root.model.Screen.SplashScreen
-import fr.dappli.photocloud.common.root.model.Screen.HomeScreen
 import fr.dappli.photocloud.compose.home.HomeUi
 import fr.dappli.photocloud.compose.login.LoginUi
 import fr.dappli.photocloud.compose.splash.SplashUi
@@ -19,10 +16,10 @@ fun RootUi(root: Root) {
         Children(
             routerState = routerState
         ) { child ->
-            when (val screen = child.instance) {
-                is LoginScreen -> LoginUi(screen.component)
-                is SplashScreen -> SplashUi()
-                is HomeScreen -> HomeUi(screen.component)
+            when (val child = child.instance) {
+                is Root.Child.LoginChild -> LoginUi(child.component)
+                is Root.Child.SplashChild -> SplashUi()
+                is Root.Child.HomeChild -> HomeUi(child.component)
             }
         }
         // TODO add bottom navigation
