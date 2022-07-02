@@ -5,13 +5,14 @@ import com.arkivanov.decompose.value.Value
 import fr.dappli.photocloud.common.list.PhotoList
 
 interface Home {
-    val routerState: Value<RouterState<*, Child>>
+    val bottomNavRouterState: Value<RouterState<*, Child>>
+    val homeRouterState: Value<RouterState<*, PhotoList>>
 
     fun onTabHomeClick()
     fun onTabSettingsClick()
 
     sealed class Child {
-        class PhotoListChild(val component: PhotoList) : Child()
+        object HomeChild : Child()
         object SettingsChild : Child()
     }
 }

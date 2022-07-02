@@ -16,24 +16,36 @@ import fr.dappli.photocloud.compose.list.PhotoListUI
 
 @Composable
 fun HomeUi(home: Home) {
-    val routerState by home.routerState.subscribeAsState()
+    val routerState by home.bottomNavRouterState.subscribeAsState()
     val currentChild = routerState.activeChild.instance
     Column {
         Children(
             routerState = routerState,
             modifier = Modifier.weight(weight = 1F),
         ) {
-            Content(it.instance)
+            Content(it.instance, home)
         }
         BottomBar(home, currentChild)
     }
 }
 
 @Composable
-private fun Content(child: Home.Child) {
+private fun Content(child: Home.Child, home: Home) {
     when (child) {
-        is Home.Child.PhotoListChild -> PhotoListUI(child.component)
+        is Home.Child.HomeChild -> HomeContent(home)
         Home.Child.SettingsChild -> Text("Settings")
+    }
+}
+
+@Composable
+private fun HomeContent(home: Home) {
+    Column {
+        Children(
+            routerState = home.homeRouterState,
+            modifier = Modifier.weight(weight = 1F),
+        ) {
+            PhotoListUI(it.instance)
+        }
     }
 }
 
@@ -45,7 +57,7 @@ private fun BottomBar(home: Home, child: Home.Child) {
                 Icon(imageVector = Icons.Default.Home, "")
             },
             label = { Text(text = "Home") },
-            selected = (child is Home.Child.PhotoListChild),
+            selected = (child == Home.Child.HomeChild),
             onClick = home::onTabHomeClick
         )
         BottomNavigationItem(
