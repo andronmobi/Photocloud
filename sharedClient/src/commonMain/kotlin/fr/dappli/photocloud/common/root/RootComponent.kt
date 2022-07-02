@@ -41,12 +41,12 @@ class RootComponent(
                 }
             )
             is Config.Splash -> Child.SplashChild(
-                SplashComponent(context, photocloudLoader) {
-                    router.replaceCurrent(Config.Home)
+                SplashComponent(context, photocloudLoader) { config ->
+                    router.replaceCurrent(Config.Home(config.rootDir.id))
                 }
             )
             is Config.Home -> Child.HomeChild(
-                HomeComponent(context, photocloudLoader)
+                HomeComponent(context, photocloudLoader, newConfig.rootDirId)
             )
         }
     }
@@ -57,6 +57,6 @@ class RootComponent(
         @Parcelize
         object Splash : Config()
         @Parcelize
-        object Home : Config()
+        data class Home(val rootDirId: String) : Config()
     }
 }

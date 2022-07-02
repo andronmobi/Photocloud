@@ -12,6 +12,7 @@ import androidx.compose.ui.unit.dp
 import com.arkivanov.decompose.extensions.compose.jetbrains.Children
 import com.arkivanov.decompose.extensions.compose.jetbrains.subscribeAsState
 import fr.dappli.photocloud.common.home.Home
+import fr.dappli.photocloud.compose.list.PhotoListUI
 
 @Composable
 fun HomeUi(home: Home) {
@@ -31,7 +32,7 @@ fun HomeUi(home: Home) {
 @Composable
 private fun Content(child: Home.Child) {
     when (child) {
-        Home.Child.PhotoListChild -> Text("PhotoList")
+        is Home.Child.PhotoListChild -> PhotoListUI(child.component)
         Home.Child.SettingsChild -> Text("Settings")
     }
 }
@@ -44,7 +45,7 @@ private fun BottomBar(home: Home, child: Home.Child) {
                 Icon(imageVector = Icons.Default.Home, "")
             },
             label = { Text(text = "Home") },
-            selected = (child == Home.Child.PhotoListChild),
+            selected = (child is Home.Child.PhotoListChild),
             onClick = home::onTabHomeClick
         )
         BottomNavigationItem(

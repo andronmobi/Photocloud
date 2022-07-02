@@ -9,11 +9,14 @@ import com.arkivanov.decompose.value.Value
 import com.arkivanov.essenty.parcelable.Parcelable
 import com.arkivanov.essenty.parcelable.Parcelize
 import fr.dappli.photocloud.common.home.Home.Child
+import fr.dappli.photocloud.common.list.PhotoListComponent
 import fr.dappli.photocloud.common.network.PhotocloudLoader
+import fr.dappli.photocloud.common.utils.toPhotoDir
 
 class HomeComponent(
     componentContext: ComponentContext,
-    private val photocloudLoader: PhotocloudLoader
+    private val photocloudLoader: PhotocloudLoader,
+    private val rootDirId: String
 ) : Home, ComponentContext by componentContext {
 
     private val router: Router<Config, Child> = router(
@@ -34,7 +37,16 @@ class HomeComponent(
 
     private fun createChild(config: Config, context: ComponentContext): Child {
         return when (config) {
-            Config.PhotoList -> Child.PhotoListChild
+            Config.PhotoList -> Child.PhotoListChild(
+                PhotoListComponent(
+                    componentContext = context,
+                    photocloudLoader = photocloudLoader,
+                    currentDir = rootDirId.toPhotoDir(),
+                    isInitial = true,
+                    onDirSelected = {},
+                    onClose = {}
+                )
+            )
             Config.Settings -> Child.SettingsChild
         }
     }
@@ -42,6 +54,7 @@ class HomeComponent(
     sealed class Config : Parcelable {
         @Parcelize
         object PhotoList : Config()
+
         @Parcelize
         object Settings : Config()
     }

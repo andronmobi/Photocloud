@@ -2,6 +2,7 @@ package fr.dappli.photocloud.common.home
 
 import com.arkivanov.decompose.router.RouterState
 import com.arkivanov.decompose.value.Value
+import fr.dappli.photocloud.common.list.PhotoList
 
 interface Home {
     val routerState: Value<RouterState<*, Child>>
@@ -10,8 +11,7 @@ interface Home {
     fun onTabSettingsClick()
 
     sealed class Child {
-        //class PhotoListScreen(val component: PhotoList) : Child()
-        object PhotoListChild : Child()
+        class PhotoListChild(val component: PhotoList) : Child()
         object SettingsChild : Child()
     }
 }
