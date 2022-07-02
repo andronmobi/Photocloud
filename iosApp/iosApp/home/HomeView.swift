@@ -20,19 +20,26 @@ struct HomeView: View {
             ChildView(activeChild: activeChild)
                 .frame(maxHeight: .infinity)
 
-            HStack(spacing: 16) {
+            HStack {
                 Button(action: home.onTabHomeClick) {
-                    Label("Photos", systemImage: "123.rectangle")
+                    Label("Home", systemImage: "house")
                         .labelStyle(VerticalLabelStyle())
-                        .opacity(activeChild is HomeChild.PhotoListChild ? 1 : 0.5)
+                        .foregroundColor(.white)
+                        .opacity(activeChild is HomeChild.PhotoListChild ? 1 : 0.7)
                 }
-
+                .frame(maxWidth: .infinity)
+                .padding(.top, 10)
                 Button(action: home.onTabSettingsClick) {
-                    Label("Settings", systemImage: "list.bullet")
+                    Label("Settings", systemImage: "gearshape")
                         .labelStyle(VerticalLabelStyle())
-                        .opacity(activeChild is HomeChild.SettingsChild ? 1 : 0.5)
+                        .foregroundColor(.white)
+                        .opacity(activeChild is HomeChild.SettingsChild ? 1 : 0.7)
                 }
+                .frame(maxWidth: .infinity)
+                .padding(.top, 10)
             }
+            .frame(maxWidth: .infinity)
+            .background(Color(red: 98 / 255, green: 0 / 255, blue: 242 / 255))
         }
     }
 }
