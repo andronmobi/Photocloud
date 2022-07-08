@@ -10,7 +10,7 @@ struct RootView: View {
 
     init(_ root: Root) {
         self.root = root
-        routerState = (ObservableValue(root.routerState))
+        routerState = ObservableValue(root.routerState)
     }
 
     var body: some View {

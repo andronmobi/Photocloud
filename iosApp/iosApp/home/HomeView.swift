@@ -6,53 +6,76 @@ struct HomeView: View {
     private let home: Home
 
     @ObservedObject
-    private var routerState: ObservableValue<RouterState<AnyObject, HomeChild>>
-
-    private var activeChild: HomeChild { routerState.value.activeChild.instance }
+    private var bottomNavRouterState: ObservableValue<RouterState<AnyObject, HomeChild>>
+    private var bottomActiveChild: HomeChild { bottomNavRouterState.value.activeChild.instance }
 
     init(_ home: Home) {
         self.home = home
-        routerState = (ObservableValue(home.routerState))
+        bottomNavRouterState = ObservableValue(home.bottomNavRouterState)
     }
 
     var body: some View {
         VStack {
-            ChildView(activeChild: activeChild)
+            ChildView(activeChild: bottomActiveChild, home: home)
                 .frame(maxHeight: .infinity)
-
-            HStack {
-                Button(action: home.onTabHomeClick) {
-                    Label("Home", systemImage: "house")
-                        .labelStyle(VerticalLabelStyle())
-                        .foregroundColor(.white)
-                        .opacity(activeChild is HomeChild.PhotoListChild ? 1 : 0.7)
-                }
-                .frame(maxWidth: .infinity)
-                .padding(.top, 10)
-                Button(action: home.onTabSettingsClick) {
-                    Label("Settings", systemImage: "gearshape")
-                        .labelStyle(VerticalLabelStyle())
-                        .foregroundColor(.white)
-                        .opacity(activeChild is HomeChild.SettingsChild ? 1 : 0.7)
-                }
-                .frame(maxWidth: .infinity)
-                .padding(.top, 10)
-            }
-            .frame(maxWidth: .infinity)
-            .background(Color(red: 98 / 255, green: 0 / 255, blue: 242 / 255))
+            BottomBarView(activeChild: bottomActiveChild, home: home)
         }
     }
 }
 
 private struct ChildView: View {
     let activeChild: HomeChild
+    let home: Home
 
     var body: some View {
         switch activeChild {
-        case activeChild as HomeChild.PhotoListChild: Text("PhotoList")
+        case activeChild as HomeChild.HomeChild: HomeContentView(home)
         case activeChild as HomeChild.SettingsChild: Text("Settings")
         default: EmptyView()
         }
+    }
+}
+
+private struct HomeContentView: View {
+
+    @ObservedObject
+    private var homeRouterState: ObservableValue<RouterState<AnyObject, PhotoList>>
+    private var component: PhotoList { homeRouterState.value.activeChild.instance }
+
+    init(_ home: Home) {
+        homeRouterState = ObservableValue(home.homeRouterState)
+    }
+
+    var body: some View {
+        PhotoListView(component)
+    }
+}
+
+private struct BottomBarView: View {
+    let activeChild: HomeChild
+    let home: Home
+
+    var body: some View {
+        HStack {
+            Button(action: home.onTabHomeClick) {
+                Label("Home", systemImage: "house")
+                    .labelStyle(VerticalLabelStyle())
+                    .foregroundColor(.white)
+                    .opacity(activeChild is HomeChild.HomeChild ? 1 : 0.7)
+            }
+            .frame(maxWidth: .infinity)
+            .padding(.top, 10)
+            Button(action: home.onTabSettingsClick) {
+                Label("Settings", systemImage: "gearshape")
+                    .labelStyle(VerticalLabelStyle())
+                    .foregroundColor(.white)
+                    .opacity(activeChild is HomeChild.SettingsChild ? 1 : 0.7)
+            }
+            .frame(maxWidth: .infinity)
+            .padding(.top, 10)
+        }
+        .frame(maxWidth: .infinity)
+        .background(Color(red: 98 / 255, green: 0 / 255, blue: 242 / 255))
     }
 }
 

@@ -25,7 +25,7 @@ fun HomeUi(home: Home) {
         ) {
             Content(it.instance, home)
         }
-        BottomBar(home, currentChild)
+        BottomBar(currentChild, home)
     }
 }
 
@@ -50,7 +50,7 @@ private fun HomeContent(home: Home) {
 }
 
 @Composable
-private fun BottomBar(home: Home, child: Home.Child) {
+private fun BottomBar(child: Home.Child, home: Home) {
     BottomNavigation(elevation = 10.dp) {
         BottomNavigationItem(
             icon = {
