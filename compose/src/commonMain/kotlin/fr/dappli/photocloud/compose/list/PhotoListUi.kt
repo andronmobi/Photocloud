@@ -10,13 +10,15 @@ import androidx.compose.foundation.lazy.LazyVerticalGrid
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.Card
-import androidx.compose.material.Text
+import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -36,17 +38,44 @@ fun PhotoListUI(photoList: PhotoList) {
         PhotoGridItem(it.id, loadBitmap(stream))
     }
 
-    Column {
-        Folders(model.dirs) { dirId ->
-            photoList.onDirClicked(dirId)
+    Surface(color = MaterialTheme.colors.background) {
+        Column {
+            PhotoTopBar(photoList)
+            Folders(model.dirs) { dirId ->
+                photoList.onDirClicked(dirId)
+            }
+            Spacer(modifier = Modifier.size(4.dp))
+            PhotoGrid(bitmaps)
         }
-        Spacer(modifier = Modifier.size(4.dp))
-        PhotoGrid(bitmaps)
     }
 }
 
 @Composable
-fun Folders(dirs: List<PhotoDir>, onDirClicked: (String) -> Unit) {
+private fun PhotoTopBar(photoList: PhotoList) {
+    TopAppBar(
+        elevation = 0.dp,
+        backgroundColor = MaterialTheme.colors.background
+    ) {
+        if (!photoList.isInitial) {
+            IconButton(onClick = { photoList.onBackClicked() }) {
+                Icon(
+                    imageVector = Icons.Filled.ArrowBack,
+                    contentDescription = "Back"
+                )
+            }
+        }
+        Text(
+            modifier = Modifier.fillMaxWidth(),
+            textAlign = TextAlign.Center,
+            color = Color.Black,
+            fontWeight = FontWeight.Bold,
+            text = if (photoList.isInitial) "Photocloud" else photoList.currentDir.name
+        )
+    }
+}
+
+@Composable
+private fun Folders(dirs: List<PhotoDir>, onDirClicked: (String) -> Unit) {
     LazyRow(
         contentPadding = PaddingValues(8.dp)
     ) {
@@ -77,7 +106,7 @@ fun Folders(dirs: List<PhotoDir>, onDirClicked: (String) -> Unit) {
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun PhotoGrid(photoItems: List<PhotoGridItem>) {
+private fun PhotoGrid(photoItems: List<PhotoGridItem>) {
     LazyVerticalGrid(
         cells = GridCells.Adaptive(116.dp),
         contentPadding = PaddingValues(8.dp)
