@@ -1,6 +1,8 @@
 package fr.dappli.photocloud.compose.home
 
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Home
@@ -12,20 +14,33 @@ import androidx.compose.ui.unit.dp
 import com.arkivanov.decompose.extensions.compose.jetbrains.Children
 import com.arkivanov.decompose.extensions.compose.jetbrains.subscribeAsState
 import fr.dappli.photocloud.common.home.Home
+import fr.dappli.photocloud.compose.isDesktop
 import fr.dappli.photocloud.compose.list.PhotoListUI
 
 @Composable
 fun HomeUi(home: Home) {
     val routerState by home.bottomNavRouterState.subscribeAsState()
     val currentChild = routerState.activeChild.instance
-    Column {
-        Children(
-            routerState = routerState,
-            modifier = Modifier.weight(weight = 1F),
-        ) {
-            Content(it.instance, home)
+    if (isDesktop) {
+        Row {
+            AppNavRail(currentChild, home)
+            Children(
+                routerState = routerState,
+                modifier = Modifier.weight(weight = 1F),
+            ) {
+                Content(it.instance, home)
+            }
         }
-        BottomBar(currentChild, home)
+    } else {
+        Column {
+            Children(
+                routerState = routerState,
+                modifier = Modifier.weight(weight = 1F),
+            ) {
+                Content(it.instance, home)
+            }
+            BottomBar(currentChild, home)
+        }
     }
 }
 
@@ -66,6 +81,32 @@ private fun BottomBar(child: Home.Child, home: Home) {
             },
             label = { Text(text = "Settings") },
             selected = (child == Home.Child.SettingsChild),
+            onClick = home::onTabSettingsClick
+        )
+    }
+}
+
+@Composable
+private fun AppNavRail(child: Home.Child, home: Home) {
+    NavigationRail(modifier = Modifier.fillMaxHeight()) {
+        NavigationRailItem(
+            selected = (child == Home.Child.HomeChild),
+            icon = {
+                Icon(
+                    imageVector = Icons.Filled.Home,
+                    contentDescription = "Home"
+                )
+            },
+            onClick = home::onTabHomeClick
+        )
+        NavigationRailItem(
+            selected = (child == Home.Child.SettingsChild),
+            icon = {
+                Icon(
+                    imageVector = Icons.Filled.Settings,
+                    contentDescription = "Settings"
+                )
+            },
             onClick = home::onTabSettingsClick
         )
     }
