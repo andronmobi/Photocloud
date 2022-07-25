@@ -88,7 +88,10 @@ private fun BottomBar(child: Home.Child, home: Home) {
 
 @Composable
 private fun AppNavRail(child: Home.Child, home: Home) {
-    NavigationRail(modifier = Modifier.fillMaxHeight()) {
+    NavigationRail(
+        elevation = 0.dp,
+        modifier = Modifier.fillMaxHeight()
+    ) {
         NavigationRailItem(
             selected = (child == Home.Child.HomeChild),
             icon = {

@@ -1,7 +1,9 @@
 package fr.dappli.photocloud.compose.root
 
-import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.material.Surface
 import androidx.compose.runtime.*
+import androidx.compose.ui.Modifier
 import fr.dappli.photocloud.common.root.Root
 import com.arkivanov.decompose.extensions.compose.jetbrains.Children
 import com.arkivanov.decompose.extensions.compose.jetbrains.subscribeAsState
@@ -12,7 +14,7 @@ import fr.dappli.photocloud.compose.splash.SplashUi
 @Composable
 fun RootUi(root: Root) {
     val routerState by root.routerState.subscribeAsState()
-    Column {
+    Surface(modifier = Modifier.fillMaxHeight()) {
         Children(
             routerState = routerState
         ) { child ->
