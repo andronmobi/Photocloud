@@ -103,6 +103,13 @@ class Network(private val database: Database) {
         }
     }
 
+    suspend fun logout() {
+        database.clearCache(CacheKey.ACCESS_TOKEN.name)
+        database.clearCache(CacheKey.REFRESH_TOKEN.name)
+        bearerTokens = null
+        // TODO we should implement logout on server side to clear a token
+    }
+
     private suspend fun updateTokens(oldTokens: BearerTokens): BearerTokens {
         val newToken = nonAuthClient.post {
             url {

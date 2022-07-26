@@ -46,7 +46,9 @@ class RootComponent(
                 }
             )
             is Config.Home -> Child.HomeChild(
-                HomeComponent(context, photocloudLoader, newConfig.rootDirId)
+                HomeComponent(context, photocloudLoader, newConfig.rootDirId) {
+                    router.replaceCurrent(Config.Login)
+                }
             )
         }
     }

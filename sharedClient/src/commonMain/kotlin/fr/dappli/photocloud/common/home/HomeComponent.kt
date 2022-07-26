@@ -9,12 +9,14 @@ import fr.dappli.photocloud.common.home.Home.Child
 import fr.dappli.photocloud.common.list.PhotoList
 import fr.dappli.photocloud.common.list.PhotoListComponent
 import fr.dappli.photocloud.common.network.PhotocloudLoader
+import fr.dappli.photocloud.common.settings.SettingsComponent
 import fr.dappli.photocloud.common.utils.toPhotoDir
 
 class HomeComponent(
     componentContext: ComponentContext,
     private val photocloudLoader: PhotocloudLoader,
-    rootDirId: String
+    rootDirId: String,
+    private val onLogoutSuccess: () -> Unit
 ) : Home, ComponentContext by componentContext {
 
     private val bottomNavRouter: Router<Config, Child> = router(
@@ -45,7 +47,9 @@ class HomeComponent(
     private fun createChild(config: Config, context: ComponentContext): Child {
         return when (config) {
             Config.Home -> Child.HomeChild
-            Config.Settings -> Child.SettingsChild
+            Config.Settings -> Child.SettingsChild(
+                SettingsComponent(context, photocloudLoader, onLogoutSuccess)
+            )
         }
     }
 

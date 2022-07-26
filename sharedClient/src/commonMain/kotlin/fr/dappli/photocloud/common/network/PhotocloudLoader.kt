@@ -21,6 +21,10 @@ class PhotocloudLoader(
         return network.login(name, password)
     }
 
+    suspend fun logout() {
+        network.logout()
+    }
+
     suspend fun getConfig(): Config {
         return network.authClient.get {
             url {

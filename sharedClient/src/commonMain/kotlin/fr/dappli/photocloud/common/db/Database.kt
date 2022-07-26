@@ -10,6 +10,12 @@ class Database(databaseDriverFactory: DatabaseDriverFactory) {
         }
     }
 
+    fun clearCache(key: String) {
+        dbQuery.transaction {
+            dbQuery.deleteFromCacheByKey(key)
+        }
+    }
+
     fun insertToCache(key: String, value: String) {
         dbQuery.transaction {
             dbQuery.insertToCache(key, value)
