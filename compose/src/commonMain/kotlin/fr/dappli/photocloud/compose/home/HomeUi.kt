@@ -16,6 +16,7 @@ import com.arkivanov.decompose.extensions.compose.jetbrains.subscribeAsState
 import fr.dappli.photocloud.common.home.Home
 import fr.dappli.photocloud.compose.isDesktop
 import fr.dappli.photocloud.compose.list.PhotoListUI
+import fr.dappli.photocloud.compose.settings.SettingsUi
 
 @Composable
 fun HomeUi(home: Home) {
@@ -48,7 +49,7 @@ fun HomeUi(home: Home) {
 private fun Content(child: Home.Child, home: Home) {
     when (child) {
         is Home.Child.HomeChild -> HomeContent(home)
-        Home.Child.SettingsChild -> Text("Settings")
+        is Home.Child.SettingsChild -> SettingsUi(child.component)
     }
 }
 
@@ -80,7 +81,7 @@ private fun BottomBar(child: Home.Child, home: Home) {
                 Icon(imageVector = Icons.Default.Settings, "")
             },
             label = { Text(text = "Settings") },
-            selected = (child == Home.Child.SettingsChild),
+            selected = (child is Home.Child.SettingsChild),
             onClick = home::onTabSettingsClick
         )
     }
@@ -103,7 +104,7 @@ private fun AppNavRail(child: Home.Child, home: Home) {
             onClick = home::onTabHomeClick
         )
         NavigationRailItem(
-            selected = (child == Home.Child.SettingsChild),
+            selected = (child is Home.Child.SettingsChild),
             icon = {
                 Icon(
                     imageVector = Icons.Filled.Settings,
