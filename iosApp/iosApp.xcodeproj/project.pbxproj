@@ -10,6 +10,7 @@
 		058557BB273AAA24004C7B11 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 058557BA273AAA24004C7B11 /* Assets.xcassets */; };
 		058557D9273AAEEB004C7B11 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 058557D8273AAEEB004C7B11 /* Preview Assets.xcassets */; };
 		2152FB042600AC8F00CF470E /* iOSApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2152FB032600AC8F00CF470E /* iOSApp.swift */; };
+		252B5CD72891D3770034714F /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 252B5CD62891D3770034714F /* SettingsView.swift */; };
 		25456E59283C314E00208557 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25456E58283C314E00208557 /* LoginView.swift */; };
 		257C237D2800D6E40098A3EB /* ObservableValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 257C237A2800D6E40098A3EB /* ObservableValue.swift */; };
 		257C237E2800D6E40098A3EB /* PhotoListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 257C237B2800D6E40098A3EB /* PhotoListView.swift */; };
@@ -36,6 +37,7 @@
 		058557BA273AAA24004C7B11 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		058557D8273AAEEB004C7B11 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		2152FB032600AC8F00CF470E /* iOSApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iOSApp.swift; sourceTree = "<group>"; };
+		252B5CD62891D3770034714F /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		25456E58283C314E00208557 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 		257C237A2800D6E40098A3EB /* ObservableValue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ObservableValue.swift; sourceTree = "<group>"; };
 		257C237B2800D6E40098A3EB /* PhotoListView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoListView.swift; sourceTree = "<group>"; };
@@ -64,6 +66,14 @@
 				058557D8273AAEEB004C7B11 /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		252B5CD52891D34C0034714F /* settings */ = {
+			isa = PBXGroup;
+			children = (
+				252B5CD62891D3770034714F /* SettingsView.swift */,
+			);
+			path = settings;
 			sourceTree = "<group>";
 		};
 		25456E57283C310A00208557 /* login */ = {
@@ -110,6 +120,7 @@
 		7555FF7D242A565900829871 /* iosApp */ = {
 			isa = PBXGroup;
 			children = (
+				252B5CD52891D34C0034714F /* settings */,
 				25F03B4A285D27A400415B4B /* splash */,
 				25F03B47285D26EB00415B4B /* home */,
 				25456E57283C310A00208557 /* login */,
@@ -227,6 +238,7 @@
 				25456E59283C314E00208557 /* LoginView.swift in Sources */,
 				25F03B4C285D27B700415B4B /* SplashView.swift in Sources */,
 				25F03B49285D272900415B4B /* HomeView.swift in Sources */,
+				252B5CD72891D3770034714F /* SettingsView.swift in Sources */,
 				2152FB042600AC8F00CF470E /* iOSApp.swift in Sources */,
 				257C237D2800D6E40098A3EB /* ObservableValue.swift in Sources */,
 				257C23832800E9010098A3EB /* ContentView.swift in Sources */,

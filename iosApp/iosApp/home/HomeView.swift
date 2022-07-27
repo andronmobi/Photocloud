@@ -30,7 +30,7 @@ private struct ChildView: View {
     var body: some View {
         switch activeChild {
         case activeChild as HomeChild.HomeChild: HomeContentView(home)
-        case activeChild as HomeChild.SettingsChild: Text("Settings")
+        case let child as HomeChild.SettingsChild: SettingsView(child.component)
         default: EmptyView()
         }
     }
