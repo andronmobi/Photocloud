@@ -5,7 +5,6 @@ import kotlin.coroutines.CoroutineContext
 
 expect object Platform {
     val platform: String
-    val debugHost: String
     val engineFactory: HttpClientEngineFactory<HttpClientEngineConfig>
     val uiDispatcher: CoroutineContext
     val defaultDispatcher: CoroutineContext

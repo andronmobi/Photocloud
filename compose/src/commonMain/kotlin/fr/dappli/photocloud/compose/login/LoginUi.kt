@@ -21,6 +21,7 @@ fun LoginUi(login: Login) {
     val focusManager = LocalFocusManager.current
     val username = rememberSaveable { mutableStateOf("") }
     val password = rememberSaveable { mutableStateOf("") }
+    val host = rememberSaveable { mutableStateOf(login.defaultHost) }
 
     Column(
         modifier = Modifier.fillMaxSize(),
@@ -62,11 +63,25 @@ fun LoginUi(login: Login) {
             keyboardActions = KeyboardActions(onDone = { focusManager.clearFocus() })
         )
 
+        OutlinedTextField(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 20.dp)
+                .padding(horizontal = 60.dp),
+            value = host.value,
+            placeholder = { Text(text = "192.168.1.2") },
+            label = { Text(text = "Host name or IP address") },
+            onValueChange = { host.value = it },
+            singleLine = true,
+            keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
+            keyboardActions = KeyboardActions(onDone = { focusManager.clearFocus() })
+        )
+
         Button(
             modifier = Modifier.padding(top = 32.dp).padding(horizontal = 60.dp),
             onClick = {
             if (username.value.isNotBlank() && password.value.isNotBlank()) {
-                login.login(username.value, password.value)
+                login.login(username.value, password.value, host.value)
                 focusManager.clearFocus()
             } else {
                 // TODO display error for outlined text

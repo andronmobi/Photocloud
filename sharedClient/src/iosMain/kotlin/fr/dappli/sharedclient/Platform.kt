@@ -14,7 +14,6 @@ import kotlin.native.concurrent.freeze
 
 actual object Platform {
     actual val platform: String = UIDevice.currentDevice.systemName() + " " + UIDevice.currentDevice.systemVersion
-    actual val debugHost: String = "192.168.1.2"
     actual val engineFactory: HttpClientEngineFactory<HttpClientEngineConfig> = Darwin
     actual val uiDispatcher: CoroutineContext = MainDispatcher
     actual val defaultDispatcher: CoroutineContext = MainDispatcher

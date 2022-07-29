@@ -4,7 +4,6 @@ import fr.dappli.photocloud.common.db.Database
 import fr.dappli.photocloud.common.vo.Config
 import fr.dappli.photocloud.common.vo.Dir
 import fr.dappli.photocloud.common.vo.PCFile
-import fr.dappli.sharedclient.Platform
 import io.ktor.client.call.*
 import io.ktor.client.request.*
 import io.ktor.http.*
@@ -18,8 +17,8 @@ class PhotocloudLoader(
     val isLoggedIn: Boolean
         get() = network.isLoggedIn
 
-    suspend fun login(name: String, password: String): Boolean {
-        return network.login(name, password, Platform.debugHost) // TODO
+    suspend fun login(name: String, password: String, host: String): Boolean {
+        return network.login(name, password, host)
     }
 
     suspend fun logout() {

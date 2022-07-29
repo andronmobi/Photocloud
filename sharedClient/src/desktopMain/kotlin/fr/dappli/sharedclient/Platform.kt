@@ -7,7 +7,6 @@ import kotlin.coroutines.CoroutineContext
 
 actual object Platform {
     actual val platform: String = "Desktop"
-    actual val debugHost: String = "localhost"
     actual val engineFactory: HttpClientEngineFactory<HttpClientEngineConfig> = OkHttp
     actual val uiDispatcher: CoroutineContext = Dispatchers.Default
     actual val defaultDispatcher: CoroutineContext = Dispatchers.Default

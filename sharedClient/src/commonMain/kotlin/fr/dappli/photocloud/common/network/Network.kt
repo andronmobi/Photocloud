@@ -1,5 +1,6 @@
 package fr.dappli.photocloud.common.network
 
+import fr.dappli.photocloud.common.Configuration.DEFAULT_HOST
 import fr.dappli.photocloud.common.db.CacheKey
 import fr.dappli.photocloud.common.db.Database
 import fr.dappli.photocloud.common.vo.Token
@@ -19,7 +20,7 @@ import io.ktor.serialization.kotlinx.json.*
 
 class Network(private val database: Database) {
 
-    private var hostAddress: String = Platform.debugHost
+    private var hostAddress: String = DEFAULT_HOST
     private var bearerTokens: BearerTokens? = null
 
     val host: String
@@ -115,9 +116,9 @@ class Network(private val database: Database) {
         database.clearCache(CacheKey.ACCESS_TOKEN.name)
         database.clearCache(CacheKey.REFRESH_TOKEN.name)
         bearerTokens = null
-        // clear a host adress from database and set a default one in variable
+        // clear a host address from database and set a default one in variable
         database.clearCache(CacheKey.HOST_ADDRESS.name)
-        hostAddress = Platform.debugHost
+        hostAddress = DEFAULT_HOST
         // TODO we should implement logout on server side to clear a token
     }
 
