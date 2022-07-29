@@ -19,7 +19,11 @@ import io.ktor.serialization.kotlinx.json.*
 
 class Network(private val database: Database) {
 
+    private var hostAddress: String = Platform.debugHost
     private var bearerTokens: BearerTokens? = null
+
+    val host: String
+        get() = hostAddress
 
     init {
         bearerTokens = database.getFromCache(CacheKey.ACCESS_TOKEN.name)?.let { accessToken ->
@@ -40,7 +44,7 @@ class Network(private val database: Database) {
         defaultRequest {
             url {
                 protocol = URLProtocol.HTTP
-                host = Platform.debugHost
+                host = hostAddress
                 port = 9090 // TODO for debug
             }
         }
@@ -68,16 +72,20 @@ class Network(private val database: Database) {
         defaultRequest {
             url {
                 protocol = URLProtocol.HTTP
-                host = Platform.debugHost
+                host = hostAddress
                 port = 9090 // TODO for debug
             }
         }
     }
 
-    suspend fun login(name: String, password: String): Boolean {
+    suspend fun login(name: String, password: String, hostAddress: String): Boolean {
         return try {
+            this.hostAddress = hostAddress
+            database.insertOrIgnoreToCacheWithUpdate(CacheKey.HOST_ADDRESS.name, hostAddress)
+
             val response = nonAuthClient.post {
                 url {
+                    host = hostAddress
                     encodedPath = "login"
                 }
                 contentType(ContentType.Application.Json)
@@ -107,6 +115,9 @@ class Network(private val database: Database) {
         database.clearCache(CacheKey.ACCESS_TOKEN.name)
         database.clearCache(CacheKey.REFRESH_TOKEN.name)
         bearerTokens = null
+        // clear a host adress from database and set a default one in variable
+        database.clearCache(CacheKey.HOST_ADDRESS.name)
+        hostAddress = Platform.debugHost
         // TODO we should implement logout on server side to clear a token
     }
 

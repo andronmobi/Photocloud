@@ -22,3 +22,7 @@ update:
 UPDATE Cache
 SET value = ?
 WHERE key = ?;
+
+insertOrIgnoreToCacheWithUpdate:
+INSERT OR IGNORE INTO Cache(key, value) VALUES(?, ?);
+UPDATE Cache SET value = ? WHERE key = ?;
