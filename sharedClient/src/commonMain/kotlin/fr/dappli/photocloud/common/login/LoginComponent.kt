@@ -1,7 +1,7 @@
 package fr.dappli.photocloud.common.login
 
 import com.arkivanov.decompose.ComponentContext
-import fr.dappli.photocloud.common.Configuration.DEFAULT_HOST
+import fr.dappli.photocloud.common.ClientConfig.DEFAULT_HOST
 import fr.dappli.photocloud.common.network.PhotocloudLoader
 import fr.dappli.sharedclient.Platform
 import kotlinx.coroutines.*

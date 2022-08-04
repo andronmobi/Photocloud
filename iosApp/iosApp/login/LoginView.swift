@@ -9,6 +9,8 @@ struct LoginView: View {
     private var name: String = ""
     @State
     private var password: String = ""
+    @State
+    private var host: String = ""
 
     init(_ login: Login) {
         self.login = login
@@ -30,9 +32,18 @@ struct LoginView: View {
                 .padding(.horizontal, 60)
                 .padding(.top, 20)
 
+            TextField("Host name or IP address", text: $host)
+                .autocapitalization(.none)
+                .textFieldStyle(.roundedBorder)
+                .padding(.horizontal, 60)
+                .padding(.top, 20)
+                .onAppear {
+                    self.host = login.defaultHost
+                }
+
             Button(action: {
-                if (!name.isEmpty && !password.isEmpty) {
-                    login.login(name: name, password: password)
+                if (!name.isEmpty && !password.isEmpty && !host.isEmpty) {
+                    login.login(name: name, password: password, host: host)
                 } else {
                     // TODO
                 }

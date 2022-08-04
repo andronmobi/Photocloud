@@ -1,6 +1,6 @@
 package fr.dappli.photocloud.common.network
 
-import fr.dappli.photocloud.common.Configuration.DEFAULT_HOST
+import fr.dappli.photocloud.common.ClientConfig.DEFAULT_HOST
 import fr.dappli.photocloud.common.db.CacheKey
 import fr.dappli.photocloud.common.db.Database
 import fr.dappli.photocloud.common.vo.Token
