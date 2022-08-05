@@ -20,7 +20,7 @@ import io.ktor.serialization.kotlinx.json.*
 
 class Network(private val database: Database) {
 
-    private var hostAddress: String = DEFAULT_HOST
+    private var hostAddress: String
     private var bearerTokens: BearerTokens? = null
 
     val host: String
@@ -32,6 +32,8 @@ class Network(private val database: Database) {
             val refreshToken = database.getFromCache(CacheKey.REFRESH_TOKEN.name) ?: ""
             BearerTokens(accessToken, refreshToken)
         }
+        hostAddress = database.getFromCache(CacheKey.HOST_ADDRESS.name) ?: DEFAULT_HOST
+        println("host address $hostAddress")
     }
 
     val isLoggedIn: Boolean

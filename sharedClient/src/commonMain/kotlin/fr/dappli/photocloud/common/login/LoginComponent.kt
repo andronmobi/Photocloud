@@ -13,7 +13,7 @@ class LoginComponent(
 ) : Login, ComponentContext by componentContext {
 
     override fun login(name: String, password: String, host: String) {
-        println("login $name $password")
+        println("login $name $password $host")
         CoroutineScope(Platform.uiDispatcher).launch {
             // TODO loading
             if (photocloudLoader.login(name, password, host))

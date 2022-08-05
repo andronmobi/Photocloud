@@ -34,7 +34,7 @@ class Database(databaseDriverFactory: DatabaseDriverFactory) {
 
     fun insertOrIgnoreToCacheWithUpdate(key: String, value: String) {
         dbQuery.transaction {
-            dbQuery.insertOrIgnoreToCacheWithUpdate(value, key)
+            dbQuery.insertOrIgnoreToCacheWithUpdate(key, value)
         }
     }
 }

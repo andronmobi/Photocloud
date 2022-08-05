@@ -20,9 +20,9 @@ WHERE key = ?;
 
 update:
 UPDATE Cache
-SET value = ?
-WHERE key = ?;
+SET value = :value
+WHERE key = :key;
 
 insertOrIgnoreToCacheWithUpdate:
-INSERT OR IGNORE INTO Cache(key, value) VALUES(?, ?);
-UPDATE Cache SET value = ? WHERE key = ?;
+INSERT OR IGNORE INTO Cache(key, value) VALUES(:key, :value);
+UPDATE Cache SET value = :value WHERE key = :key;
