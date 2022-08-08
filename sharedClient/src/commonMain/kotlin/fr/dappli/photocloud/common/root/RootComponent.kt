@@ -23,30 +23,44 @@ class RootComponent(
     private val photocloudLoader = PhotocloudLoader(database)
 
     private val router: Router<Config, Child> = router(
-        initialConfiguration = Config.Login,
+        initialConfiguration = getStartupConfig(),
         handleBackButton = true, // Pop the back stack on back button press
         childFactory = ::createConfig
     )
 
     override val routerState: Value<RouterState<*, Child>> = router.state
 
+    private fun getStartupConfig(): Config {
+        return if (photocloudLoader.isLoggedIn) Config.Splash else Config.Login
+    }
+
     private fun createConfig(config: Config, context: ComponentContext): Child {
-        val newConfig = if (config is Config.Login && photocloudLoader.isLoggedIn) {
-            Config.Splash
-        } else config
-        return when (newConfig) {
-            is Config.Login -> Child.LoginChild(
-                LoginComponent(context, photocloudLoader) {
-                    router.replaceCurrent(Config.Splash)
-                }
-            )
+        return when (config) {
+            is Config.Login -> {
+                Child.LoginChild(
+                    LoginComponent(context, photocloudLoader) {
+                        router.replaceCurrent(Config.Splash)
+                    }
+                )
+            }
             is Config.Splash -> Child.SplashChild(
-                SplashComponent(context, photocloudLoader) { config ->
-                    router.replaceCurrent(Config.Home(config.rootDir.id))
-                }
+                SplashComponent(
+                    componentContext = context,
+                    photocloudLoader = photocloudLoader,
+                    onSuccess = { config ->
+                        router.replaceCurrent(Config.Home(config.rootDir.id))
+                    },
+                    onError = { isLogout ->
+                        if (isLogout) {
+                            router.replaceCurrent(Config.Login)
+                        } else {
+                            TODO("replace by error screen")
+                        }
+                    }
+                )
             )
             is Config.Home -> Child.HomeChild(
-                HomeComponent(context, photocloudLoader, newConfig.rootDirId) {
+                HomeComponent(context, photocloudLoader, config.rootDirId) {
                     router.replaceCurrent(Config.Login)
                 }
             )
@@ -56,8 +70,10 @@ class RootComponent(
     private sealed class Config : Parcelable {
         @Parcelize
         object Login : Config()
+
         @Parcelize
         object Splash : Config()
+
         @Parcelize
         data class Home(val rootDirId: String) : Config()
     }

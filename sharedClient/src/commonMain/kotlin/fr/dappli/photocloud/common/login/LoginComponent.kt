@@ -9,7 +9,7 @@ import kotlinx.coroutines.*
 class LoginComponent(
     componentContext: ComponentContext,
     private val photocloudLoader: PhotocloudLoader,
-    private val onLoginSuccess: () -> Unit,
+    private val onLoginSuccess: () -> Unit
 ) : Login, ComponentContext by componentContext {
 
     override fun login(name: String, password: String, host: String) {

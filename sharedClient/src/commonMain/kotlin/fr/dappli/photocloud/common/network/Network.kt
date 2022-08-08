@@ -84,7 +84,7 @@ class Network(private val database: Database) {
     suspend fun login(name: String, password: String, hostAddress: String): Boolean {
         return try {
             this.hostAddress = hostAddress
-            database.insertOrIgnoreToCacheWithUpdate(CacheKey.HOST_ADDRESS.name, hostAddress)
+            database.insertToCacheOrUpdate(CacheKey.HOST_ADDRESS.name, hostAddress)
 
             val response = nonAuthClient.post {
                 url {
@@ -97,8 +97,8 @@ class Network(private val database: Database) {
             when (response.status) {
                 HttpStatusCode.OK -> {
                     val token = response.body<Token>()
-                    database.insertToCache(CacheKey.ACCESS_TOKEN.name, token.accessToken)
-                    database.insertToCache(CacheKey.REFRESH_TOKEN.name, token.refreshToken)
+                    database.insertToCacheOrUpdate(CacheKey.ACCESS_TOKEN.name, token.accessToken)
+                    database.insertToCacheOrUpdate(CacheKey.REFRESH_TOKEN.name, token.refreshToken)
                     bearerTokens = BearerTokens(token.accessToken, token.refreshToken)
                     true
                 }
