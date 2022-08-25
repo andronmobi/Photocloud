@@ -1,9 +1,12 @@
 package fr.dappli.photocloud.common.login
 
 import com.arkivanov.decompose.ComponentContext
+import com.arkivanov.decompose.value.MutableValue
+import com.arkivanov.decompose.value.Value
 import fr.dappli.photocloud.common.ClientConfig.DEFAULT_HOST
 import fr.dappli.photocloud.common.network.PhotocloudLoader
 import fr.dappli.sharedclient.Platform
+import io.ktor.client.network.sockets.*
 import kotlinx.coroutines.*
 
 class LoginComponent(
@@ -12,14 +15,40 @@ class LoginComponent(
     private val onLoginSuccess: () -> Unit
 ) : Login, ComponentContext by componentContext {
 
+    private val _state = MutableValue<Login.State>(Login.State.None)
+
+    override val state: Value<Login.State>
+        get() = _state
+
     override fun login(name: String, password: String, host: String) {
-        println("login $name $password $host")
+        when {
+            name.isBlank() -> {
+                _state.value = Login.State.Error("username can not be empty or blank")
+                return
+            }
+            password.isBlank() -> {
+                _state.value = Login.State.Error("password can not be empty or blank")
+                return
+            }
+            host.isBlank() -> {
+                _state.value = Login.State.Error("host can not be empty or blank")
+                return
+            }
+        }
+
         CoroutineScope(Platform.uiDispatcher).launch {
             // TODO loading
-            if (photocloudLoader.login(name, password, host))
-                onLoginSuccess()
-            // TODO else error
+            try {
+                if (photocloudLoader.login(name, password, host))
+                    onLoginSuccess()
+            } catch (e: ConnectTimeoutException) {
+                _state.value = Login.State.Error("Connect timeout has expired")
+            }
         }
+    }
+
+    override fun onSnackbarClose() {
+        _state.value = Login.State.None
     }
 
     override val defaultHost: String = DEFAULT_HOST
