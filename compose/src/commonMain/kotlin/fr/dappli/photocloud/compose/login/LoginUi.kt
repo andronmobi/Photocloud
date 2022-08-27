@@ -1,5 +1,6 @@
 package fr.dappli.photocloud.compose.login
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
@@ -10,11 +11,13 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.zIndex
 import com.arkivanov.decompose.extensions.compose.jetbrains.subscribeAsState
 import fr.dappli.photocloud.common.login.Login
 
@@ -29,16 +32,32 @@ fun LoginUi(login: Login) {
 
     Box(Modifier.fillMaxSize()) {
 
-        if (state is Login.State.Error) {
-            Snackbar(
-                modifier = Modifier.padding(10.dp),
-                action = {
-                   Button(onClick = { login.onSnackbarClose() }) {
-                       Text("OK")
-                   }
+        when (state) {
+            is Login.State.Error -> {
+                Snackbar(
+                    modifier = Modifier.padding(10.dp),
+                    action = {
+                        Button(onClick = { login.onSnackbarClose() }) {
+                            Text("OK")
+                        }
+                    }
+                ) {
+                    Text((state as Login.State.Error).message)
                 }
-            ) {
-                Text((state as Login.State.Error).message)
+            }
+            Login.State.Loading -> {
+                Surface(
+                    Modifier.fillMaxSize().zIndex(1f),
+                    color = Color.Transparent
+                ) {
+                    Column(
+                        Modifier.background(Color.Transparent),
+                        verticalArrangement = Arrangement.Center,
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
+                        CircularProgressIndicator()
+                    }
+                }
             }
         }
 

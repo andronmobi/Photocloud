@@ -12,6 +12,7 @@ interface Login {
 
     sealed interface State {
         object None : State
+        object Loading : State
         data class Error(val message: String) : State
     }
 }

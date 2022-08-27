@@ -37,12 +37,23 @@ class LoginComponent(
         }
 
         CoroutineScope(Platform.uiDispatcher).launch {
-            // TODO loading
             try {
+                _state.value = Login.State.Loading
                 if (photocloudLoader.login(name, password, host))
                     onLoginSuccess()
-            } catch (e: ConnectTimeoutException) {
-                _state.value = Login.State.Error("Connect timeout has expired")
+                else {
+                    _state.value = Login.State.Error("Authentication failed")
+                }
+            } catch (e: Throwable) {
+                println("login error: $e")
+                when (e) {
+                    is ConnectTimeoutException -> {
+                        _state.value = Login.State.Error("Connect timeout has expired")
+                    }
+                    else -> {
+                        _state.value = Login.State.Error("Exception: ${e.message}")
+                    }
+                }
             }
         }
     }
