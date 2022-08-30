@@ -10,9 +10,9 @@ interface Login {
     fun onSnackbarClose()
     fun login(name: String, password: String, host: String)
 
-    sealed interface State {
-        object None : State
-        object Loading : State
-        data class Error(val message: String) : State
+    sealed class State {
+        object None : State()
+        object Loading : State()
+        data class Error(val message: String) : State()
     }
 }

@@ -59,6 +59,7 @@ fun LoginUi(login: Login) {
                     }
                 }
             }
+            Login.State.None -> Unit // no-op
         }
 
         Column(

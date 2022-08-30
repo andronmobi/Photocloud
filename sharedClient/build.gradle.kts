@@ -106,6 +106,9 @@ android {
     }
     namespace = "fr.dappli.sharedclient"
 }
+dependencies {
+    testImplementation("junit:junit:4.12")
+}
 
 sqldelight {
     database("AppDatabase") {
