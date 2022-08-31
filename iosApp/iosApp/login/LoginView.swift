@@ -8,6 +8,8 @@ struct LoginView: View {
     @ObservedObject
     private var state: ObservableValue<LoginState>
 
+    private let primaryColor: Color = Color(red: 98 / 255, green: 0 / 255, blue: 242 / 255)
+
     @State
     private var name: String = ""
     @State
@@ -41,7 +43,7 @@ struct LoginView: View {
                             .font(.body)
                             .padding(.vertical, 10)
                             .padding(.horizontal, 15)
-                            .background(Color(red: 98 / 255, green: 0 / 255, blue: 242 / 255))
+                            .background(primaryColor)
                             .cornerRadius(4)
                     }.padding(.vertical, 10)
                     Spacer().frame(width: 10)
@@ -52,7 +54,15 @@ struct LoginView: View {
                     .padding(10)
 
             case loginState as LoginState.Loading:
-                Text("Loading")
+                VStack {
+                    ProgressView(value: 0.4).progressViewStyle(
+                        CircularProgressViewStyle(tint: primaryColor)
+                    )
+                }.frame(
+                    maxWidth: .infinity,
+                    maxHeight: .infinity,
+                    alignment: .center
+                ).zIndex(1)
 
             default:
                 EmptyView()
@@ -90,7 +100,7 @@ struct LoginView: View {
                         .frame(minWidth: 0, maxWidth: .infinity)
                 }
                     .buttonStyle(.bordered)
-                    .background(Color(red: 98 / 255, green: 0 / 255, blue: 242 / 255))
+                    .background(primaryColor)
                     .foregroundColor(.white)
                     .cornerRadius(4)
                     .padding(.horizontal, 60)
@@ -99,7 +109,7 @@ struct LoginView: View {
                 maxWidth: .infinity,
                 maxHeight: .infinity,
                 alignment: .center
-            )
+            ).allowsHitTesting(!(loginState is LoginState.Loading))
 
         }.frame(
             maxWidth: .infinity,
