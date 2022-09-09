@@ -19,6 +19,7 @@ actual fun loadBitmap(inputStream: InputStream): ImageBitmap {
 
 @Composable
 actual fun iconDirPainter(): Painter = painterResource(R.drawable.ic_dir)
-
 @Composable
 actual fun iconPhotoPainter(): Painter = painterResource(R.drawable.ic_photo)
+@Composable
+actual fun iconCloudPainter(): Painter = painterResource(R.drawable.ic_cloud)

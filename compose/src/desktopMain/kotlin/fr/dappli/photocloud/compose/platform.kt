@@ -15,6 +15,7 @@ actual fun loadBitmap(inputStream: InputStream): ImageBitmap {
 
 @Composable
 actual fun iconDirPainter(): Painter = painterResource("ic_dir.svg")
-
 @Composable
 actual fun iconPhotoPainter(): Painter = painterResource("ic_photo.svg")
+@Composable
+actual fun iconCloudPainter(): Painter = painterResource("ic_cloud.svg")

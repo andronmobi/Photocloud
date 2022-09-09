@@ -9,5 +9,5 @@ expect val isDesktop: Boolean
 expect fun loadBitmap(inputStream: InputStream): ImageBitmap
 
 expect fun iconDirPainter(): Painter
-
 expect fun iconPhotoPainter(): Painter
+expect fun iconCloudPainter(): Painter
