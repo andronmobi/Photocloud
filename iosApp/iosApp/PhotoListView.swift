@@ -13,6 +13,7 @@ extension View {
 
 struct PhotoListView: View {
 
+    private let photoSize: CGFloat = 104
     private let photoList: PhotoList
 
     @ObservedObject
@@ -44,7 +45,7 @@ struct PhotoListView: View {
     }
 
     func foldersAndPhotos() -> some View {
-        VStack(alignment: .leading, spacing: 10) {
+        VStack(alignment: .leading, spacing: 8) {
             folders()
             photosView()
         }
@@ -57,31 +58,37 @@ struct PhotoListView: View {
 
     func folders() -> some View {
         ScrollView(.horizontal) {
-            HStack(spacing: 16) {
+            HStack(spacing: 8) {
                 ForEach(model.value.dirs, id: \.self.id) { photoDir in
                     Button(action: {
                         photoList.onDirClicked(dirId: photoDir.id)
                     }, label: {
-                        Image("ic_dir").resizable().frame(width: 120, height: 120).scaledToFit()
-                            .overlay(Text(photoDir.name))
-                            .padding(.bottom, 8)
+                        Image("ic_dir")
+                            .resizable()
+                            .frame(width: photoSize + 8, height: photoSize)
+                            .scaledToFit()
+                            .overlay(
+                                Text(photoDir.name).padding(.top, 16)
+                            )
                     })
                 }
             }
-        }
+        }.padding(.bottom, 8)
     }
 
     func photosView() -> some View {
         ScrollView(.vertical) {
-            let columns: [GridItem] = [GridItem(.adaptive(minimum: 120))]
-            LazyVGrid(columns: columns) {
+            let columns: [GridItem] = [
+            GridItem(.adaptive(minimum: photoSize), spacing: 8, alignment: .leading)
+            ]
+            LazyVGrid(columns: columns, spacing: 8) {
                 ForEach(model.value.photoImages, id: \.self.id) { photoImage in
                     // try to do converting outside of scroll view to increase a performance
                     let uiImage = (photoImage.image as KotlinByteArray).toUiImage() ?? UIImage()
                     Image(uiImage: uiImage)
                         .resizable()
                         .scaledToFill()
-                        .frame(width: 120, height: 120, alignment: .center)
+                        .frame(minWidth: photoSize, minHeight: photoSize, maxHeight: photoSize, alignment: .leading)
                         .clipped()
                         .cornerRadius(4)
                 }
